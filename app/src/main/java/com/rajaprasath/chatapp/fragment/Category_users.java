@@ -22,6 +22,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,15 +35,25 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.rajaprasath.chatapp.Adapter.UserAdapter;
+import com.rajaprasath.chatapp.Notifications.Client;
+import com.rajaprasath.chatapp.Notifications.Data;
+import com.rajaprasath.chatapp.Notifications.MyResponse;
+import com.rajaprasath.chatapp.Notifications.Sender;
+import com.rajaprasath.chatapp.Notifications.Token;
 import com.rajaprasath.chatapp.R;
 import com.rajaprasath.chatapp.controller.User;
 import com.rajaprasath.chatapp.controller.UserInterface;
+import com.rajaprasath.chatapp.ui.stranger.CategoryUsers;
 import com.rajaprasath.chatapp.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class Category_users extends Fragment implements UserInterface {
@@ -49,6 +64,9 @@ public class Category_users extends Fragment implements UserInterface {
     private final CollectionReference collectionReference= db.collection("Users");
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
+    private final APIService apiService = Client.getclient("https://fcm.googleapis.com/").create(APIService.class);
+    private Integer Category_users_intent=4;
+    private String category;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,7 +79,7 @@ public class Category_users extends Fragment implements UserInterface {
 
         users=new ArrayList<>();
 
-
+       category=getArguments().getString("category");
         return view;
     }
 
@@ -84,10 +102,13 @@ public class Category_users extends Fragment implements UserInterface {
                                 user.setUsername(snapshot.getString(Util.username));
                                 user.setImageurl(snapshot.getString(Util.imageurl));
                                 user.setNickname(snapshot.getString(Util.nickname));
+                                user.setInterest((ArrayList<String>) snapshot.get(Util.interest));
 
-                                users.add(user);
-
-
+                                if (user.getInterest() != null) {
+                                    if (user.getInterest().toString().contains(category)) {
+                                        users.add(user);
+                                    }
+                                }
 
                             }
                         }
@@ -119,15 +140,17 @@ public class Category_users extends Fragment implements UserInterface {
         super.onStart();
         getusers();
 
+
+
     }
 
 
     @Override
-    public void requestchat(final String userid, String username) {
+    public void requestchat(final String userid, final String username) {
         builder=new AlertDialog.Builder(getContext());
         View view= getLayoutInflater().inflate(R.layout.request_popup,null);
         TextView request=view.findViewById(R.id.request);
-        String request_text= getResources().getString(R.string.request_text)+" "+username+"?";
+        final String request_text= getResources().getString(R.string.request_text)+" "+username+"?";
         request.setText(request_text);
         Button yes=view.findViewById(R.id.yes);
         Button no=view.findViewById(R.id.no);
@@ -140,6 +163,8 @@ public class Category_users extends Fragment implements UserInterface {
                  @Override
                  public void onComplete(@NonNull Task<Void> task) {
                      Toast.makeText(getContext(), "Request Sent", Toast.LENGTH_SHORT).show();
+                     String notif_text=User.getInstance().getNickname()+" wants to chat with you";
+                     sendNotification(userid,User.getInstance().getNickname(),notif_text,Category_users_intent);
                  }
              });
 
@@ -156,4 +181,60 @@ public class Category_users extends Fragment implements UserInterface {
         dialog=builder.create();
         dialog.show();
     }
+
+
+    private void sendNotification(final String receiver, final String nickname, final String msg, final Integer Incognito) {
+        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        com.google.firebase.database.Query query = tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+
+
+                for (DataSnapshot snapshot : datasnapshot.getChildren()) {
+                    Token token = snapshot.getValue(Token.class);
+                    final Data data = new Data(User.getInstance().getUserid(), R.mipmap.ic_launcher, nickname, msg,User.getInstance().getUserid(),Incognito);
+                    Sender sender = null;
+                    if (token != null) {
+                        sender = new Sender(data, token.getToken());
+                    }
+
+
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+
+                                    if (response.code() == 200) {
+
+                                        if (response.body().success != 1) {
+
+                                        }
+                                        else {
+
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<MyResponse> call, Throwable t) {
+
+                                }
+                            });
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+
+
+
+
 }

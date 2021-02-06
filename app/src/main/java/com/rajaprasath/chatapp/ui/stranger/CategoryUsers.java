@@ -65,8 +65,11 @@ public class CategoryUsers extends AppCompatActivity  {
 
         Toolbar toolbar= findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
-
+        category=getIntent().getStringExtra("category_name");
+        Bundle bundle=new Bundle();
+        bundle.putString("category",category);
         final Category_users category_users= new Category_users();
+        category_users.setArguments(bundle);
         final FriendRequests friendRequests= new FriendRequests();
 
 
@@ -115,7 +118,7 @@ public class CategoryUsers extends AppCompatActivity  {
         back=findViewById(R.id.back);
         category_name=findViewById(R.id.category_name);
         users = new ArrayList<>();
-       category=getIntent().getStringExtra("category_name");
+
        category_name.setText(category);
         getusers();
 

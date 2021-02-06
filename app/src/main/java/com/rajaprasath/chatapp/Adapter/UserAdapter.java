@@ -21,13 +21,20 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.rajaprasath.chatapp.Notifications.Client;
+import com.rajaprasath.chatapp.Notifications.Data;
+import com.rajaprasath.chatapp.Notifications.MyResponse;
+import com.rajaprasath.chatapp.Notifications.Sender;
+import com.rajaprasath.chatapp.Notifications.Token;
 import com.rajaprasath.chatapp.R;
 import com.rajaprasath.chatapp.controller.User;
 import com.rajaprasath.chatapp.controller.UserInterface;
+import com.rajaprasath.chatapp.fragment.APIService;
 import com.rajaprasath.chatapp.fragment.UsersFragment;
 import com.rajaprasath.chatapp.model.Chat;
 import com.rajaprasath.chatapp.model.UserStatus;
@@ -46,6 +53,10 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>  {
 
     Context context;
@@ -60,7 +71,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>  {
     private SecretKeySpec secretKeySpec;
     private boolean permission;
     private UserInterface userInterface;
-
+    private final APIService apiService = Client.getclient("https://fcm.googleapis.com/").create(APIService.class);
 
 
     public UserAdapter(Context context, List<User> users, Integer mode, UserInterface userInterface) {
@@ -333,8 +344,6 @@ else if (collection=="Incogchats"){
     public int getItemCount() {
         return users.size() ;
     }
-
-
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

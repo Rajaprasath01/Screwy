@@ -14,21 +14,37 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.rajaprasath.chatapp.Notifications.Client;
+import com.rajaprasath.chatapp.Notifications.Data;
+import com.rajaprasath.chatapp.Notifications.MyResponse;
+import com.rajaprasath.chatapp.Notifications.Sender;
+import com.rajaprasath.chatapp.Notifications.Token;
 import com.rajaprasath.chatapp.R;
 import com.rajaprasath.chatapp.controller.User;
+import com.rajaprasath.chatapp.fragment.APIService;
 
 import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class requestAdapter  extends RecyclerView.Adapter<requestAdapter.ViewHolder> {
-   private Context context;
+   private final Context context;
    private List<User> users=null;
     private final int permission=130;
     private final  int trusted=1;
@@ -37,6 +53,10 @@ public class requestAdapter  extends RecyclerView.Adapter<requestAdapter.ViewHol
     private final CollectionReference collectionReference= db.collection("Users");
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private User user;
+    private final APIService apiService = Client.getclient("https://fcm.googleapis.com/").create(APIService.class);
+    private final Integer Friend_Request=3;
+    private Integer Inconito=1;
+    private Integer Normal=0;
 
     public requestAdapter(Context context, List<User> users, int request_type) {
         this.context=context;
@@ -74,7 +94,13 @@ public class requestAdapter  extends RecyclerView.Adapter<requestAdapter.ViewHol
                     obj.put("permission", true);
                     collectionReference.document(User.getInstance().getUserid())
                             .collection("requests").document(user.getUserid()).set(obj);
-                    collectionReference.document(user.getUserid()).collection("requests").document(User.getInstance().getUserid()).set(obj);
+                    collectionReference.document(user.getUserid()).collection("requests").document(User.getInstance().getUserid()).set(obj).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg=User.getInstance().getNickname()+" accepted your friend request";
+                            sendNotification(user.getUserid(),User.getInstance().getNickname(),msg,Inconito);
+                        }
+                    });
                 }
             });
             holder.decline.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +113,7 @@ public class requestAdapter  extends RecyclerView.Adapter<requestAdapter.ViewHol
 
                 }
             });
+
         }
 
         else if (request_type==trusted){
@@ -113,9 +140,16 @@ public class requestAdapter  extends RecyclerView.Adapter<requestAdapter.ViewHol
                     del_obj.put("permission",true);
                     collectionReference.document(User.getInstance().getUserid())
                             .collection("message").document(user.getUserid()).set(obj);
-                    collectionReference.document(user.getUserid()).collection("message").document(User.getInstance().getUserid()).set(obj);
+                    collectionReference.document(user.getUserid()).collection("message").document(User.getInstance().getUserid()).set(obj).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg=User.getInstance().getNickname()+" added you as a friend";
+                            sendNotification(user.getUserid(),User.getInstance().getNickname(),msg,Normal);
+                        }
+                    });
                     collectionReference.document(User.getInstance().getUserid()).collection("requests").document(user.getUserid()).set(del_obj);
                     collectionReference.document(user.getUserid()).collection("requests").document(User.getInstance().getUserid()).set(del_obj);
+
                 }
             });
             holder.decline.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +167,7 @@ public class requestAdapter  extends RecyclerView.Adapter<requestAdapter.ViewHol
                 }
             });
 
+
         }
 
     }
@@ -147,15 +182,69 @@ if (status!=null) {
 }
     }
 
+
+    private void sendNotification(final String receiver, final String nickname, final String msg, final Integer mode) {
+        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+
+
+                for (DataSnapshot snapshot : datasnapshot.getChildren()) {
+                    Token token = snapshot.getValue(Token.class);
+                    final Data data = new Data(User.getInstance().getUserid(), R.mipmap.ic_launcher, nickname, msg,User.getInstance().getUserid(),mode);
+                    Sender sender = null;
+                    if (token != null) {
+                        sender = new Sender(data, token.getToken());
+                    }
+
+
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+
+                                    if (response.code() == 200) {
+
+                                        if (response.body().success != 1) {
+
+                                        }
+                                        else {
+
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<MyResponse> call, Throwable t) {
+
+                                }
+                            });
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+
     @Override
     public int getItemCount() {
         return users.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView username;
-        private ImageButton agree,decline;
-        private CircleImageView profile,status;
+        private final TextView username;
+        private final ImageButton agree;
+        private final ImageButton decline;
+        private final CircleImageView profile;
+        private final CircleImageView status;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             username=itemView.findViewById(R.id.user);

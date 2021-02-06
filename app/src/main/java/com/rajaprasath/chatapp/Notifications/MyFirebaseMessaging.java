@@ -21,8 +21,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.rajaprasath.chatapp.fragment.Category_users;
 import com.rajaprasath.chatapp.fragment.FriendRequests;
 import com.rajaprasath.chatapp.ui.ChatRoom;
+import com.rajaprasath.chatapp.ui.MainActivity;
+import com.rajaprasath.chatapp.ui.stranger.CategoryUsers;
 import com.rajaprasath.chatapp.ui.stranger.IncogChatRoom;
 
 public class MyFirebaseMessaging extends FirebaseMessagingService {
@@ -30,6 +33,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
     private final Integer Normal=0;
     private final Integer Incognito=1;
+    private Integer Category_users_intent=4;
 
     public MyFirebaseMessaging() {
     }
@@ -94,7 +98,10 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
             intent = new Intent(this, IncogChatRoom.class);
         }
         else if (mode== friend_Request){
-            intent = new Intent(this, FriendRequests.class);
+            intent = new Intent(this, MainActivity.class);
+        }
+        else if (mode==Category_users_intent){
+            intent=new Intent(this, MainActivity.class);
         }
 
         Bundle bundle= new Bundle();

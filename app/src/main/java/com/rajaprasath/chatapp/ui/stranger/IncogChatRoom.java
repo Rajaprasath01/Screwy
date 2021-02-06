@@ -51,6 +51,7 @@ import com.rajaprasath.chatapp.Notifications.Token;
 import com.rajaprasath.chatapp.R;
 import com.rajaprasath.chatapp.controller.User;
 import com.rajaprasath.chatapp.fragment.APIService;
+import com.rajaprasath.chatapp.fragment.FriendRequests;
 import com.rajaprasath.chatapp.model.Chat;
 import com.rajaprasath.chatapp.model.UserStatus;
 import com.rajaprasath.chatapp.util.Util;
@@ -110,6 +111,8 @@ public class IncogChatRoom extends AppCompatActivity {
 
     private String token;
     private DatabaseReference IncogReference;
+    private String userNickname;
+    private Integer FriendRequests_intent=3;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -284,6 +287,7 @@ public class IncogChatRoom extends AppCompatActivity {
                     user.setStatus(snapshot.getString("status"));
                     user.setNickname(snapshot.getString(Util.nickname));
                     username.setText(user.getNickname());
+                    userNickname=user.getNickname();
                     if (user.getImageurl().equals("default")) {
                         profilepic.setImageResource(R.mipmap.chatroom_person_icon_round);
                     } else {
@@ -389,6 +393,10 @@ public class IncogChatRoom extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(IncogChatRoom.this, "Request Sent", Toast.LENGTH_SHORT).show();
+                        String request=User.getInstance().getNickname()+" wants to chat with you";
+
+                        sendNotification(receiver,User.getInstance().getNickname(),request, FriendRequests_intent);
+
                     }
                 });
 

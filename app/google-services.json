@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "932939640856",
+    "firebase_url": "https://screwy-ba775-default-rtdb.firebaseio.com",
+    "project_id": "screwy-ba775",
+    "storage_bucket": "screwy-ba775.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:932939640856:android:48c114c3162212649b136d",
+        "android_client_info": {
+          "package_name": "com.rajaprasath.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "932939640856-152n8lrffb9i9ot7odn16nkgq53mq5gr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rajaprasath.chatapp",
+            "certificate_hash": "e476e328eee5113193ab67684b8bf24f3075a718"
+          }
+        },
+        {
+          "client_id": "932939640856-50juu9k0920sotl6ebaqhk94934n1qvu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCK9IG8JQTigi7pTI5mEADLQnYagRmIwLY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "932939640856-50juu9k0920sotl6ebaqhk94934n1qvu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

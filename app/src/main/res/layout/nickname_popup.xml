@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+<androidx.cardview.widget.CardView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/colorPrimary">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/enter_name_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enter_your_name"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/cardview_light_background"/>
+        <EditText
+            android:id="@+id/name_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cardview_light_background"
+            android:paddingStart="15dp"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_below="@+id/enter_name_id"
+            />
+        <Button
+            android:id="@+id/cancel_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@+id/name_id"
+            android:layout_toLeftOf="@+id/save_id"
+            android:text="@string/cancel"
+            android:textColor="@color/cardview_light_background"
+            android:background="@color/colorPrimary"/>
+        <Button
+            android:id="@+id/save_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name_id"
+            android:layout_alignParentEnd="true"
+
+            android:text="@string/save"
+            android:textColor="@color/cardview_light_background"
+            android:background="@color/colorPrimary"/>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
+</LinearLayout>

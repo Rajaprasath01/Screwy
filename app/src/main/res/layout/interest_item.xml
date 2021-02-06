@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimaryHighlight"
+    >
+<androidx.cardview.widget.CardView
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="1dp"
+    app:cardBackgroundColor="@color/colorPrimaryHighlight"
+    >
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/interests_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="10dp"
+                    />
+                <CheckedTextView
+
+                    android:id="@+id/interest_choice_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/interests_icon"
+                    android:layout_marginStart="10dp"
+                    android:layout_centerVertical="true"
+                    android:text="Gaming"
+                    android:checkMarkTint="@color/colorAccent"
+                    android:textColor="@color/colorAccent"
+                    android:drawablePadding="15dp"
+                    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                    android:gravity="center"
+                    android:checked="false"
+                    android:padding="10dp"
+                    />
+        </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>
+</LinearLayout>

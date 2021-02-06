@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="x">#121212</color>
+    <color name="y">#212121</color>
+
+    <color name="incog_primaryDark">#121212</color>
+    <color name="incog_primary">#212121</color>
+    <color name="highlight">#556881</color>
+    <color name="black">#000000</color>
+    <color name="colorPrimaryDark">#5BEEEEEE</color>
+    <color name="colorPrimary">#212121</color>
+    <color name="colorPrimaryHighlight">#424242</color>
+    <color name="colorAccent">#EFEBEB</color>
+    <color name="android_green">#3ddc84</color>
+    <color name="notif_color">#121212</color>
+    <color name="statusbar_color">#121212</color>
+    <color name="lightcolor">#B4B4B4</color>
+    <color name="transparent">#00000000</color>
+
+</resources>

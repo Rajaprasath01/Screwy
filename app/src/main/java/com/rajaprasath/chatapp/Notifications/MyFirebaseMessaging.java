@@ -44,6 +44,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(@NonNull String s) {
+        
         super.onNewToken(s);
 
     }

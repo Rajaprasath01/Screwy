@@ -92,7 +92,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(MainActivity.this, CategoryActivity.class));
+                String activity=getIntent().getStringExtra("activity");
+                if (activity.equals("categoryactivity")){
+                    finish();
+                }
+                else {
+                    Intent intent=new Intent(MainActivity.this, CategoryActivity.class);
+                    intent.putExtra("activity","mainactivity");
+                    startActivity(intent);
+                }
+
 
             }
         });

@@ -1,6 +1,7 @@
 package com.rajaprasath.chatapp.ui;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,9 +16,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.rajaprasath.chatapp.Adapter.UserAdapter;
 import com.rajaprasath.chatapp.R;
 import com.rajaprasath.chatapp.controller.User;
+import com.rajaprasath.chatapp.fragment.UsersFragment;
+import com.rajaprasath.chatapp.ui.stranger.CategoryActivity;
+import com.rajaprasath.chatapp.util.Util;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -40,8 +51,7 @@ public class splashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-     // startActivity(new Intent(splashScreen.this,ProfileActivity.class));
-        //finish();
+
         firebaseAuth=FirebaseAuth.getInstance();
         user=firebaseAuth.getCurrentUser();
 
@@ -67,8 +77,8 @@ public class splashScreen extends AppCompatActivity {
                                 user.setInterest((ArrayList<String>) snapshot.get("interest"));
                                 user.setAbout(snapshot.getString("about"));
 
-                                startActivity(new Intent(splashScreen.this, MainActivity.class));
-                                finish();
+                                check_users();
+
                             }
                             else {
 
@@ -92,6 +102,52 @@ public class splashScreen extends AppCompatActivity {
         };
 
     }
+
+    private void check_users() {
+         final List<String> ids=new ArrayList<>();
+        FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
+        final FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
+
+        collectionReference.document(firebaseUser.getUid()).collection("message").orderBy("messagetime", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                QuerySnapshot value=task.getResult();
+                if (value!=null){
+                    ids.clear();
+                    for (QueryDocumentSnapshot documentSnapshot :value){
+
+                        if (documentSnapshot!=null){
+                            String id= documentSnapshot.getId();
+                            if (documentSnapshot.get("trusted")!=null) {
+                                if (documentSnapshot.getBoolean("trusted") == true) {
+
+                                    ids.add(id);
+
+                                } else if (documentSnapshot.getBoolean("trusted") == false) {
+                                    ids.remove(id);
+
+                                }
+                            }
+                        }
+
+                    }
+                    if (ids.size()==0){
+                        Intent intent=new Intent(splashScreen.this, CategoryActivity.class);
+                        intent.putExtra("activity","splashscreen");
+                        startActivity(intent);
+                        finish();
+                    }
+                    else {
+                        startActivity(new Intent(splashScreen.this,MainActivity.class));
+                        finish();
+                    }
+
+                }
+            }
+        });
+
+    }
+
     @Override
     protected void onStart() {
         super.onStart();

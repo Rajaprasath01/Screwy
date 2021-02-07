@@ -41,6 +41,7 @@ public class CategoryActivity extends AppCompatActivity {
     private CollectionReference collectionReference=db.collection("Users");
     private FirebaseDatabase database=FirebaseDatabase.getInstance();
     private RelativeLayout mode;
+    private String activity;
 
 
     @Override
@@ -56,12 +57,22 @@ public class CategoryActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         categoryAdapter= new CategoryAdapter(getApplicationContext(),categories);
         recyclerView.setAdapter(categoryAdapter);
+         activity=getIntent().getStringExtra("activity");
         mode= findViewById(R.id.mode_layout);
         mode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                finish();
+
+                if (activity.equals("mainactivity")){
+                    finish();
+                }
+                else if (activity.equals("splashscreen")){
+                    Intent intent=new Intent(CategoryActivity.this,MainActivity.class);
+                    intent.putExtra("activity","categoryactivity");
+                    startActivity(intent);
+                }
+
             }
         });
 

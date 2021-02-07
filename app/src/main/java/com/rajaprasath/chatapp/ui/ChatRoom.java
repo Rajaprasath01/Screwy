@@ -271,7 +271,8 @@ private SecretKeySpec secretKeySpec;
             public void onClick(View v) {
                 final HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put(Util.trusted, false);
-                startActivity(new Intent(ChatRoom.this, MainActivity.class));
+               // startActivity(new Intent(ChatRoom.this, MainActivity.class));
+                finish();
                 collectionReference.document(User.getInstance().getUserid()).collection(Util.message).document(userid).set(hashMap);
                 collectionReference.document(userid).collection(Util.message).document(User.getInstance().getUserid()).set(hashMap);
 
@@ -287,6 +288,7 @@ private SecretKeySpec secretKeySpec;
         builder.setView(view);
         dialog = builder.create();
         dialog.show();
+
     }
 
     private void seenmsg(final String sender, final String receiver) {

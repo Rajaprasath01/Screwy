@@ -36,15 +36,15 @@
                     android:layout_height="100dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="50dp"
-                    android:src="@mipmap/ic_launcher">
+                    android:src="@mipmap/person_icon_round">
 
                 </de.hdodenhof.circleimageview.CircleImageView>
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginStart="210dp"
-                    android:layout_marginTop="110dp"
+                    android:layout_marginStart="217dp"
+                    android:layout_marginTop="115dp"
                     android:src="@mipmap/ic_launcher_camera" />
 
                 <TextView
@@ -54,6 +54,7 @@
                     android:layout_below="@+id/display_pic"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="15dp"
+                    android:drawableEnd="@drawable/ic_baseline_edit_24"
                     android:text="@string/username"
                     android:textColor="@color/colorPrimary"
                     android:textSize="18sp"

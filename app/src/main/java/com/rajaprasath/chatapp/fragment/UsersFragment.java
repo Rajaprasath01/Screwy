@@ -1,5 +1,6 @@
 package com.rajaprasath.chatapp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -29,6 +30,8 @@ import com.rajaprasath.chatapp.Notifications.Token;
 import com.rajaprasath.chatapp.R;
 import com.rajaprasath.chatapp.controller.User;
 import com.rajaprasath.chatapp.controller.UserInterface;
+import com.rajaprasath.chatapp.ui.stranger.CategoryActivity;
+import com.rajaprasath.chatapp.ui.stranger.CategoryUsers;
 import com.rajaprasath.chatapp.util.Util;
 
 import java.util.ArrayList;

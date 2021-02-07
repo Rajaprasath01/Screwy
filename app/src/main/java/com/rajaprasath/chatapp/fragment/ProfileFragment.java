@@ -155,9 +155,49 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         });
 
+        username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                set_username();
+            }
+        });
+
         return view;
     }
 
+    private void set_username() {
+
+        builder= new AlertDialog.Builder(getContext());
+        View view1 = getLayoutInflater().inflate(R.layout.nickname_popup,null);
+        final EditText editname=view1.findViewById(R.id.name_id);
+        if (User.getInstance().getUsername()!=null){
+            editname.setText(User.getInstance().getUsername().trim());
+        }
+        Button save_button=view1.findViewById(R.id.save_id);
+        Button cancel_button=view1.findViewById(R.id.cancel_id);
+        builder.setView(view1);
+        dialog=builder.create();
+        dialog.show();
+
+        save_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                username.setText(editname.getText().toString().trim());
+                dialog.dismiss();
+                Map<String,Object> userobj = new HashMap<>();
+
+                userobj.put(Util.username,editname.getText().toString().trim());
+                collectionReference.document(fuser.getUid()).update(userobj);
+                User.getInstance().setUsername(editname.getText().toString().trim());
+            }
+        });
+        cancel_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
 
 
     private void set_about() {

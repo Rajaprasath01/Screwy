@@ -87,9 +87,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position ) {
 
         Chat chat= chats.get(position);
-        holder.show_message.setText(chat.getMessage());
-        holder.profile_pic.setBackgroundResource(R.color.transparent);
-
+        if (holder.show_message!=null) {
+            holder.show_message.setText(chat.getMessage().trim());
+        }
+        if (holder.profile_pic!=null) {
+            holder.profile_pic.setBackgroundResource(R.color.transparent);
+        }
         holder.show_message.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -129,16 +132,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             }
 
             if (position==chats.size()-1){
-                holder.seen_msg.setVisibility(View.VISIBLE);
-                if (chat.isIsseen()){
-                    holder.seen_msg.setText("Seen");
-                }
-                else {
-                    holder.seen_msg.setText("Delivered");
+                if (holder.seen_msg!=null) {
+                    holder.seen_msg.setVisibility(View.VISIBLE);
+                    if (chat.isIsseen()) {
+                        holder.seen_msg.setText("Seen");
+                    } else {
+                        holder.seen_msg.setText("Delivered");
+                    }
                 }
             }
             else {
-                holder.seen_msg.setVisibility(View.GONE);
+                if (holder.seen_msg!=null) {
+                    holder.seen_msg.setVisibility(View.GONE);
+                }
             }
 
         }

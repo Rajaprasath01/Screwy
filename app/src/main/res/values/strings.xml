@@ -40,4 +40,5 @@
     <string name="request_text">Would you like to send a friend request to </string>
     <string name="add_trusted_text">Would you like to add this person to your contacts?</string>
     <string name="delete">Delete</string>
+    <string name="sign_out_text">Are you sure you want to signout?</string>
 </resources>

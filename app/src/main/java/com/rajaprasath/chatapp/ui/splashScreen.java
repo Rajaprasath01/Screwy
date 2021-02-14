@@ -119,11 +119,11 @@ public class splashScreen extends AppCompatActivity {
                         if (documentSnapshot!=null){
                             String id= documentSnapshot.getId();
                             if (documentSnapshot.get("trusted")!=null) {
-                                if (documentSnapshot.getBoolean("trusted") == true) {
+                                if (documentSnapshot.getBoolean("trusted")) {
 
                                     ids.add(id);
 
-                                } else if (documentSnapshot.getBoolean("trusted") == false) {
+                                } else if (!documentSnapshot.getBoolean("trusted")) {
                                     ids.remove(id);
 
                                 }

@@ -2,6 +2,7 @@ package com.rajaprasath.chatapp.ui;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -39,6 +41,7 @@ import com.rajaprasath.chatapp.controller.User;
 import com.rajaprasath.chatapp.fragment.ProfileFragment;
 import com.rajaprasath.chatapp.fragment.UsersFragment;
 import com.rajaprasath.chatapp.ui.stranger.CategoryActivity;
+import com.rajaprasath.chatapp.ui.stranger.IncogChatRoom;
 import com.rajaprasath.chatapp.util.Util;
 
 import java.util.ArrayList;
@@ -59,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private RelativeLayout mode;
+    private AlertDialog dialog;
+    private AlertDialog.Builder builder;
 
 
 
@@ -93,8 +98,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String activity=getIntent().getStringExtra("activity");
-                if (activity.equals("categoryactivity")){
-                    finish();
+                if (activity!=null) {
+                    if (activity.equals("categoryactivity")) {
+                        finish();
+                    }
                 }
                 else {
                     Intent intent=new Intent(MainActivity.this, CategoryActivity.class);
@@ -122,13 +129,9 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.sign_out:
                 if (user != null && firebaseAuth != null) {
-                    firebaseAuth.signOut();
+                    signout();
 
-                    User user= User.getInstance();
-                    user=null;
 
-                    startActivity(new Intent(MainActivity.this, splashScreen.class));
-                    finish();
                 }
                 else {
 
@@ -137,6 +140,34 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
 
+    }
+
+    private void signout() {
+        builder=new AlertDialog.Builder(this);
+        View view=getLayoutInflater().inflate(R.layout.signout_popup,null);
+        Button yes = view.findViewById(R.id.yes);
+        Button no = view.findViewById(R.id.no);
+        yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                firebaseAuth.signOut();
+                User user= User.getInstance();
+                user=null;
+                startActivity(new Intent(MainActivity.this, splashScreen.class));
+                finish();
+
+                dialog.dismiss();
+            }
+        });
+        no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        builder.setView(view);
+        dialog = builder.create();
+        dialog.show();
     }
 
     public class ViewpagerAdapter extends FragmentPagerAdapter{

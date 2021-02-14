@@ -22,11 +22,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,6 +55,7 @@ import com.rajaprasath.chatapp.controller.User;
 import com.rajaprasath.chatapp.fragment.APIService;
 import com.rajaprasath.chatapp.model.Chat;
 import com.rajaprasath.chatapp.model.UserStatus;
+import com.rajaprasath.chatapp.ui.stranger.CategoryActivity;
 import com.rajaprasath.chatapp.ui.stranger.CategoryUsers;
 import com.rajaprasath.chatapp.util.Util;
 
@@ -107,6 +112,13 @@ private SecretKeySpec secretKeySpec;
         setContentView(R.layout.activity_chat_room);
         getSupportActionBar().hide();
 
+        String activity=getIntent().getStringExtra("activity");
+        if (activity!=null){
+            if (activity.trim().equals("notif")){
+                setuserinstance();
+            }
+        }
+
         apiService = Client.getclient("https://fcm.googleapis.com/").create(APIService.class);
         send=findViewById(R.id.send);
         recyclerView=findViewById(R.id.chat_recyclerview);
@@ -114,15 +126,21 @@ private SecretKeySpec secretKeySpec;
         LinearLayoutManager linearLayoutManager= new LinearLayoutManager(ChatRoom.this);
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-       sender=User.getInstance().getUserid();
-       receiver=getIntent().getStringExtra("userid");
+        if (User.getInstance().getUserid()!=null){
+            sender=User.getInstance().getUserid();
+        }
+       if (getIntent().getStringExtra("userid")!=null){
+           receiver=getIntent().getStringExtra("userid");
+           userid=getIntent().getStringExtra("userid");
+       }
+
        msg_text=findViewById(R.id.msg_text);
         profilepic=findViewById(R.id.profile_image_id);
         username=findViewById(R.id.user_id);
         status=findViewById(R.id.status);
         back=findViewById(R.id.back_layout);
         back_button=findViewById(R.id.back);
-        userid=getIntent().getStringExtra("userid");
+
         remove_contact=findViewById(R.id.remove_trusted);
 
         remove_contact.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +172,7 @@ private SecretKeySpec secretKeySpec;
                         return true;
                     case MotionEvent.ACTION_UP:
 
+                        onBackPressed();
                         finish();
                         return true;
                 }
@@ -209,43 +228,18 @@ private SecretKeySpec secretKeySpec;
 });
 
 
+   checkstatus_readmsg();
 
 
-        collectionReference.document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isComplete() && task.isSuccessful()) {
-                    DocumentSnapshot snapshot = task.getResult();
-                    User user = new User();
-                    user.setUsername(snapshot.getString("username"));
-                    user.setUserid(snapshot.getString("userid"));
-                    user.setImageurl(snapshot.getString("imageurl"));
-
-                    username.setText(user.getUsername());
-                    if (user.getImageurl().equals("default")){
-                        profilepic.setImageResource(R.mipmap.chatroom_person_icon_round);
-
-                    }
-                    else {
-                        Glide.with(ChatRoom.this).load(user.getImageurl()).into(profilepic);
-                    }
-
-                    checkstatus(receiver);
-
-
-                    read_message(sender,receiver,user.getImageurl());
-                }
-
-
-            }
-        });
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 notify=true;
                 msg= String.valueOf(msg_text.getText());
+                msg=msg.trim();
                 if (!msg.equals("")) {
+
                     send_message(sender, receiver, msg);
                 }
                 else {
@@ -255,7 +249,81 @@ private SecretKeySpec secretKeySpec;
             }
         });
 
-           seenmsg(sender,receiver);
+        if (sender!=null && receiver!=null) {
+            seenmsg(sender, receiver);
+        }
+    }
+
+    private void checkstatus_readmsg() {
+        if (userid!=null) {
+
+            collectionReference.document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isComplete() && task.isSuccessful()) {
+                        DocumentSnapshot snapshot = task.getResult();
+                        User user = new User();
+                        user.setUsername(snapshot.getString("username"));
+                        user.setUserid(snapshot.getString("userid"));
+                        user.setImageurl(snapshot.getString("imageurl"));
+
+                        username.setText(user.getUsername());
+                        if (user.getImageurl().equals("default")) {
+                            profilepic.setImageResource(R.mipmap.chatroom_person_icon_round);
+
+                        } else {
+                            Glide.with(ChatRoom.this).load(user.getImageurl()).into(profilepic);
+                        }
+
+                        checkstatus(receiver);
+
+
+                        read_message(sender, receiver, user.getImageurl());
+                    }
+
+
+                }
+            });
+        }
+    }
+
+    private void setuserinstance() {
+
+       String user= FirebaseAuth.getInstance().getCurrentUser().getUid();
+       if (user!=null) {
+           collectionReference.document(user).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+               @Override
+               public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                   if (task.isComplete() && task.isSuccessful()) {
+                       DocumentSnapshot snapshot = task.getResult();
+                       User user = User.getInstance();
+                       user.setUserid(snapshot.getString("userid"));
+                       user.setUsername(snapshot.getString("username"));
+                       user.setImageurl(snapshot.getString("imageurl"));
+                       user.setNickname(snapshot.getString("nickname"));
+                       user.setGender(snapshot.getString("gender"));
+                       user.setInterest((ArrayList<String>) snapshot.get("interest"));
+                       user.setAbout(snapshot.getString("about"));
+
+                       if (User.getInstance().getUserid() != null) {
+                           sender = User.getInstance().getUserid();
+                       }
+                       if (getIntent().getStringExtra("userid") != null) {
+                           receiver = getIntent().getStringExtra("userid");
+                           userid = getIntent().getStringExtra("userid");
+                       }
+
+
+                       seenmsg(sender,receiver);
+                       checkstatus_readmsg();
+                       onResume();
+
+                   } else {
+
+                   }
+               }
+           });
+       }
     }
 
     private void remove_trusted() {
@@ -271,10 +339,20 @@ private SecretKeySpec secretKeySpec;
             public void onClick(View v) {
                 final HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put(Util.trusted, false);
-               // startActivity(new Intent(ChatRoom.this, MainActivity.class));
-                finish();
-                collectionReference.document(User.getInstance().getUserid()).collection(Util.message).document(userid).set(hashMap);
-                collectionReference.document(userid).collection(Util.message).document(User.getInstance().getUserid()).set(hashMap);
+
+
+                collectionReference.document(User.getInstance().getUserid()).collection(Util.message).document(userid).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        collectionReference.document(userid).collection(Util.message).document(User.getInstance().getUserid()).set(hashMap);
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
 
                 dialog.dismiss();
             }
@@ -498,7 +576,9 @@ private SecretKeySpec secretKeySpec;
     protected void onResume() {
         super.onResume();
         status("online");
-        currentuser(userid);
+        if (userid!=null) {
+            currentuser(userid);
+        }
         updatelastseen();
     }
 
@@ -555,27 +635,46 @@ private SecretKeySpec secretKeySpec;
 
     private void currentuser(String userid){
 
-        SharedPreferences.Editor editor= getSharedPreferences("PREFS",MODE_PRIVATE).edit();
-        editor.putString("currentuser",userid);
-        editor.apply();
+        if (userid!=null) {
+            SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+            editor.putString("currentuser", userid);
+            editor.apply();
+
+        }
     }
 
     private void updatelastseen() {
 
-        HashMap<String,Object> hashMap=new HashMap<>();
-        hashMap.put(Util.lastseen, Timestamp.now());
-        collectionReference.document(User.getInstance().getUserid()).set(hashMap,SetOptions.merge());
+        if (User.getInstance().getUserid()!=null) {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put(Util.lastseen, Timestamp.now());
+            collectionReference.document(User.getInstance().getUserid()).set(hashMap, SetOptions.merge());
+        }
     }
     private void status(final String status) {
 
-        HashMap<String,Object> hashMap = new HashMap<>();
-        hashMap.put("status",status);
-        DatabaseReference reference= database.getReference("Users").child(User.getInstance().getUserid());
+        if (User.getInstance().getUserid()!=null) {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("status", status);
+            DatabaseReference reference = database.getReference("Users").child(User.getInstance().getUserid());
 
-        reference.updateChildren(hashMap);
+            reference.updateChildren(hashMap);
 
-
+        }
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        String activity=getIntent().getStringExtra("activity");
+        if (activity!=null){
+            if (activity.trim().equals("notif")){
+                startActivity(new Intent(this,MainActivity.class));
+                finish();
+
+            }
+        }
+
+    }
 }

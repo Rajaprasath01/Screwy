@@ -17,6 +17,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.rajaprasath.chatapp.Notifications.Client;
@@ -35,6 +38,7 @@ import com.rajaprasath.chatapp.R;
 import com.rajaprasath.chatapp.controller.User;
 import com.rajaprasath.chatapp.fragment.APIService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -69,6 +73,9 @@ public class requestAdapter  extends RecyclerView.Adapter<requestAdapter.ViewHol
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(context).inflate(R.layout.request_item,parent,false);
 
+        FirebaseUser fuser= FirebaseAuth.getInstance().getCurrentUser();
+        User.getInstance().setUserid(fuser.getUid());
+       setuserinstance();
 
         return new ViewHolder(view);
     }
@@ -98,6 +105,7 @@ public class requestAdapter  extends RecyclerView.Adapter<requestAdapter.ViewHol
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             String msg=User.getInstance().getNickname()+" accepted your friend request";
+
                             sendNotification(user.getUserid(),User.getInstance().getNickname(),msg,Inconito);
                         }
                     });
@@ -190,10 +198,15 @@ if (status!=null) {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
 
+                String category=User.getInstance().getInterest().get(0);
+                if (category==null){
+                    category="";
+                }
 
                 for (DataSnapshot snapshot : datasnapshot.getChildren()) {
                     Token token = snapshot.getValue(Token.class);
-                    final Data data = new Data(User.getInstance().getUserid(), R.mipmap.ic_launcher, nickname, msg,User.getInstance().getUserid(),mode);
+
+                    final Data data = new Data(User.getInstance().getUserid(), R.mipmap.ic_launcher, nickname, msg,User.getInstance().getUserid(),mode,category);
                     Sender sender = null;
                     if (token != null) {
                         sender = new Sender(data, token.getToken());
@@ -253,6 +266,34 @@ if (status!=null) {
             profile=itemView.findViewById(R.id.profile_image);
             status=itemView.findViewById(R.id.status);
 
+        }
+    }
+
+
+    private void setuserinstance() {
+
+        String user= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if (user!=null) {
+            collectionReference.document(user).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isComplete() && task.isSuccessful()) {
+                        DocumentSnapshot snapshot = task.getResult();
+                        User user = User.getInstance();
+                        user.setUserid(snapshot.getString("userid"));
+                        user.setUsername(snapshot.getString("username"));
+                        user.setImageurl(snapshot.getString("imageurl"));
+                        user.setNickname(snapshot.getString("nickname"));
+                        user.setGender(snapshot.getString("gender"));
+                        user.setInterest((ArrayList<String>) snapshot.get("interest"));
+                        user.setAbout(snapshot.getString("about"));
+
+
+                    } else {
+
+                    }
+                }
+            });
         }
     }
 }

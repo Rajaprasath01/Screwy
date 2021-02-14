@@ -369,13 +369,19 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nickname.setText(editname.getText().toString().trim());
+
                 dialog.dismiss();
                 Map<String,Object> userobj = new HashMap<>();
 
                 userobj.put(Util.nickname,editname.getText().toString().trim());
-                collectionReference.document(fuser.getUid()).update(userobj);
-                User.getInstance().setNickname(editname.getText().toString().trim());
+                collectionReference.document(fuser.getUid()).update(userobj).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        nickname.setText(editname.getText().toString().trim());
+                        User.getInstance().setNickname(editname.getText().toString().trim());
+                    }
+                });
+
             }
         });
         cancel_button.setOnClickListener(new View.OnClickListener() {

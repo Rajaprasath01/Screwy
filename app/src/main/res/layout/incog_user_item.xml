@@ -55,8 +55,8 @@
 
             <TextView
                 android:id="@+id/lastmessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="15dp"
                 android:layout_below="@+id/user"
                 android:layout_toEndOf="@+id/profile_image"
                 android:layout_marginStart="10dp"

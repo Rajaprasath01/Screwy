@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -123,6 +124,16 @@ public class IncogChatRoom extends AppCompatActivity {
         getSupportActionBar().hide();
         getWindow().setNavigationBarColor(getResources().getColor(R.color.black));
 
+
+        String activity=getIntent().getStringExtra("activity");
+        if (activity!=null){
+            if (activity.trim().equals("notif")){
+                setuserinstance();
+
+            }
+        }
+
+
         apiService = Client.getclient("https://fcm.googleapis.com/").create(APIService.class);
         send = findViewById(R.id.send);
         recyclerView = findViewById(R.id.chat_recyclerview);
@@ -130,8 +141,13 @@ public class IncogChatRoom extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(IncogChatRoom.this);
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-        sender = User.getInstance().getUserid();
-        receiver = getIntent().getStringExtra("userid");
+        if (User.getInstance().getUserid()!=null) {
+            sender = User.getInstance().getUserid();
+        }
+        if (getIntent().getStringExtra("userid")!=null) {
+            receiver = getIntent().getStringExtra("userid");
+            userid = getIntent().getStringExtra("userid");
+        }
         msg_text = findViewById(R.id.msg_text);
         profilepic = findViewById(R.id.profile_image_id);
         username = findViewById(R.id.user_id);
@@ -140,7 +156,7 @@ public class IncogChatRoom extends AppCompatActivity {
         back_button = findViewById(R.id.back);
         add_trusted = findViewById(R.id.add_trusted);
         block=findViewById(R.id.block);
-        userid = getIntent().getStringExtra("userid");
+
 
        block.setImageResource(R.drawable.ic_baseline_block_24);
        block.setVisibility(View.GONE);
@@ -209,7 +225,9 @@ public class IncogChatRoom extends AppCompatActivity {
                         return true;
                     case MotionEvent.ACTION_UP:
 
+                        onBackPressed();
                         finish();
+
                         return true;
                 }
                 return false;
@@ -229,11 +247,11 @@ public class IncogChatRoom extends AppCompatActivity {
         msg_text.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (msg_text.getText().toString().length() == 0) {
-                    HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("typing", null);
+                if (msg_text.getText().toString().length()==0){
+                    HashMap<String,Object> hashMap = new HashMap<>();
+                    hashMap.put("typing",null);
 
-                    DatabaseReference reference = database.getReference("Users").child(User.getInstance().getUserid());
+                    DatabaseReference reference= database.getReference("Users").child(User.getInstance().getUserid());
 
                     reference.updateChildren(hashMap);
                 }
@@ -242,18 +260,19 @@ public class IncogChatRoom extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if (msg_text.getText().toString().length() == 0) {
-                    HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("typing", null);
+                if (msg_text.getText().toString().length()==0){
+                    HashMap<String,Object> hashMap = new HashMap<>();
+                    hashMap.put("typing",null);
 
-                    DatabaseReference reference = database.getReference("Users").child(User.getInstance().getUserid());
+                    DatabaseReference reference= database.getReference("Users").child(User.getInstance().getUserid());
 
                     reference.updateChildren(hashMap);
-                } else {
-                    HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("typing", typing);
-                    hashMap.put("receiver", receiver);
-                    DatabaseReference reference = database.getReference("Users").child(User.getInstance().getUserid());
+                }
+                else {
+                    HashMap<String,Object> hashMap = new HashMap<>();
+                    hashMap.put("typing",typing);
+                    hashMap.put("receiver",receiver);
+                    DatabaseReference reference= database.getReference("Users").child(User.getInstance().getUserid());
 
                     reference.updateChildren(hashMap);
                 }
@@ -262,11 +281,10 @@ public class IncogChatRoom extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (msg_text.getText().toString().length() == 0) {
-                    HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("typing", null);
-
-                    DatabaseReference reference = database.getReference("Users").child(User.getInstance().getUserid());
+                if (msg_text.getText().toString().length()==0){
+                    HashMap<String,Object> hashMap = new HashMap<>();
+                    hashMap.put("typing",null);
+                    DatabaseReference reference= database.getReference("Users").child(User.getInstance().getUserid());
 
                     reference.updateChildren(hashMap);
                 }
@@ -275,7 +293,76 @@ public class IncogChatRoom extends AppCompatActivity {
 
 
 
-        collectionReference.document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        checksts_readmsg();
+
+
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notify = true;
+                msg = String.valueOf(msg_text.getText());
+                msg=msg.trim();
+                if (!msg.isEmpty()) {
+
+                    send_message(sender, receiver, msg);
+                } else {
+
+                }
+                msg_text.setText("");
+            }
+        });
+
+
+        if (sender!=null && receiver!=null) {
+            seenmsg(sender, receiver);
+
+        }
+
+    }
+
+    private void setuserinstance() {
+
+        String user= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if (user!=null) {
+            collectionReference.document(user).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isComplete() && task.isSuccessful()) {
+                        DocumentSnapshot snapshot = task.getResult();
+                        User user = User.getInstance();
+                        user.setUserid(snapshot.getString("userid"));
+                        user.setUsername(snapshot.getString("username"));
+                        user.setImageurl(snapshot.getString("imageurl"));
+                        user.setNickname(snapshot.getString("nickname"));
+                        user.setGender(snapshot.getString("gender"));
+                        user.setInterest((ArrayList<String>) snapshot.get("interest"));
+                        user.setAbout(snapshot.getString("about"));
+
+                        if (User.getInstance().getUserid() != null) {
+                            sender = User.getInstance().getUserid();
+                        }
+                        if (getIntent().getStringExtra("userid") != null) {
+                            receiver = getIntent().getStringExtra("userid");
+                            userid = getIntent().getStringExtra("userid");
+                        }
+
+                        checktrusted();
+                        checksts_readmsg();
+                        seenmsg(sender,receiver);
+                        onResume();
+
+                    } else {
+
+                    }
+                }
+            });
+        }
+    }
+
+    private void checksts_readmsg() {
+        if (userid!=null){
+               collectionReference.document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isComplete() && task.isSuccessful()) {
@@ -300,48 +387,31 @@ public class IncogChatRoom extends AppCompatActivity {
 
             }
         });
-
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                notify = true;
-                msg = String.valueOf(msg_text.getText());
-                if (!msg.equals("")) {
-                    send_message(sender, receiver, msg);
-                } else {
-
-                }
-                msg_text.setText("");
-            }
-        });
-
-
-        seenmsg(sender, receiver);
-
-
-
+        }
     }
 
     private void checktrusted() {
-        collectionReference.document(User.getInstance().getUserid()).collection(Util.message).document(userid)
-                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
-                        if (snapshot!=null) {
-                            if (snapshot.get("trusted") != null) {
-                                if (!snapshot.getBoolean("trusted")) {
+        if (User.getInstance().getUserid()!=null) {
+            collectionReference.document(User.getInstance().getUserid()).collection(Util.message).document(userid)
+                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                            if (snapshot != null) {
+                                if (snapshot.get("trusted") != null) {
+                                    if (!snapshot.getBoolean("trusted")) {
+
+                                        block.setVisibility(View.VISIBLE);
+                                    } else {
+                                        block.setVisibility(View.GONE);
+                                    }
+                                } else {
 
                                     block.setVisibility(View.VISIBLE);
-                                } else {
-                                     block.setVisibility(View.GONE);
                                 }
-                            } else {
-
-                                block.setVisibility(View.VISIBLE);
                             }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     private void blockcontact() {
@@ -487,42 +557,44 @@ public class IncogChatRoom extends AppCompatActivity {
     private void read_message(final String sender, final String receiver, final String imageurl) {
         chats = new ArrayList<>();
 
-
-        DatabaseReference reference = database.getReference("Incogchats").child(User.getInstance().getUserid());
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                chats.clear();
-                for (DataSnapshot datasnapshot : snapshot.getChildren()) {
-                    Chat chat = datasnapshot.getValue(Chat.class);
-                    if (chat.getMessage() != null) {
-                        chat.setMessage(AESDecryptionMethod(chat.getMessage()));
-                    }
-                    if (chat.getSender() != null && sender != null && chat.getReceiver() != null && receiver != null) {
-
-                        if ((chat.getSender().equals(sender) && chat.getReceiver().equals(receiver)) ||
-                                (chat.getSender().equals(receiver) && chat.getReceiver().equals(sender))) {
-
-                            chat.setMessageid(datasnapshot.getKey());
-                            chats.add(chat);
-
-
-                        }
-
-
-                    }
+if (User.getInstance().getUserid()!=null) {
+    DatabaseReference reference = database.getReference("Incogchats").child(User.getInstance().getUserid());
+    reference.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+            chats.clear();
+            for (DataSnapshot datasnapshot : snapshot.getChildren()) {
+                Chat chat = datasnapshot.getValue(Chat.class);
+                if (chat.getMessage() != null) {
+                    chat.setMessage(AESDecryptionMethod(chat.getMessage().trim()));
                 }
+                if (chat.getSender() != null && sender != null && chat.getReceiver() != null && receiver != null) {
+
+                    if ((chat.getSender().equals(sender) && chat.getReceiver().equals(receiver)) ||
+                            (chat.getSender().equals(receiver) && chat.getReceiver().equals(sender))) {
+
+                        chat.setMessageid(datasnapshot.getKey());
+                        chats.add(chat);
 
 
-                messageAdapter = new MessageAdapter(IncogChatRoom.this, chats, imageurl, 1);
-                recyclerView.setAdapter(messageAdapter);
+                    }
+
+
+                }
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+            messageAdapter = new MessageAdapter(IncogChatRoom.this, chats, imageurl, 1);
+            recyclerView.setAdapter(messageAdapter);
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+
+        }
+    });
+
+}
     }
 
 
@@ -581,10 +653,11 @@ public class IncogChatRoom extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
 
+                String category=User.getInstance().getInterest().get(0);
 
                 for (DataSnapshot snapshot : datasnapshot.getChildren()) {
                     Token token = snapshot.getValue(Token.class);
-                    final Data data = new Data(User.getInstance().getUserid(), R.mipmap.ic_launcher, nickname, msg,User.getInstance().getUserid(),Incognito);
+                    final Data data = new Data(User.getInstance().getUserid(), R.mipmap.ic_launcher, nickname, msg,User.getInstance().getUserid(),Incognito,category);
                     Sender sender = null;
                     if (token != null) {
                         sender = new Sender(data, token.getToken());
@@ -670,7 +743,9 @@ public class IncogChatRoom extends AppCompatActivity {
         super.onResume();
         status("online");
         updatelastseen();
-        currentuser(userid);
+        if (userid!=null) {
+            currentuser(userid);
+        }
         if (deletechatListener != null) {
             senderReference.removeEventListener(deletechatListener);
         }
@@ -701,19 +776,21 @@ public class IncogChatRoom extends AppCompatActivity {
 
     private void currentuser(String userid){
 
-        SharedPreferences.Editor editor= getSharedPreferences("PREFS",MODE_PRIVATE).edit();
-        editor.putString("currentuser",userid);
-        editor.apply();
+        if (userid!=null) {
+            SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+            editor.putString("currentuser", userid);
+            editor.apply();
+        }
     }
 
     private void checkstatus(String receiver) {
 
-        DatabaseReference userReference = database.getReference("Users");
-        userReference.addValueEventListener(new ValueEventListener() {
+        DatabaseReference reference= database.getReference("Users");
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    UserStatus userStatus = dataSnapshot.getValue(UserStatus.class);
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    UserStatus userStatus= dataSnapshot.getValue(UserStatus.class);
 
 
                     if (dataSnapshot.getKey().equals(userid)) {
@@ -721,16 +798,16 @@ public class IncogChatRoom extends AppCompatActivity {
 
                         if (userStatus.getStatus().equals("online")) {
                             if (userStatus.getTyping() != null) {
-                                if (userStatus.getReceiver().equals(IncogChatRoom.this.receiver)) {
+                                if (userStatus.getReceiver().equals(sender)) {
                                     if (userStatus.getTyping().equals("typing")) {
                                         status.setText("typing...");
                                     }
                                 }
-                            } else {
+                            }else {
                                 status.setText("online");
                             }
 
-                        } else {
+                        } else  {
                             status.setText("offline");
                         }
                     }
@@ -748,12 +825,13 @@ public class IncogChatRoom extends AppCompatActivity {
 
     private void status(final String status) {
 
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("status", status);
-        DatabaseReference reference = database.getReference("Users").child(User.getInstance().getUserid());
+        if (User.getInstance().getUserid()!=null) {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("status", status);
+            DatabaseReference reference = database.getReference("Users").child(User.getInstance().getUserid());
 
-        reference.updateChildren(hashMap);
-
+            reference.updateChildren(hashMap);
+        }
 
     }
 
@@ -776,65 +854,81 @@ public class IncogChatRoom extends AppCompatActivity {
 
     private void setunseencount() {
 
+if (User.getInstance().getUserid()!=null) {
+    IncogReference = database.getReference("Incogchats").child(User.getInstance().getUserid());
+    setunseen = IncogReference.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+            unread_count = 0;
+            Chat chat = new Chat();
+            for (DataSnapshot datasnapshot : snapshot.getChildren()) {
+                chat = datasnapshot.getValue(Chat.class);
+                if (chat.getMessage() != null) {
+                    chat.setMessage(AESDecryptionMethod(chat.getMessage()));
+                }
+                if (chat.getSender() != null && sender != null && chat.getReceiver() != null && receiver != null) {
 
-        IncogReference = database.getReference("Incogchats").child(User.getInstance().getUserid());
-        setunseen = IncogReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                unread_count = 0;
-                Chat chat = new Chat();
-                for (DataSnapshot datasnapshot : snapshot.getChildren()) {
-                    chat = datasnapshot.getValue(Chat.class);
-                    if (chat.getMessage() != null) {
-                        chat.setMessage(AESDecryptionMethod(chat.getMessage()));
-                    }
-                    if (chat.getSender() != null && sender != null && chat.getReceiver() != null && receiver != null) {
+                    if (chat.getSender().equals(receiver) && chat.getReceiver().equals(sender)) {
 
-                        if (chat.getSender().equals(receiver) && chat.getReceiver().equals(sender)) {
-
-                            if (!chat.isIsseen()) {
-                                unread_count++;
-                            }
-
-
+                        if (!chat.isIsseen()) {
+                            unread_count++;
                         }
 
 
                     }
-                }
-
-
-                if (chat.isIsseen()) {
-                    delchat();
-
-
-                } else {
 
 
                 }
+            }
+
+
+            if (chat.isIsseen()) {
+                delchat();
+
+
+            } else {
+
 
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+        }
 
-            }
-        });
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
 
+        }
+    });
 
+}
 
 
     }
     private void updatelastseen() {
-
-        HashMap<String,Object> hashMap=new HashMap<>();
-        hashMap.put(Util.lastseen, Timestamp.now());
-        collectionReference.document(User.getInstance().getUserid()).set(hashMap,SetOptions.merge());
+if (User.getInstance().getUserid()!=null) {
+    HashMap<String, Object> hashMap = new HashMap<>();
+    hashMap.put(Util.lastseen, Timestamp.now());
+    collectionReference.document(User.getInstance().getUserid()).set(hashMap, SetOptions.merge());
+}
     }
 
     private void delchat() {
 
-        DatabaseReference databaseReference = database.getReference("Incogchats").child(User.getInstance().getUserid());
-        databaseReference.setValue(null);
+        if (User.getInstance().getUserid()!=null) {
+            DatabaseReference databaseReference = database.getReference("Incogchats").child(User.getInstance().getUserid());
+            databaseReference.setValue(null);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        String activity=getIntent().getStringExtra("activity");
+        if (activity!=null){
+            if (activity.trim().equals("notif")){
+                startActivity(new Intent(this,CategoryActivity.class));
+                finish();
+
+            }
+        }
     }
 }

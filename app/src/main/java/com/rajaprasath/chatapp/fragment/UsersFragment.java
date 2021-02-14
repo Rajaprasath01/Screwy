@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -76,11 +77,11 @@ public class UsersFragment extends Fragment implements UserInterface {
                         if (documentSnapshot!=null){
                             String id= documentSnapshot.getId();
                             if (documentSnapshot.get("trusted")!=null) {
-                                if (documentSnapshot.getBoolean("trusted") == true) {
+                                if (documentSnapshot.getBoolean("trusted")) {
 
                                     ids.add(id);
 
-                                } else if (documentSnapshot.getBoolean("trusted") == false) {
+                                } else if (!documentSnapshot.getBoolean("trusted")) {
                                     ids.remove(id);
 
                                 }

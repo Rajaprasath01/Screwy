@@ -70,6 +70,8 @@ public class FriendRequests extends Fragment {
         trust_recyclerview=view.findViewById(R.id.trust_request_recyclerview);
         trust_recyclerview.setHasFixedSize(true);
         trust_recyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
+        String fuser=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        User.getInstance().setUserid(fuser);
         getrequests();
         chat_request_layout=view.findViewById(R.id.chat_request_layout);
         trust_request_layout=view.findViewById(R.id.trust_request_layout);

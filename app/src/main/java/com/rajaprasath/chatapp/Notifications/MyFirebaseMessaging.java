@@ -3,6 +3,7 @@ package com.rajaprasath.chatapp.Notifications;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,6 +26,8 @@ import com.rajaprasath.chatapp.fragment.Category_users;
 import com.rajaprasath.chatapp.fragment.FriendRequests;
 import com.rajaprasath.chatapp.ui.ChatRoom;
 import com.rajaprasath.chatapp.ui.MainActivity;
+import com.rajaprasath.chatapp.ui.splashScreen;
+import com.rajaprasath.chatapp.ui.stranger.CategoryActivity;
 import com.rajaprasath.chatapp.ui.stranger.CategoryUsers;
 import com.rajaprasath.chatapp.ui.stranger.IncogChatRoom;
 
@@ -62,6 +65,8 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
         String sent= remoteMessage.getData().get("sent");
         String user=remoteMessage.getData().get("user");
+        String category=remoteMessage.getData().get("category");
+
         SharedPreferences preferences= getSharedPreferences("PREFS",MODE_PRIVATE);
 
 
@@ -70,8 +75,8 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
             if (!currentuser.equals(user)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                     sendOreoNotification(remoteMessage);
 
-                    sendOreoNotification(remoteMessage);
                 } else {
                     sendNotification(remoteMessage);
                 }
@@ -86,31 +91,47 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         String icon=remoteMessage.getData().get("icon");
         String title=remoteMessage.getData().get("title");
         String body=remoteMessage.getData().get("body");
+        String category=remoteMessage.getData().get("category");
         int mode= Integer.parseInt(remoteMessage.getData().get("mode"));
 
         RemoteMessage.Notification notification= remoteMessage.getNotification();
         int j= Integer.parseInt(user.replaceAll("[\\D]",""));
         Intent intent=null;
+        int requestID = (int) System.currentTimeMillis();
+
         int friend_Request = 3;
         if (mode==Normal){
             intent = new Intent(this, ChatRoom.class);
         }
         else if (mode==Incognito){
-            intent = new Intent(this, IncogChatRoom.class);
+            intent=new Intent(getApplicationContext(),IncogChatRoom.class);
+            intent.putExtra("mode","incognito");
         }
         else if (mode== friend_Request){
-            intent = new Intent(this, MainActivity.class);
+            intent=new Intent(getApplicationContext(),CategoryUsers.class);
+            intent.putExtra("mode","friend_request");
+            intent.putExtra("category_name",category);
+
+
+
         }
         else if (mode==Category_users_intent){
-            intent=new Intent(this, MainActivity.class);
+            intent=new Intent(getApplicationContext(),CategoryUsers.class);
+            intent.putExtra("mode","category_users");
+            intent.putExtra("category_name",category);
         }
+
 
         Bundle bundle= new Bundle();
         bundle.putString("userid",user);
         intent.putExtras(bundle);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent= PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.putExtra("activity","notif");
+        intent.putExtra("userid",user);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        TaskStackBuilder stackBuilder=TaskStackBuilder.create(getApplicationContext());
+        stackBuilder.addNextIntentWithParentStack(intent);
 
+        PendingIntent pendingIntent=stackBuilder.getPendingIntent(100,PendingIntent.FLAG_UPDATE_CURRENT);
         String GROUP_KEY_WORK_EMAIL = "com.android.example.WORK_EMAIL";
         Uri defaultringtone= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         OreoNotification oreoNotification= new OreoNotification(this);
@@ -134,22 +155,44 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         String icon=remoteMessage.getData().get("icon");
         String title=remoteMessage.getData().get("title");
         String body=remoteMessage.getData().get("body");
+        String category=remoteMessage.getData().get("category");
         int mode= Integer.parseInt(remoteMessage.getData().get("mode"));
 
         RemoteMessage.Notification notification= remoteMessage.getNotification();
         int j= Integer.parseInt(user.replaceAll("[\\D]",""));
-        Intent intent=null;
+        Intent intent=new Intent(getApplicationContext(), splashScreen.class);
+        int friend_Request = 3;
         if (mode==Normal){
             intent = new Intent(this, ChatRoom.class);
         }
         else if (mode==Incognito){
-            intent = new Intent(this, IncogChatRoom.class);
+            intent=new Intent(getApplicationContext(),IncogChatRoom.class);
+            intent.putExtra("mode","incognito");
         }
-        Bundle bundle= new Bundle();
-        bundle.putString("userid",user);
-        intent.putExtras(bundle);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent= PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        else if (mode== friend_Request){
+            intent=new Intent(getApplicationContext(),CategoryUsers.class);
+            intent.putExtra("mode","friend_request");
+            intent.putExtra("category_name",category);
+
+
+
+        }
+        else if (mode==Category_users_intent){
+            intent=new Intent(getApplicationContext(),CategoryUsers.class);
+            intent.putExtra("mode","category_users");
+            intent.putExtra("category_name",category);
+        }
+
+
+
+        intent.putExtra("activity","notif");
+        intent.putExtra("userid",user);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        TaskStackBuilder stackBuilder=TaskStackBuilder.create(getApplicationContext());
+
+        stackBuilder.addNextIntentWithParentStack(intent);
+
+        PendingIntent pendingIntent=stackBuilder.getPendingIntent(100,PendingIntent.FLAG_UPDATE_CURRENT);
         String GROUP_KEY_WORK_EMAIL = "com.android.example.WORK_EMAIL";
         Uri defaultringtone= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 

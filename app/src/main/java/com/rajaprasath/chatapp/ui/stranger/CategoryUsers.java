@@ -17,7 +17,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.Timestamp;
@@ -63,15 +65,21 @@ public class CategoryUsers extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_users);
 
+      String fuser=  FirebaseAuth.getInstance().getCurrentUser().getUid();
+        User.getInstance().setUserid(fuser);
+
         Toolbar toolbar= findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         category=getIntent().getStringExtra("category_name");
+
         Bundle bundle=new Bundle();
         bundle.putString("category",category);
+        bundle.putString("activity","notif");
         final Category_users category_users= new Category_users();
         category_users.setArguments(bundle);
         final FriendRequests friendRequests= new FriendRequests();
 
+        friendRequests.setArguments(bundle);
 
       final TabLayout  tabLayout=findViewById(R.id.tab_layout);
       final ViewPager  viewPager=findViewById(R.id.view_pager);
@@ -89,8 +97,10 @@ public class CategoryUsers extends AppCompatActivity  {
         tabLayout.setupWithViewPager(viewPager);
 
 
+        FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
+        final FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
 
-    collectionReference.document(User.getInstance().getUserid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+    collectionReference.document(firebaseUser.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
         @Override
         public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
 
@@ -133,6 +143,8 @@ public class CategoryUsers extends AppCompatActivity  {
 
     }
 
+
+
     private void getusers() {
         FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
         final FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
@@ -155,8 +167,11 @@ public class CategoryUsers extends AppCompatActivity  {
                                 user.setInterest((ArrayList<String>) snapshot.get(Util.interest));
 
                                 if (user.getInterest() != null) {
-                                    if (user.getInterest().toString().contains(category)) {
-                                        users.add(user);
+
+                                    if (category!=null) {
+                                        if (user.getInterest().toString().contains(category)) {
+                                            users.add(user);
+                                        }
                                     }
                                 }
                             }
@@ -229,6 +244,7 @@ public class CategoryUsers extends AppCompatActivity  {
     }
     private void updatelastseen() {
 
+
         HashMap<String,Object> hashMap=new HashMap<>();
         hashMap.put(Util.lastseen, Timestamp.now());
         collectionReference.document(User.getInstance().getUserid()).set(hashMap,SetOptions.merge());
@@ -242,5 +258,18 @@ public class CategoryUsers extends AppCompatActivity  {
         reference.updateChildren(hashMap);
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        String activity=getIntent().getStringExtra("activity");
+        if (activity!=null){
+            if (activity.trim().equals("notif")){
+                startActivity(new Intent(this,CategoryActivity.class));
+                finish();
+
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.rajaprasath.chatapp.Adapter.CategoryAdapter;
@@ -49,6 +51,7 @@ public class CategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
+        setuserinstance();
         categories = new ArrayList<>();
         getCategories();
         recyclerView=findViewById(R.id.category_recyclerView);
@@ -63,16 +66,16 @@ public class CategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                if (activity != null) {
+                    if (activity.equals("mainactivity")) {
+                        finish();
+                    } else if (activity.equals("splashscreen")) {
+                        Intent intent = new Intent(CategoryActivity.this, MainActivity.class);
+                        intent.putExtra("activity", "categoryactivity");
+                        startActivity(intent);
+                    }
 
-                if (activity.equals("mainactivity")){
-                    finish();
                 }
-                else if (activity.equals("splashscreen")){
-                    Intent intent=new Intent(CategoryActivity.this,MainActivity.class);
-                    intent.putExtra("activity","categoryactivity");
-                    startActivity(intent);
-                }
-
             }
         });
 
@@ -94,6 +97,7 @@ public class CategoryActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         status("online");
         updatelastseen();
     }
@@ -110,7 +114,10 @@ public class CategoryActivity extends AppCompatActivity {
 
         HashMap<String,Object> hashMap=new HashMap<>();
         hashMap.put(Util.lastseen, Timestamp.now());
-        collectionReference.document(User.getInstance().getUserid()).set(hashMap,SetOptions.merge());
+
+        if (User.getInstance().getUserid()!=null) {
+            collectionReference.document(User.getInstance().getUserid()).set(hashMap, SetOptions.merge());
+        }
     }
     private void status(final String status) {
 
@@ -123,4 +130,35 @@ public class CategoryActivity extends AppCompatActivity {
         }
 
     }
+
+    private void setuserinstance() {
+        String userid = getIntent().getStringExtra("userid");
+
+        if (userid != null) {
+
+            collectionReference.document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isComplete() && task.isSuccessful()) {
+                        DocumentSnapshot snapshot = task.getResult();
+                        User user = User.getInstance();
+                        user.setUserid(snapshot.getString("userid"));
+                        user.setUsername(snapshot.getString("username"));
+                        user.setImageurl(snapshot.getString("imageurl"));
+                        user.setNickname(snapshot.getString("nickname"));
+                        user.setGender(snapshot.getString("gender"));
+                        user.setInterest((ArrayList<String>) snapshot.get("interest"));
+                        user.setAbout(snapshot.getString("about"));
+
+                        onResume();
+
+                    } else {
+
+                    }
+                }
+            });
+        }
+    }
+
+
 }

@@ -67,6 +67,7 @@ public class Category_users extends Fragment implements UserInterface {
     private final APIService apiService = Client.getclient("https://fcm.googleapis.com/").create(APIService.class);
     private Integer Category_users_intent=4;
     private String category;
+    private Integer friend_request=3;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,7 +80,13 @@ public class Category_users extends Fragment implements UserInterface {
 
         users=new ArrayList<>();
 
-       category=getArguments().getString("category");
+        String fuser=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        User.getInstance().setUserid(fuser);
+
+        if (getArguments() != null) {
+            category=getArguments().getString("category");
+
+        }
         return view;
     }
 
@@ -105,8 +112,10 @@ public class Category_users extends Fragment implements UserInterface {
                                 user.setInterest((ArrayList<String>) snapshot.get(Util.interest));
 
                                 if (user.getInterest() != null) {
-                                    if (user.getInterest().toString().contains(category)) {
-                                        users.add(user);
+                                    if (category!=null) {
+                                        if (user.getInterest().toString().contains(category)) {
+                                            users.add(user);
+                                        }
                                     }
                                 }
 
@@ -164,7 +173,9 @@ public class Category_users extends Fragment implements UserInterface {
                  public void onComplete(@NonNull Task<Void> task) {
                      Toast.makeText(getContext(), "Request Sent", Toast.LENGTH_SHORT).show();
                      String notif_text=User.getInstance().getNickname()+" wants to chat with you";
-                     sendNotification(userid,User.getInstance().getNickname(),notif_text,Category_users_intent);
+                     String category=User.getInstance().getInterest().get(0);
+                     sendNotification(userid,User.getInstance().getNickname(),notif_text,friend_request,category);
+
                  }
              });
 
@@ -183,7 +194,7 @@ public class Category_users extends Fragment implements UserInterface {
     }
 
 
-    private void sendNotification(final String receiver, final String nickname, final String msg, final Integer Incognito) {
+    private void sendNotification(final String receiver, final String nickname, final String msg, final Integer Incognito, final String category) {
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
         com.google.firebase.database.Query query = tokens.orderByKey().equalTo(receiver);
         query.addValueEventListener(new ValueEventListener() {
@@ -193,7 +204,7 @@ public class Category_users extends Fragment implements UserInterface {
 
                 for (DataSnapshot snapshot : datasnapshot.getChildren()) {
                     Token token = snapshot.getValue(Token.class);
-                    final Data data = new Data(User.getInstance().getUserid(), R.mipmap.ic_launcher, nickname, msg,User.getInstance().getUserid(),Incognito);
+                    final Data data = new Data(User.getInstance().getUserid(), R.mipmap.ic_launcher, nickname, msg,User.getInstance().getUserid(),Incognito,category);
                     Sender sender = null;
                     if (token != null) {
                         sender = new Sender(data, token.getToken());

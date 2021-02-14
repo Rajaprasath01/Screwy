@@ -1,5 +1,7 @@
 package com.rajaprasath.chatapp.Notifications;
 
+import java.util.ArrayList;
+
 public class Data {
 
     private String user;
@@ -8,8 +10,10 @@ public class Data {
     private String body;
     private String sent;
     private Integer mode;
+    private String category;
     public Data() {
     }
+
 
     public Data(String user, int icon, String title, String body, String sent, Integer mode) {
         this.user = user;
@@ -17,7 +21,17 @@ public class Data {
         this.title = title;
         this.body = body;
         this.sent = sent;
-        this.mode=mode;
+        this.mode = mode;
+    }
+
+    public Data(String user, int icon, String title, String body, String sent, Integer mode, String category) {
+        this.user = user;
+        this.icon = icon;
+        this.title = title;
+        this.body = body;
+        this.sent = sent;
+        this.mode = mode;
+        this.category = category;
     }
 
     public String getUser() {
@@ -66,5 +80,13 @@ public class Data {
 
     public void setMode(Integer mode) {
         this.mode = mode;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

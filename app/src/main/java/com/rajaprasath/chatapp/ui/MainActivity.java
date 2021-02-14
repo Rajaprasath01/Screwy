@@ -208,14 +208,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         status("online");
-        updatelastseen();
+        if (User.getInstance().getUserid()!=null){
+        updatelastseen();}
     }
 
     private void updatelastseen() {
 
-        HashMap<String,Object> hashMap=new HashMap<>();
-        hashMap.put(Util.lastseen, Timestamp.now());
-        collectionReference.document(User.getInstance().getUserid()).set(hashMap,SetOptions.merge());
+        if (User.getInstance().getUserid()!=null) {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put(Util.lastseen, Timestamp.now());
+            collectionReference.document(User.getInstance().getUserid()).set(hashMap, SetOptions.merge());
+        }
     }
 
     @Override

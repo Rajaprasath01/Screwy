@@ -61,32 +61,32 @@
                     android:id="@+id/user_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_marginTop="15dp"
                     android:layout_marginStart="5dp"
                     android:layout_toEndOf="@+id/profile_image_id"
                     android:text="@string/username"
                     android:textColor="@color/cardview_light_background"
-                    android:textSize="18dp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginStart="10dp"
                     android:layout_below="@id/user_id"
                     android:layout_toEndOf="@+id/profile_image_id"
                     android:text="offline"
                     android:textColor="@color/cardview_light_background"
-                    android:textSize="15dp" />
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:id="@+id/remove_trusted"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
                     android:layout_marginBottom="0dp"
                     android:src="@drawable/ic_baseline_person_off_24"/>
 

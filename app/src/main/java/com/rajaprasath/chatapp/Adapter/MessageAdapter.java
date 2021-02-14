@@ -17,11 +17,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.rajaprasath.chatapp.R;
 import com.rajaprasath.chatapp.controller.User;
 import com.rajaprasath.chatapp.model.Chat;
+import com.rajaprasath.chatapp.ui.ChatRoom;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +40,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
    private int LEFT_MSG=0;
    private int RIGHT_MSG=1;
    private int who;
+   private String userid;
     private User fuser;
     AlertDialog dialog;
     AlertDialog.Builder builder;
@@ -48,6 +52,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         this.imageurl=imageurl;
         this.mode=mode;
     }
+
+
 
     @NonNull
     @Override
@@ -88,20 +94,28 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         Chat chat= chats.get(position);
         if (holder.show_message!=null) {
-            holder.show_message.setText(chat.getMessage().trim());
+            holder.show_message.setText(chat.getMessage());
+            holder.show_message.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    if (chats.size()>position) {
+                        Chat chat1 = chats.get(position);
+
+                        if (mode == 0) {
+                            deletechat(holder, position, chat1);
+                        } else if (mode == 1) {
+                            deletechatincognito(holder, position, chat1);
+                        }
+                    }
+                    return false;
+                }
+            });
         }
         if (holder.profile_pic!=null) {
             holder.profile_pic.setBackgroundResource(R.color.transparent);
         }
-        holder.show_message.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
 
-                Chat chat1=chats.get(position);
-               deletechat(holder,position,chat1);
-               return false;
-            }
-        });
 
         if (who==LEFT_MSG){
             if (imageurl.equals("default")){
@@ -155,6 +169,59 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     }
 
     private void deletechat(ViewHolder holder, final int position, final Chat localchat) {
+        builder=new AlertDialog.Builder(context);
+        View view=LayoutInflater.from(context).inflate(R.layout.delete_popup,null);
+        TextView delete=view.findViewById(R.id.delete);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DatabaseReference reference= database.getReference("chats");
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                        for (DataSnapshot datasnapshot : snapshot.getChildren() ){
+                            Chat chat = datasnapshot.getValue(Chat.class);
+
+                            if (datasnapshot.getKey() != null) {
+                                if (datasnapshot.getKey().equals(localchat.getMessageid())) {
+                                    if (chat.getSender().equals(User.getInstance().getUserid())) {
+
+
+                                        datasnapshot.getRef().setValue(null);
+
+                                    }
+                                }
+                            }
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+                dialog.dismiss();
+            }
+
+
+        });
+        builder.setView(view);
+
+        dialog=builder.create();
+
+        dialog.show();
+        dialog.getWindow().setLayout(400,130);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.delete_popup_background);
+    }
+
+    private void deletechatincognito(ViewHolder holder, final int position, final Chat localchat) {
         builder=new AlertDialog.Builder(context);
         View view=LayoutInflater.from(context).inflate(R.layout.delete_popup,null);
         TextView delete=view.findViewById(R.id.delete);

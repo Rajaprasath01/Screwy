@@ -303,8 +303,7 @@ public class IncogChatRoom extends AppCompatActivity {
                 notify = true;
                 msg = String.valueOf(msg_text.getText());
                 msg=msg.trim();
-                if (!msg.isEmpty()) {
-
+                if (!msg.equals("")) {
                     send_message(sender, receiver, msg);
                 } else {
 
@@ -566,7 +565,7 @@ if (User.getInstance().getUserid()!=null) {
             for (DataSnapshot datasnapshot : snapshot.getChildren()) {
                 Chat chat = datasnapshot.getValue(Chat.class);
                 if (chat.getMessage() != null) {
-                    chat.setMessage(AESDecryptionMethod(chat.getMessage().trim()));
+                    chat.setMessage(AESDecryptionMethod(chat.getMessage()));
                 }
                 if (chat.getSender() != null && sender != null && chat.getReceiver() != null && receiver != null) {
 

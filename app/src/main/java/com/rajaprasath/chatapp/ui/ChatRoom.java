@@ -415,13 +415,16 @@ private SecretKeySpec secretKeySpec;
                 chats.clear();
                 for (DataSnapshot datasnapshot : snapshot.getChildren() ){
                     Chat chat = datasnapshot.getValue(Chat.class);
-                    chat.setMessage(AESDecryptionMethod(chat.getMessage()));
+                    if (chat.getMessage() != null) {
+                        chat.setMessage(AESDecryptionMethod(chat.getMessage()));
+                    }
 
                     if (chat.getSender()!=null && sender!=null && chat.getReceiver()!=null && receiver!=null) {
 
                     if ((chat.getSender().equals(sender)&& chat.getReceiver().equals(receiver))  ||
                             (chat.getSender().equals(receiver) && chat.getReceiver().equals(sender))) {
 
+                        chat.setMessageid(datasnapshot.getKey());
                         chats.add(chat);
                         
                         

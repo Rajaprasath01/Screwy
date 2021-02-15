@@ -49,6 +49,8 @@ import java.util.HashMap;
 
 import javax.crypto.Cipher;
 
+import kotlin.random.Random;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -150,11 +152,13 @@ public class MainActivity extends AppCompatActivity {
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firebaseAuth.signOut();
+                 firebaseAuth.signOut();
                 User user= User.getInstance();
                 user=null;
-                startActivity(new Intent(MainActivity.this, splashScreen.class));
-                finish();
+                if (firebaseAuth.getCurrentUser()==null) {
+                    startActivity(new Intent(MainActivity.this, splashScreen.class));
+                    finish();
+                }
 
                 dialog.dismiss();
             }
@@ -168,6 +172,8 @@ public class MainActivity extends AppCompatActivity {
         builder.setView(view);
         dialog = builder.create();
         dialog.show();
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.signout_popup_background);
+        dialog.getWindow().setLayout(650,300);
     }
 
     public class ViewpagerAdapter extends FragmentPagerAdapter{

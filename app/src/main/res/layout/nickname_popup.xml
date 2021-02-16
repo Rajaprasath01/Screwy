@@ -16,15 +16,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/enter_your_name"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginStart="@dimen/_8sdp"
             android:textColor="@color/cardview_light_background"/>
         <EditText
             android:id="@+id/name_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/cardview_light_background"
-            android:paddingStart="15dp"
+            android:paddingStart="@dimen/_12sdp"
             android:backgroundTint="@color/colorAccent"
             android:layout_below="@+id/enter_name_id"
             />
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
 
             android:layout_below="@+id/name_id"
-            android:layout_toLeftOf="@+id/save_id"
+            android:layout_toStartOf="@+id/save_id"
             android:text="@string/cancel"
             android:textColor="@color/cardview_light_background"
             android:background="@color/colorPrimary"/>

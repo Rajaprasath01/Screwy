@@ -5,14 +5,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
-        android:layout_width="300dp"
+        android:layout_width="@dimen/_233sdp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp">
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginLeft="@dimen/_8sdp">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_pic"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/_31sdp"
+            android:layout_height="@dimen/_31sdp"
             android:background="@color/transparent"/>
 <androidx.cardview.widget.CardView
     android:id="@+id/left_card"
@@ -21,17 +21,17 @@
     android:layout_toEndOf="@+id/profile_pic"
     android:layout_centerVertical="true"
     app:cardBackgroundColor="@color/colorPrimary"
-    android:layout_marginLeft="5dp"
-    app:cardCornerRadius="5dp">
+    android:layout_marginLeft="@dimen/_4sdp"
+    app:cardCornerRadius="@dimen/_4sdp">
     <TextView
         android:id="@+id/show_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:padding="5dp"
+        android:layout_marginLeft="@dimen/_4sdp"
+        android:layout_marginRight="@dimen/_4sdp"
+        android:padding="@dimen/_4sdp"
         android:text="hello"
-        android:textSize="18sp"
+        android:textSize="@dimen/_14sdp"
         android:textColor="@color/cardview_light_background"
         android:background="@color/colorPrimary"/>
 </androidx.cardview.widget.CardView>

@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/screwylogo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/_78sdp"
+            android:layout_height="@dimen/_78sdp"
             android:contentDescription="@string/todo"
             android:src="@drawable/screwy_logo"
             android:layout_centerHorizontal="true"
@@ -28,15 +28,15 @@
 
         <ImageView
             android:id="@+id/screwy_text"
-            android:layout_width="200dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/_155sdp"
+            android:layout_height="@dimen/_78sdp"
             android:src="@drawable/screwy"
             android:layout_centerInParent="true"
             />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/_39sdp"
+            android:layout_height="@dimen/_39sdp"
             android:layout_above="@+id/eternity"
             android:layout_centerHorizontal="true"
             android:src="@drawable/from"
@@ -44,8 +44,8 @@
             />
         <ImageView
             android:id="@+id/eternity"
-            android:layout_width="160dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/_124sdp"
+            android:layout_height="@dimen/_47sdp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:src="@drawable/eternity"/>

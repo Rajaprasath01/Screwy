@@ -18,8 +18,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/incog_primary"
                 android:text="@string/delete"
-                android:padding="10dp"
-                android:textSize="18sp"
+                android:padding="@dimen/_8sdp"
+                android:textSize="@dimen/_14sdp"
                 android:textColor="@color/colorAccent"
                 android:layout_centerInParent="true"/>
         </RelativeLayout>

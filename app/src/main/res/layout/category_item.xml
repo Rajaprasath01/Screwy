@@ -8,23 +8,23 @@
         android:id="@+id/category_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         app:cardBackgroundColor="@color/colorPrimary"
         >
         <RelativeLayout
 
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="@dimen/_117sdp"
+            android:layout_height="@dimen/_117sdp"
             >
 
             <ImageView
                 android:id="@+id/category_image"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="@dimen/_62sdp"
+                android:layout_height="@dimen/_62sdp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/_16sdp"
                 android:src="@drawable/gaming"
                 android:tint="@color/cardview_light_background"
                 app:tint="@color/cardview_light_background" />
@@ -39,7 +39,7 @@
                 android:fontFamily="@font/chicle"
                 android:text="category"
                 android:textColor="@color/cardview_light_background"
-                android:textSize="24sp"
+                android:textSize="@dimen/_19sdp"
                 android:textStyle="bold" />
 
         </RelativeLayout>

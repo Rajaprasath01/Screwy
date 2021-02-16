@@ -14,8 +14,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/_78sdp"
+        android:layout_height="@dimen/_78sdp"
         android:src="@drawable/screwy_logo"
         app:layout_constraintBottom_toTopOf="@+id/signin_form"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/_13sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,22 +37,22 @@
             android:id="@+id/signin_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/_8sdp"
             android:text="@string/action_sign_in_short"
             android:textColor="@color/colorPrimary"
-            android:textSize="21dp" />
+            android:textSize="@dimen/_16sdp" />
 
         <AutoCompleteTextView
             android:id="@+id/_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/signin_text"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/_16sdp"
             android:backgroundTint="#80424242"
             android:hint=" @string/email"
             android:inputType="textEmailAddress"
             android:maxLines="1"
-            android:padding="15dp"
+            android:padding="@dimen/_12sdp"
             android:textAlignment="textStart"
             android:textColor="@color/colorPrimary"
             android:textColorHint="#80424242"
@@ -63,12 +63,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/_email"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/_16sdp"
             android:backgroundTint="#80424242"
             android:hint="     @string/password"
             android:inputType="textPassword"
             android:maxLines="1"
-            android:padding="15dp"
+            android:padding="@dimen/_12sdp"
             android:textColor="@color/colorPrimary"
             android:textColorHint="#80424242" />
 
@@ -78,22 +78,22 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/_password"
             android:background="@drawable/login_button"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/_13sdp"
             android:text="@string/login"
             android:textColor="@color/lightcolor"
-            android:textSize="20sp" />
+            android:textSize="@dimen/_16sdp" />
 
         <TextView
             android:id="@+id/or"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/login"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/_13sdp"
             android:background="@android:color/transparent"
             android:gravity="center"
             android:text="@string/or"
             android:textColor="@color/colorPrimary"
-            android:textSize="14sp" />
+            android:textSize="@dimen/_11sdp" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/or"
             android:layout_centerHorizontal="true"
-            android:padding="10dp"
+            android:padding="@dimen/_8sdp"
 
             />
 
@@ -113,11 +113,11 @@
         android:id="@+id/create_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/_13sdp"
         android:background="@android:color/transparent"
         android:text="@string/Create_account"
         android:textColor="@color/colorPrimary"
-        android:textSize="12sp"
+        android:textSize="@dimen/_9sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

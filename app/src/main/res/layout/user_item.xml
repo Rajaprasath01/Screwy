@@ -11,29 +11,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardElevation="0dp"
-        android:layout_marginBottom="1dp"
+        android:layout_marginBottom="@dimen/_1sdp"
         app:cardBackgroundColor="@color/colorPrimaryDark">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginLeft="@dimen/_8sdp"
             android:background="@color/transparent">
 
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/_39sdp"
+                android:layout_height="@dimen/_39sdp"
                />
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/status"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_marginTop="38dp"
-                android:layout_marginStart="38dp"
+                android:layout_width="@dimen/_8sdp"
+                android:layout_height="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_30sdp"
                 android:src="@color/colorAccent"
                 />
 
@@ -42,34 +42,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="@dimen/_8sdp"
                 android:layout_toEndOf="@+id/profile_image"
                 android:fontFamily="@font/oleo_script_swash_caps"
                 android:text="@string/username"
                 android:textColor="@color/colorPrimary"
-                android:textSize="18dp" />
+                android:textSize="@dimen/_14sdp" />
 
             <TextView
                 android:id="@+id/lastmessage"
-                android:layout_width="150dp"
-                android:layout_height="15dp"
+                android:layout_width="@dimen/_117sdp"
+                android:layout_height="@dimen/_12sdp"
                 android:layout_below="@+id/user"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:layout_toEndOf="@+id/profile_image"
                 android:fontFamily="@font/berkshire_swash"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="@dimen/_9sdp" />
 
             <TextView
                 android:id="@+id/msg_count"
-                android:layout_width="20dp"
-                android:layout_height="22dp"
-                android:paddingStart="1dp"
-                android:textSize="16sp"
-                android:paddingBottom="2dp"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_17sdp"
+                android:paddingStart="@dimen/_1sdp"
+                android:textSize="@dimen/_13sdp"
+                android:paddingBottom="@dimen/_2sdp"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="@dimen/_8sdp"
                 android:layout_alignParentEnd="true" />
         </RelativeLayout>
 

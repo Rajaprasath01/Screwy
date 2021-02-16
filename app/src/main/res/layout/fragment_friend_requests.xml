@@ -23,9 +23,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             app:cardBackgroundColor="@color/incog_primary"
-            android:layout_marginTop="10dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
+            android:layout_marginTop="@dimen/_8sdp"
+            android:paddingTop="@dimen/_16sdp"
+            android:paddingBottom="@dimen/_16sdp">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,28 +34,28 @@
                     android:id="@+id/chat_request_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:padding="5dp">
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:padding="@dimen/_4sdp">
                     <TextView
                         android:id="@+id/chat_request"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/_14sdp"
                         android:textColor="@color/colorAccent"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="@dimen/_8sdp"
                         android:text="Chat Requests"/>
                     <TextView
                         android:id="@+id/chat_count"
-                        android:layout_width="20dp"
-                        android:layout_height="22dp"
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_17sdp"
                         android:layout_centerVertical="true"
                         android:textColor="@color/black"
                         android:background="@drawable/white_count_fill"
-                        android:paddingStart="1dp"
-                        android:textSize="16sp"
-                        android:paddingBottom="2dp"
+                        android:paddingStart="@dimen/_1sdp"
+                        android:textSize="@dimen/_13sdp"
+                        android:paddingBottom="@dimen/_2sdp"
                         android:textStyle="bold"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="@dimen/_8sdp"
                         android:layout_toEndOf="@+id/chat_request"/>
                     <ImageView
                         android:layout_width="wrap_content"
@@ -77,7 +77,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintHeight_default="wrap"
-        app:layout_constraintHeight_max="230dp"
+        app:layout_constraintHeight_max="@dimen/_179sdp"
         android:background="@color/incog_primaryDark"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -96,9 +96,9 @@
             android:layout_below="@+id/chat_request_card"
             android:layout_centerVertical="true"
             app:cardBackgroundColor="@color/incog_primary"
-            android:layout_marginTop="10dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
+            android:layout_marginTop="@dimen/_8sdp"
+            android:paddingTop="@dimen/_16sdp"
+            android:paddingBottom="@dimen/_16sdp">
             <RelativeLayout
                 android:id="@+id/trust_request_root"
                 android:layout_width="match_parent"
@@ -107,28 +107,28 @@
                     android:id="@+id/trust_request_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:padding="5dp">
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:padding="@dimen/_4sdp">
                     <TextView
                         android:id="@+id/trust_request"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="@dimen/_8sdp"
                         android:text="Friend Requests"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/_14sdp"
                         android:textColor="@color/colorAccent"/>
                     <TextView
                         android:id="@+id/trust_count"
-                        android:layout_width="20dp"
-                        android:layout_height="22dp"
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_17sdp"
                         android:layout_centerVertical="true"
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         android:background="@drawable/white_count_fill"
-                        android:textSize="16sp"
-                        android:paddingStart="1dp"
-                        android:paddingBottom="2dp"
-                        android:layout_marginStart="10dp"
+                        android:textSize="@dimen/_13sdp"
+                        android:paddingStart="@dimen/_1sdp"
+                        android:paddingBottom="@dimen/_2sdp"
+                        android:layout_marginStart="@dimen/_7sdp"
                         android:layout_toEndOf="@+id/trust_request"/>
                     <ImageView
                         android:layout_width="wrap_content"

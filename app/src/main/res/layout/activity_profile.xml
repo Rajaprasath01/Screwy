@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:background="@color/lightcolor"
         android:orientation="vertical"
-        android:padding="10dp"
+        android:padding="@dimen/_8sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,11 +28,11 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/profile_card"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="@dimen/_8sdp"
             android:fontFamily="@font/chewy"
             android:text="Complete your profile"
             android:textColor="@color/colorPrimary"
-            android:textSize="24sp" />
+            android:textSize="@dimen/_19sdp" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/profile_card"
@@ -51,7 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/username_id"
-                    android:layout_marginTop="30dp">
+                    android:layout_marginTop="@dimen/_23sdp">
 
                     <TextView
                         android:id="@+id/nickname_id"
@@ -63,15 +63,15 @@
                     <EditText
                         android:id="@+id/nickname"
                         android:layout_width="match_parent"
-                        android:layout_height="35dp"
+                        android:layout_height="@dimen/_27sdp"
                         android:layout_below="@id/nickname_id"
                         android:background="@drawable/edittext_profile"
                         android:drawableStart="@drawable/nickname"
-                        android:drawablePadding="10dp"
-                        android:paddingLeft="10dp"
+                        android:drawablePadding="@dimen/_8sdp"
+                        android:paddingLeft="@dimen/_8sdp"
                         android:textColor="@color/colorAccent"
                         android:textColorHint="@color/colorAccent"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/_14sdp"
                         android:textStyle="bold" />
                 </RelativeLayout>
 
@@ -95,10 +95,10 @@
                         android:layout_below="@+id/gender_id"
                         android:background="@drawable/edittext_profile"
                         android:drawableStart="@drawable/gender_pr"
-                        android:drawablePadding="10dp"
-                        android:paddingLeft="10dp"
+                        android:drawablePadding="@dimen/_8sdp"
+                        android:paddingLeft="@dimen/_8sdp"
                         android:textColor="@color/colorAccent"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/_14sdp"
                         android:textStyle="bold" />
                 </RelativeLayout>
 
@@ -118,14 +118,14 @@
                     <TextView
                         android:id="@+id/interest"
                         android:layout_width="match_parent"
-                        android:layout_height="35dp"
+                        android:layout_height="@dimen/_27sdp"
                         android:layout_below="@+id/interest_id"
                         android:background="@drawable/edittext_profile"
                         android:drawableStart="@drawable/interest_pr"
-                        android:drawablePadding="10dp"
-                        android:paddingLeft="10dp"
+                        android:drawablePadding="@dimen/_8sdp"
+                        android:paddingLeft="@dimen/_8sdp"
                         android:textColor="@color/colorAccent"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/_14sdp"
                         android:textStyle="bold" />
                 </RelativeLayout>
 
@@ -145,14 +145,14 @@
                     <TextView
                         android:id="@+id/about"
                         android:layout_width="match_parent"
-                        android:layout_height="35dp"
+                        android:layout_height="@dimen/_27sdp"
                         android:layout_below="@+id/about_id"
                         android:background="@drawable/edittext_profile"
                         android:drawableStart="@drawable/info_pr"
-                        android:drawablePadding="10dp"
-                        android:paddingLeft="10dp"
+                        android:drawablePadding="@dimen/_8sdp"
+                        android:paddingLeft="@dimen/_8sdp"
                         android:textColor="@color/colorAccent"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/_14sdp"
                         android:textStyle="bold" />
                 </RelativeLayout>
 
@@ -164,7 +164,7 @@
                     android:layout_below="@+id/about_layout"
                     android:layout_centerHorizontal="true"
 
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="@dimen/_12sdp"
                     android:background="@color/colorPrimaryHighlight"
                     android:text="Finish" />
             </RelativeLayout>

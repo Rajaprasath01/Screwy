@@ -11,28 +11,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardElevation="0dp"
-        android:layout_marginBottom="1dp"
+        android:layout_marginBottom="@dimen/_1sdp"
         app:cardBackgroundColor="@color/incog_primaryDark">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp">
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginStart="@dimen/_8sdp">
 
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/_23sdp"
+                android:layout_height="@dimen/_23sdp"
                 />
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/status"
-                android:layout_width="7dp"
-                android:layout_height="7dp"
-                android:layout_marginTop="22dp"
-                android:layout_marginStart="22dp"
+                android:layout_width="@dimen/_5sdp"
+                android:layout_height="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_17sdp"
+                android:layout_marginStart="@dimen/_17sdp"
                 android:src="@color/colorAccent"
                 />
 
@@ -40,11 +40,11 @@
                 android:id="@+id/user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="@dimen/_8sdp"
                 android:layout_toEndOf="@+id/profile_image"
                 android:textColor="@color/colorAccent"
                 android:text="@string/username"
-                android:textSize="18dp" />
+                android:textSize="@dimen/_14sdp" />
             <ImageButton
                 android:id="@+id/decline"
                 android:layout_width="wrap_content"
@@ -52,11 +52,11 @@
                 android:text="@string/decline"
                 android:textColor="@color/colorAccent"
                 android:src="@drawable/ic_baseline_decline_24"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="@dimen/_16sdp"
                 android:background="@color/transparent"
                 android:layout_below="@+id/profile_image"
                 android:layout_toStartOf="@+id/agree"
-                android:layout_marginTop="2dp"/>
+                android:layout_marginTop="@dimen/_2sdp"/>
             <ImageButton
                 android:id="@+id/agree"
                 android:layout_width="wrap_content"
@@ -65,10 +65,10 @@
                 android:textColor="@color/colorAccent"
                 android:background="@color/transparent"
                 android:src="@drawable/ic_baseline_agree_24"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="@dimen/_16sdp"
                 android:layout_below="@+id/profile_image"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="2dp"/>
+                android:layout_marginTop="@dimen/_2sdp"/>
 
         </RelativeLayout>
 

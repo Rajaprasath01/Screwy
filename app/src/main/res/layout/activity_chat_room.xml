@@ -26,15 +26,16 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:orientation="horizontal">
+                android:layout_height="@dimen/_45sdp"
+                android:orientation="horizontal"
+               >
 
                 <RelativeLayout
                     android:id="@+id/back_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
-                    android:padding="7dp">
+                    android:padding="@dimen/_7sdp">
 
                     <ImageView
                         android:id="@+id/back"
@@ -49,8 +50,8 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_image_id"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/back_layout"
                     android:src="@mipmap/chatroom_person_icon_round"
@@ -61,33 +62,35 @@
                     android:id="@+id/user_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:layout_marginStart="@dimen/_9sdp"
                     android:layout_toEndOf="@+id/profile_image_id"
                     android:text="@string/username"
                     android:textColor="@color/cardview_light_background"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_15sdp" />
 
                 <TextView
                     android:id="@+id/status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
                     android:layout_below="@id/user_id"
                     android:layout_toEndOf="@+id/profile_image_id"
                     android:text="offline"
                     android:textColor="@color/cardview_light_background"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <ImageView
                     android:id="@+id/remove_trusted"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="@dimen/_7sdp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginBottom="0dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/_5sdp"
                     android:src="@drawable/ic_baseline_person_off_24"/>
 
             </RelativeLayout>
@@ -107,24 +110,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="3dp">
+            android:layout_marginTop="@dimen/_3sdp">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginStart="@dimen/_4sdp"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
                 android:layout_toStartOf="@+id/send"
                 app:cardBackgroundColor="@color/colorPrimary"
-                app:cardCornerRadius="30dp">
+                app:cardCornerRadius="@dimen/_23sdp">
 
                 <EditText
                     android:id="@+id/msg_text"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_height="@dimen/_39sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
                     android:background="@null"
                     android:hint="Type a Message"
                     android:textColor="#FFFFFF"
@@ -133,11 +136,11 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/send"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="@dimen/_4sdp"
                 android:src="@mipmap/send_icon" />
         </RelativeLayout>
 

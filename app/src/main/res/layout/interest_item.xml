@@ -9,8 +9,8 @@
 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="2dp"
-    android:layout_marginBottom="1dp"
+    android:layout_marginTop="@dimen/_2sdp"
+    android:layout_marginBottom="@dimen/_1sdp"
     app:cardBackgroundColor="@color/colorPrimaryHighlight"
     >
         <RelativeLayout
@@ -18,10 +18,10 @@
             android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/interests_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="@dimen/_39sdp"
+                    android:layout_height="@dimen/_39sdp"
                     android:layout_centerVertical="true"
-                    android:paddingLeft="10dp"
+                    android:paddingLeft="@dimen/_8sdp"
                     />
                 <CheckedTextView
 
@@ -29,16 +29,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/interests_icon"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/_8sdp"
                     android:layout_centerVertical="true"
                     android:text="Gaming"
                     android:checkMarkTint="@color/colorAccent"
                     android:textColor="@color/colorAccent"
-                    android:drawablePadding="15dp"
+                    android:drawablePadding="@dimen/_12sdp"
                     android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                     android:gravity="center"
                     android:checked="false"
-                    android:padding="10dp"
+                    android:padding="@dimen/_8sdp"
                     />
         </RelativeLayout>
 

@@ -8,14 +8,14 @@
     android:background="@drawable/main_background"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="@dimen/_12sdp"
     tools:context=".ui.CreateAccountActivity">
 
 
     <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="4dp"
+        android:layout_width="@dimen/_39sdp"
+        android:layout_height="@dimen/_39sdp"
+        android:layout_marginStart="@dimen/_3sdp"
         android:src="@drawable/screwy_logo"
         app:layout_constraintBottom_toTopOf="@+id/signup_form"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,12 +26,12 @@
         android:id="@+id/signin_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/_16sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:text="Signin"
         android:textColor="@color/colorPrimary"
-        android:textSize="20sp"/>
+        android:textSize="@dimen/_16sdp"/>
 
     <LinearLayout
         android:id="@+id/signup_form"
@@ -48,7 +48,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/_8sdp"
             android:text="@string/create_account"
             android:textColor="@color/colorPrimary"
             android:textSize="21dp" />
@@ -57,11 +57,11 @@
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/_16sdp"
             android:backgroundTint="#80424242"
             android:hint="@string/username"
             android:maxLines="1"
-            android:padding="15dp"
+            android:padding="@dimen/_12sdp"
             android:textColor="@color/colorPrimary"
             android:textColorHint="#80424242" />
 
@@ -70,12 +70,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/signin_text"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/_16sdp"
             android:backgroundTint="#80424242"
             android:hint=" @string/email"
             android:inputType="textEmailAddress"
             android:maxLines="1"
-            android:padding="15dp"
+            android:padding="@dimen/_12sdp"
             android:textAlignment="textStart"
             android:textColor="@color/colorPrimary"
             android:textColorHint="#80424242"
@@ -86,12 +86,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/_email"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/_16sdp"
             android:backgroundTint="#80424242"
             android:hint="     @string/password"
             android:inputType="textPassword"
             android:maxLines="1"
-            android:padding="15dp"
+            android:padding="@dimen/_12sdp"
             android:textColor="@color/colorPrimary"
             android:textColorHint="#80424242" />
 
@@ -100,11 +100,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/_password"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/_12sdp"
             android:background="@drawable/login_button"
             android:text="@string/signup"
             android:textColor="@color/lightcolor"
-            android:textSize="20sp" />
+            android:textSize="@dimen/_16sdp" />
     </LinearLayout>
 
 

@@ -27,32 +27,32 @@
                     android:id="@+id/confirmation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
+                    android:padding="@dimen/_8sdp"
                     android:text="@string/add_trusted_text"
                     android:textColor="@color/colorAccent"
-                    android:textSize="24dp" />
+                    android:textSize="@dimen/_19sdp" />
 
 
                 <Button
                     android:id="@+id/yes"
                     style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/_47sdp"
+                    android:layout_height="@dimen/_31sdp"
                     android:layout_below="@+id/confirmation"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginStart="60dp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_marginStart="@dimen/_47sdp"
                     android:background="@color/incog_primary"
                     android:text="Yes" />
 
                 <Button
                     android:id="@+id/no"
                     style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/_47sdp"
+                    android:layout_height="@dimen/_31sdp"
                     android:layout_below="@+id/confirmation"
-                    android:layout_marginStart="80dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginEnd="40dp"
+                    android:layout_marginStart="@dimen/_62sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_31sdp"
                     android:layout_toEndOf="@+id/yes"
                     android:background="@color/incog_primary"
                     android:text="No" />

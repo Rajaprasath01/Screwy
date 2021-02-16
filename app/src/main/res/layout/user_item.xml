@@ -44,20 +44,22 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@+id/profile_image"
-                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/oleo_script_swash_caps"
                 android:text="@string/username"
+                android:textColor="@color/colorPrimary"
                 android:textSize="18dp" />
+
             <TextView
                 android:id="@+id/lastmessage"
-                android:layout_width="100dp"
+                android:layout_width="150dp"
                 android:layout_height="15dp"
                 android:layout_below="@+id/user"
-                android:layout_toEndOf="@+id/profile_image"
-                android:textSize="12sp"
-                android:textColor="@color/black"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                />
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/profile_image"
+                android:fontFamily="@font/berkshire_swash"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/msg_count"

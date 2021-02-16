@@ -75,7 +75,7 @@ public class requestAdapter  extends RecyclerView.Adapter<requestAdapter.ViewHol
 
         FirebaseUser fuser= FirebaseAuth.getInstance().getCurrentUser();
         User.getInstance().setUserid(fuser.getUid());
-       setuserinstance();
+
 
         return new ViewHolder(view);
     }
@@ -144,8 +144,7 @@ public class requestAdapter  extends RecyclerView.Adapter<requestAdapter.ViewHol
                     HashMap<String, Object> obj = new HashMap<>();
                     obj.put("messagetime", Timestamp.now().toDate());
                     obj.put("trusted", true);
-                    HashMap<String,Object> del_obj=new HashMap<>();
-                    del_obj.put("permission",true);
+
                     collectionReference.document(User.getInstance().getUserid())
                             .collection("message").document(user.getUserid()).set(obj);
                     collectionReference.document(user.getUserid()).collection("message").document(User.getInstance().getUserid()).set(obj).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -155,8 +154,6 @@ public class requestAdapter  extends RecyclerView.Adapter<requestAdapter.ViewHol
                             sendNotification(user.getUserid(),User.getInstance().getNickname(),msg,Normal);
                         }
                     });
-                    collectionReference.document(User.getInstance().getUserid()).collection("requests").document(user.getUserid()).set(del_obj);
-                    collectionReference.document(user.getUserid()).collection("requests").document(User.getInstance().getUserid()).set(del_obj);
 
                 }
             });
@@ -165,12 +162,10 @@ public class requestAdapter  extends RecyclerView.Adapter<requestAdapter.ViewHol
                 public void onClick(View v) {
                     HashMap<String, Object> obj = new HashMap<>();
                     obj.put("trusted", false);
-                    HashMap<String,Object> del_obj=new HashMap<>();
-                    del_obj.put("permission",true);
+
                     collectionReference.document(User.getInstance().getUserid())
                             .collection("message").document(user.getUserid()).set(obj);
-                    collectionReference.document(User.getInstance().getUserid())
-                            .collection("requests").document(user.getUserid()).set(del_obj);
+
 
                 }
             });
@@ -270,30 +265,5 @@ if (status!=null) {
     }
 
 
-    private void setuserinstance() {
 
-        String user= FirebaseAuth.getInstance().getCurrentUser().getUid();
-        if (user!=null) {
-            collectionReference.document(user).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isComplete() && task.isSuccessful()) {
-                        DocumentSnapshot snapshot = task.getResult();
-                        User user = User.getInstance();
-                        user.setUserid(snapshot.getString("userid"));
-                        user.setUsername(snapshot.getString("username"));
-                        user.setImageurl(snapshot.getString("imageurl"));
-                        user.setNickname(snapshot.getString("nickname"));
-                        user.setGender(snapshot.getString("gender"));
-                        user.setInterest((ArrayList<String>) snapshot.get("interest"));
-                        user.setAbout(snapshot.getString("about"));
-
-
-                    } else {
-
-                    }
-                }
-            });
-        }
-    }
 }

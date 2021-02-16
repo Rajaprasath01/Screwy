@@ -111,36 +111,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         firebaseAuth=FirebaseAuth.getInstance();
         fuser=firebaseAuth.getCurrentUser();
 
-        collectionReference.document(fuser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isComplete() && task.isSuccessful()){
-                    DocumentSnapshot snapshot = task.getResult();
-                    User user = new User();
-                    user.setUserid(snapshot.getString(Util.userid));
-                    user.setUsername(snapshot.getString(Util.username));
-                    user.setImageurl(snapshot.getString(Util.imageurl));
-                    user.setNickname(snapshot.getString(Util.nickname));
-                    user.setGender(snapshot.getString(Util.gender));
-                    user.setInterest((ArrayList<String>) snapshot.get(Util.interest));
-                    user.setAbout(snapshot.getString(Util.about));
-                    username.setText(user.getUsername());
-                    if (user.getImageurl()!=null) {
-                        if (user.getImageurl().equals("default")) {
-                            display_pic.setImageResource(R.mipmap.ic_launcher);
-                        } else {
-                            Glide.with(getContext()).load(user.getImageurl()).into(display_pic);
-                        }
-                    }
-                }
 
+        username.setText(user.getUsername());
+        if (user.getImageurl()!=null) {
+            if (user.getImageurl().equals("default")) {
+                display_pic.setImageResource(R.mipmap.ic_launcher);
+            } else {
+                Glide.with(getContext()).load(user.getImageurl()).into(display_pic);
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
+        }
 
 
         display_pic.setOnClickListener(new View.OnClickListener() {

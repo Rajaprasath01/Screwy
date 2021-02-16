@@ -65,6 +65,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -104,6 +105,7 @@ private SecretKeySpec secretKeySpec;
     private APIService apiService;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
+    private int ifsent=0;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -115,6 +117,7 @@ private SecretKeySpec secretKeySpec;
         String activity=getIntent().getStringExtra("activity");
         if (activity!=null){
             if (activity.trim().equals("notif")){
+                updatelastseen();
                 setuserinstance();
             }
         }
@@ -460,16 +463,10 @@ private SecretKeySpec secretKeySpec;
         hashMap.put("isseen", false);
 
         reference.push().setValue(hashMap);
-        HashMap<String,Object> time = new HashMap<>();
-        time.put(receiver,Timestamp.now().toDate());
-        HashMap<String,Object> obj=new HashMap<>();
-        obj.put("messagetime",Timestamp.now().toDate());
-        collectionReference.document(receiver).collection("message").document(sender).set(obj,SetOptions.merge());
-        collectionReference.document(sender).collection("message").document(receiver).set(obj,SetOptions.merge());
-        collectionReference.document(User.getInstance().getUserid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
 
+        collectionReference.document(User.getInstance().getUserid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot snapshot) {
                 User user = new User();
                 user.setUserid(snapshot.getString(Util.userid));
                 user.setUsername(snapshot.getString(Util.username));
@@ -483,6 +480,8 @@ private SecretKeySpec secretKeySpec;
                 notify = false;
             }
         });
+
+        ifsent=1;
     }
 
     private void sendNotification(String receiver, final String username, final String msg, final Integer Normal) {
@@ -582,7 +581,7 @@ private SecretKeySpec secretKeySpec;
         if (userid!=null) {
             currentuser(userid);
         }
-        updatelastseen();
+
     }
 
     @Override
@@ -590,9 +589,19 @@ private SecretKeySpec secretKeySpec;
         super.onPause();
         reference.removeEventListener(seenListener);
         status("offline");
-
+if (ifsent==1) {
+    updatemessagetime();
+}
         currentuser("none");
-        updatelastseen();
+
+    }
+
+    private void updatemessagetime() {
+        HashMap<String,Object> obj=new HashMap<>();
+        obj.put("messagetime",Timestamp.now().toDate());
+
+        collectionReference.document(receiver).collection("message").document(sender).set(obj,SetOptions.merge());
+        collectionReference.document(sender).collection("message").document(receiver).set(obj,SetOptions.merge());
     }
 
 

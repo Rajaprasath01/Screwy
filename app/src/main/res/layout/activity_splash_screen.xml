@@ -8,16 +8,52 @@
     android:orientation="vertical"
     tools:context=".ui.splashScreen">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="236dp"
-        android:layout_height="326dp"
-        android:contentDescription="@string/todo"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.222" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/screwylogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="@string/todo"
+            android:src="@drawable/screwy_logo"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/screwy_text"
+            android:layout_marginBottom="-20dp"/>
+
+        <ImageView
+            android:id="@+id/screwy_text"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:src="@drawable/screwy"
+            android:layout_centerInParent="true"
+            />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/eternity"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/from"
+            android:layout_marginBottom="-35dp"
+            />
+        <ImageView
+            android:id="@+id/eternity"
+            android:layout_width="160dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/eternity"/>
+
+    </RelativeLayout>
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

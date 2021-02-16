@@ -51,7 +51,7 @@ public class CategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
-        setuserinstance();
+
         categories = new ArrayList<>();
         getCategories();
         recyclerView=findViewById(R.id.category_recyclerView);
@@ -99,26 +99,17 @@ public class CategoryActivity extends AppCompatActivity {
         super.onResume();
 
         status("online");
-        updatelastseen();
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         status("offline");
-        updatelastseen();
+
     }
 
 
-    private void updatelastseen() {
-
-        HashMap<String,Object> hashMap=new HashMap<>();
-        hashMap.put(Util.lastseen, Timestamp.now());
-
-        if (User.getInstance().getUserid()!=null) {
-            collectionReference.document(User.getInstance().getUserid()).set(hashMap, SetOptions.merge());
-        }
-    }
     private void status(final String status) {
 
         HashMap<String,Object> hashMap = new HashMap<>();
@@ -131,34 +122,6 @@ public class CategoryActivity extends AppCompatActivity {
 
     }
 
-    private void setuserinstance() {
-        String userid = getIntent().getStringExtra("userid");
-
-        if (userid != null) {
-
-            collectionReference.document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isComplete() && task.isSuccessful()) {
-                        DocumentSnapshot snapshot = task.getResult();
-                        User user = User.getInstance();
-                        user.setUserid(snapshot.getString("userid"));
-                        user.setUsername(snapshot.getString("username"));
-                        user.setImageurl(snapshot.getString("imageurl"));
-                        user.setNickname(snapshot.getString("nickname"));
-                        user.setGender(snapshot.getString("gender"));
-                        user.setInterest((ArrayList<String>) snapshot.get("interest"));
-                        user.setAbout(snapshot.getString("about"));
-
-                        onResume();
-
-                    } else {
-
-                    }
-                }
-            });
-        }
-    }
 
 
 }

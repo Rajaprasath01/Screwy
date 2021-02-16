@@ -17,9 +17,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -139,7 +141,7 @@ public class FriendRequests extends Fragment {
 
 
                 }
-                displayrequests();
+                displayrequests(chat_ids);
             }
         });
         collectionReference.document(firebaseUser.getUid()).collection("requests").orderBy("requesttrust", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -160,93 +162,79 @@ public class FriendRequests extends Fragment {
 
 
                 }
-                displaytrustrequests();
+                displaytrustrequests(trust_ids);
             }
         });
     }
 
-    private void displaytrustrequests() {
+    private void displaytrustrequests(final List<String> trust_ids) {
 
-        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        int i=0;
+        trusted_users.clear();
+        for (i=0;i<trust_ids.size();i++){
+            final int finalI = i;
+            collectionReference.document(trust_ids.get(i)).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot snapshot) {
 
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (value!=null){
-                    trusted_users.clear();
+                        User user = new User();
+                        user.setUserid(snapshot.getString(Util.userid));
+                        user.setUsername(snapshot.getString(Util.username));
+                        user.setImageurl(snapshot.getString(Util.imageurl));
+                        user.setNickname(snapshot.getString(Util.nickname));
+                        user.setStatus(snapshot.getString(Util.status));
+                        trusted_users.add(user);
 
-                    QueryDocumentSnapshot snapshot;
+                        if (finalI==trust_ids.size()-1){
+                            trust_count.setText(" "+String.valueOf(trusted_users.size()));
+                            trust_requestAdapter=new requestAdapter(getContext(),trusted_users,trusted);
+                            trust_recyclerview.setAdapter(trust_requestAdapter);
 
-
-                    for (int i=0;i<trust_ids.size();i++){
-
-                        for (int j=0;j<value.size();j++){
-                            snapshot= (QueryDocumentSnapshot) value.getDocuments().get(j);
-                            if (snapshot.getString(Util.userid).equals(trust_ids.get(i))){
-                                User user = new User();
-                                user.setUserid(snapshot.getString(Util.userid));
-                                user.setUsername(snapshot.getString(Util.username));
-                                user.setImageurl(snapshot.getString(Util.imageurl));
-                                user.setNickname(snapshot.getString(Util.nickname));
-                                user.setStatus(snapshot.getString(Util.status));
-                                trusted_users.add(user);
-                            }
+                            HashMap<String,Object> obj= new HashMap<>();
+                            obj.put("trust_count",trusted_users.size());
+                            collectionReference.document(User.getInstance().getUserid()).set(obj,SetOptions.merge());
                         }
-                    }
-
-
-                    trust_count.setText(" "+String.valueOf(trusted_users.size()));
-                    trust_requestAdapter=new requestAdapter(getContext(),trusted_users,trusted);
-                    trust_recyclerview.setAdapter(trust_requestAdapter);
-
-                    HashMap<String,Object> obj= new HashMap<>();
-                    obj.put("trust_count",trusted_users.size());
-                    collectionReference.document(User.getInstance().getUserid()).set(obj,SetOptions.merge());
-
                 }
-            }
-        });
+            });
+        }
+
 
     }
 
-    private void displayrequests() {
+    private void displayrequests(final List<String> chat_ids) {
 
-        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
 
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (value!=null){
-                    chat_users.clear();
+        int i=0;
+        chat_users.clear();
+        for (i=0;i<chat_ids.size();i++){
+            final int finalI = i;
+            collectionReference.document(chat_ids.get(i)).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot snapshot) {
 
-                    QueryDocumentSnapshot snapshot;
+                    User user = new User();
+                    user.setUserid(snapshot.getString(Util.userid));
+                    user.setUsername(snapshot.getString(Util.username));
+                    user.setImageurl(snapshot.getString(Util.imageurl));
+                    user.setNickname(snapshot.getString(Util.nickname));
+                    user.setStatus(snapshot.getString(Util.status));
+                    chat_users.add(user);
 
-                    for (int i=0;i<chat_ids.size();i++){
+                    if (finalI==chat_ids.size()-1){
+                        chat_count.setText(" "+String.valueOf(chat_users.size()));
 
-                        for (int j=0;j<value.size();j++){
-                            snapshot= (QueryDocumentSnapshot) value.getDocuments().get(j);
-                            if (snapshot.getString(Util.userid).equals(chat_ids.get(i))){
-                                User user = new User();
-                                user.setUserid(snapshot.getString(Util.userid));
-                                user.setUsername(snapshot.getString(Util.username));
-                                user.setImageurl(snapshot.getString(Util.imageurl));
-                                user.setNickname(snapshot.getString(Util.nickname));
-                                user.setStatus(snapshot.getString(Util.status));
-                                chat_users.add(user);
-                            }
-                        }
+                        chat_requestAdapter = new requestAdapter(getContext(),chat_users,permission);
+                        chat_recyclerView.setAdapter(chat_requestAdapter);
+
+
+                        HashMap<String,Object> obj= new HashMap<>();
+                        obj.put("chat_count",chat_users.size());
+                        collectionReference.document(User.getInstance().getUserid()).set(obj,SetOptions.merge());
                     }
-                   chat_count.setText(" "+String.valueOf(chat_users.size()));
-
-                    chat_requestAdapter = new requestAdapter(getContext(),chat_users,permission);
-                    chat_recyclerView.setAdapter(chat_requestAdapter);
-
-
-                    HashMap<String,Object> obj= new HashMap<>();
-                    obj.put("chat_count",chat_users.size());
-                    collectionReference.document(User.getInstance().getUserid()).set(obj,SetOptions.merge());
-
                 }
-            }
-        });
+            });
+        }
+
 
         }
 

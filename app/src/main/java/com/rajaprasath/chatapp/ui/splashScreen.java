@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.rajaprasath.chatapp.Adapter.UserAdapter;
 import com.rajaprasath.chatapp.R;
@@ -33,6 +35,7 @@ import com.rajaprasath.chatapp.util.Util;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -78,6 +81,7 @@ public class splashScreen extends AppCompatActivity {
                                 user.setAbout(snapshot.getString("about"));
 
                                 check_users();
+                                updatelastseen();
 
                             }
                             else {
@@ -146,6 +150,15 @@ public class splashScreen extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void updatelastseen() {
+
+        if (User.getInstance().getUserid()!=null) {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put(Util.lastseen, Timestamp.now());
+            collectionReference.document(User.getInstance().getUserid()).set(hashMap, SetOptions.merge());
+        }
     }
 
     @Override

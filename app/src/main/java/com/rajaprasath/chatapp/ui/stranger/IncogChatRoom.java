@@ -94,7 +94,6 @@ public class IncogChatRoom extends AppCompatActivity {
     private SecretKeySpec secretKeySpec;
     private List<Chat> chats;
     private ImageView back_button;
-    private int mode;
     private TextView status;
     private String userid;
     private String typing = "typing";
@@ -109,10 +108,8 @@ public class IncogChatRoom extends AppCompatActivity {
     private boolean notify = false;
     private Integer Incognito = 1;
     private ValueEventListener setunseen;
-
     private String token;
     private DatabaseReference IncogReference;
-    private String userNickname;
     private Integer FriendRequests_intent=3;
 
 
@@ -128,6 +125,7 @@ public class IncogChatRoom extends AppCompatActivity {
         String activity=getIntent().getStringExtra("activity");
         if (activity!=null){
             if (activity.trim().equals("notif")){
+                updatelastseen();
                 setuserinstance();
 
             }
@@ -373,7 +371,7 @@ public class IncogChatRoom extends AppCompatActivity {
                     user.setStatus(snapshot.getString("status"));
                     user.setNickname(snapshot.getString(Util.nickname));
                     username.setText(user.getNickname());
-                    userNickname=user.getNickname();
+
                     if (user.getImageurl().equals("default")) {
                         profilepic.setImageResource(R.mipmap.chatroom_person_icon_round);
                     } else {
@@ -616,17 +614,9 @@ if (User.getInstance().getUserid()!=null) {
         reference.updateChildren(hashMap);
 
 
-        HashMap<String, Object> time = new HashMap<>();
-        time.put(receiver, Timestamp.now().toDate());
-        HashMap<String, Object> obj = new HashMap<>();
-        obj.put("messagetime", Timestamp.now().toDate());
-        collectionReference.document(receiver).collection("message").document(sender).set(obj, SetOptions.merge());
-
-
-        collectionReference.document(User.getInstance().getUserid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        collectionReference.document(User.getInstance().getUserid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
-
+            public void onSuccess(DocumentSnapshot snapshot) {
                 User user = new User();
                 if (snapshot != null) {
                     user.setUserid(snapshot.getString(Util.userid));
@@ -643,6 +633,7 @@ if (User.getInstance().getUserid()!=null) {
                 notify = false;
             }
         });
+
     }
 
     private void sendNotification(final String receiver, final String nickname, final String msg, final Integer Incognito) {
@@ -741,7 +732,7 @@ if (User.getInstance().getUserid()!=null) {
     protected void onResume() {
         super.onResume();
         status("online");
-        updatelastseen();
+
         if (userid!=null) {
             currentuser(userid);
         }
@@ -755,7 +746,7 @@ if (User.getInstance().getUserid()!=null) {
     protected void onPause() {
         super.onPause();
         status("offline");
-        updatelastseen();
+
         currentuser("none");
         setunseencount();
 

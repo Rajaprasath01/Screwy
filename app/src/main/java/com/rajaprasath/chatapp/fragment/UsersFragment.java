@@ -3,6 +3,7 @@ package com.rajaprasath.chatapp.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,11 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -106,41 +112,28 @@ public class UsersFragment extends Fragment implements UserInterface {
     }
 
     private void displayusers() {
+        users.clear();
+        int i=0;
+        for( i=0;i<ids.size();i++){
+            final int finalI = i;
+            collectionReference.document(ids.get(i)).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+              @Override
+              public void onSuccess(DocumentSnapshot snapshot) {
+                  User user = new User();
+                  user.setUserid(snapshot.getString(Util.userid));
+                  user.setUsername(snapshot.getString(Util.username));
+                  user.setImageurl(snapshot.getString(Util.imageurl));
 
-        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                  users.add(user);
+                  if (finalI ==ids.size()-1){
+                      userAdapter = new UserAdapter(getContext(),users, 0, UsersFragment.this);
 
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (value!=null){
-                    users.clear();
+                      recyclerView.setAdapter(userAdapter);
+                  }
+              }
+          });
+        }
 
-                    QueryDocumentSnapshot snapshot;
-
-                     for (int i=0;i<ids.size();i++){
-
-                         for (int j=0;j<value.size();j++){
-                             snapshot= (QueryDocumentSnapshot) value.getDocuments().get(j);
-                             if (snapshot!=null) {
-                                 if (snapshot.getString(Util.userid).equals(ids.get(i))) {
-                                     User user = new User();
-                                     user.setUserid(snapshot.getString(Util.userid));
-                                     user.setUsername(snapshot.getString(Util.username));
-                                     user.setImageurl(snapshot.getString(Util.imageurl));
-
-                                     users.add(user);
-                                 }
-                             }
-                         }
-                     }
-
-
-                    userAdapter = new UserAdapter(getContext(),users, 0, UsersFragment.this);
-
-                    recyclerView.setAdapter(userAdapter);
-
-                }
-            }
-        });
     }
 
 

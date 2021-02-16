@@ -13,6 +13,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -269,6 +270,7 @@ public class Login_Activity extends AppCompatActivity {
                 @Override
                 public void onFailure(@NonNull Exception e) {
 
+                    Toast.makeText(Login_Activity.this, "Incorrect Credentials", Toast.LENGTH_SHORT).show();
                 }
             });
 

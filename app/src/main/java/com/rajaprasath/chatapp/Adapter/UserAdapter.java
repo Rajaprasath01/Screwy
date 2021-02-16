@@ -65,13 +65,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>  {
     private final FirebaseFirestore db= FirebaseFirestore.getInstance();
     private final CollectionReference collectionReference=db.collection("Users");
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private final DatabaseReference reference= database.getReference("chats");
     private final byte[] encryptionkey={9,-18,27,-36,45,-54,63,-72,81,-90,8,-16,24,-32,40,-48};
     private Cipher cipher, decipher;
     private SecretKeySpec secretKeySpec;
-    private boolean permission;
     private UserInterface userInterface;
-    private final APIService apiService = Client.getclient("https://fcm.googleapis.com/").create(APIService.class);
+
 
 
     public UserAdapter(Context context, List<User> users, Integer mode, UserInterface userInterface) {

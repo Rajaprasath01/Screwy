@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -95,10 +96,10 @@ public class Category_users extends Fragment implements UserInterface {
         final FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
 
 
-        collectionReference.orderBy(Util.lastseen, Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot querySnapshots, @Nullable FirebaseFirestoreException error) {
 
+        collectionReference.orderBy(Util.lastseen, Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot querySnapshots) {
                 if (querySnapshots!=null){
                     users.clear();
                     for (QueryDocumentSnapshot snapshot: querySnapshots){
@@ -129,14 +130,8 @@ public class Category_users extends Fragment implements UserInterface {
                     userAdapter = new UserAdapter(getContext(), users, 1,Category_users.this);
                     recyclerView.setAdapter(userAdapter);
                 }
-
-
-
             }
         });
-
-
-
 
 
 

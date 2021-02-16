@@ -60,6 +60,7 @@ public class CategoryUsers extends AppCompatActivity  {
     private ViewpagerAdapter viewpagerAdapter;
     private String request_count;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +68,15 @@ public class CategoryUsers extends AppCompatActivity  {
 
       String fuser=  FirebaseAuth.getInstance().getCurrentUser().getUid();
         User.getInstance().setUserid(fuser);
+
+        String activity=getIntent().getStringExtra("activity");
+        if (activity!=null){
+            if (activity.trim().equals("notif")){
+                updatelastseen();
+
+            }
+        }
+
 
         Toolbar toolbar= findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
@@ -130,7 +140,7 @@ public class CategoryUsers extends AppCompatActivity  {
         users = new ArrayList<>();
 
        category_name.setText(category);
-        getusers();
+        //getusers();
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -233,14 +243,14 @@ public class CategoryUsers extends AppCompatActivity  {
     protected void onResume() {
         super.onResume();
         status("online");
-        updatelastseen();
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         status("offline");
-        updatelastseen();
+
     }
     private void updatelastseen() {
 

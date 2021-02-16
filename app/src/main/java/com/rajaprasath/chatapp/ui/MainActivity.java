@@ -152,9 +152,11 @@ public class MainActivity extends AppCompatActivity {
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 firebaseAuth.signOut();
-                User user= User.getInstance();
-                user=null;
+                if (firebaseAuth.getCurrentUser()!=null) {
+                    firebaseAuth.signOut();
+                    User user = User.getInstance();
+                    user = null;
+                }
                 if (firebaseAuth.getCurrentUser()==null) {
                     startActivity(new Intent(MainActivity.this, splashScreen.class));
                     finish();
@@ -173,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         dialog = builder.create();
         dialog.show();
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.signout_popup_background);
-        dialog.getWindow().setLayout(650,300);
+        dialog.getWindow().setLayout(750,280);
     }
 
     public class ViewpagerAdapter extends FragmentPagerAdapter{
@@ -215,23 +217,16 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         status("online");
         if (User.getInstance().getUserid()!=null){
-        updatelastseen();}
+
+             }
     }
 
-    private void updatelastseen() {
 
-        if (User.getInstance().getUserid()!=null) {
-            HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put(Util.lastseen, Timestamp.now());
-            collectionReference.document(User.getInstance().getUserid()).set(hashMap, SetOptions.merge());
-        }
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
         status("offline");
-        updatelastseen();
     }
 
     private void status(final String status) {

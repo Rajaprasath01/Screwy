@@ -9,6 +9,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingLeft="@dimen/_5sdp"
+        android:paddingRight="@dimen/_5sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,34 +30,36 @@
                     android:id="@+id/request"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
+                    android:fontFamily="@font/oleo_script_swash_caps"
+                    android:padding="@dimen/_8sdp"
                     android:text="@string/add_trusted_text"
                     android:textColor="@color/colorAccent"
-                    android:textSize="24dp" />
-
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/yes"
                     style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/_54sdp"
+                    android:layout_height="@dimen/_23sdp"
                     android:layout_below="@+id/request"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginStart="60dp"
-                    android:background="@color/incog_primary"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:background="@drawable/yes_button_background"
+                    android:fontFamily="@font/chewy"
                     android:text="Yes" />
 
                 <Button
                     android:id="@+id/no"
                     style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/_54sdp"
+                    android:layout_height="@dimen/_23sdp"
                     android:layout_below="@+id/request"
-                    android:layout_marginStart="80dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginEnd="40dp"
-                    android:layout_toEndOf="@+id/yes"
-                    android:background="@color/incog_primary"
+                    android:layout_toStartOf="@+id/yes"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/chewy"
                     android:text="No" />
             </RelativeLayout>
 

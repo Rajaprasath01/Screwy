@@ -84,6 +84,7 @@ public class requestAdapter  extends RecyclerView.Adapter<requestAdapter.ViewHol
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (request_type==permission) {
             user = users.get(position);
+
             String request = user.getNickname() + " wants to chat with you.";
 
             if (user.getImageurl().equals("default")) {

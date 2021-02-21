@@ -1,12 +1,12 @@
 package com.rajaprasath.chatapp.ui.stranger;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -41,7 +41,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.rajaprasath.chatapp.Adapter.MessageAdapter;
 import com.rajaprasath.chatapp.Notifications.Client;
@@ -52,7 +51,6 @@ import com.rajaprasath.chatapp.Notifications.Token;
 import com.rajaprasath.chatapp.R;
 import com.rajaprasath.chatapp.controller.User;
 import com.rajaprasath.chatapp.fragment.APIService;
-import com.rajaprasath.chatapp.fragment.FriendRequests;
 import com.rajaprasath.chatapp.model.Chat;
 import com.rajaprasath.chatapp.model.UserStatus;
 import com.rajaprasath.chatapp.util.Util;
@@ -63,7 +61,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -109,6 +106,7 @@ public class IncogChatRoom extends AppCompatActivity {
     private Integer Incognito = 1;
     private ValueEventListener setunseen;
     private String token;
+    private String gender;
     private DatabaseReference IncogReference;
     private Integer FriendRequests_intent=3;
 
@@ -145,6 +143,10 @@ public class IncogChatRoom extends AppCompatActivity {
         if (getIntent().getStringExtra("userid")!=null) {
             receiver = getIntent().getStringExtra("userid");
             userid = getIntent().getStringExtra("userid");
+        }
+        if (getIntent().getStringExtra("gender")!=null){
+            gender=getIntent().getStringExtra("gender");
+
         }
         msg_text = findViewById(R.id.msg_text);
         profilepic = findViewById(R.id.profile_image_id);
@@ -414,7 +416,7 @@ public class IncogChatRoom extends AppCompatActivity {
     private void blockcontact() {
         builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.remove_trusted_popup, null);
-        TextView confirmation=view.findViewById(R.id.confirmation);
+        TextView confirmation=view.findViewById(R.id.request);
         Button yes = view.findViewById(R.id.yes);
         Button no = view.findViewById(R.id.no);
         String text="Do you really want to block this person?";
@@ -441,6 +443,8 @@ public class IncogChatRoom extends AppCompatActivity {
         builder.setView(view);
         dialog = builder.create();
         dialog.show();
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_background);
+        dialog.getWindow().setLayout((int) getResources().getDimension(R.dimen._248sdp), (int) getResources().getDimension(R.dimen._70sdp));
 
     }
 
@@ -449,6 +453,14 @@ public class IncogChatRoom extends AppCompatActivity {
     private void request_trust() {
         builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.add_trusted_popup, null);
+        TextView request=view.findViewById(R.id.request);
+        if (gender!=null) {
+            if (gender.equals(Util.male)) {
+                request.setText("You trust him...  really?");
+            } else if (gender.equals(Util.female)) {
+                request.setText("You trust her...  really?");
+            }
+        }
         Button yes = view.findViewById(R.id.yes);
         Button no = view.findViewById(R.id.no);
         yes.setOnClickListener(new View.OnClickListener() {
@@ -456,7 +468,7 @@ public class IncogChatRoom extends AppCompatActivity {
             public void onClick(View v) {
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("requesttrust", Timestamp.now().toDate());
-                collectionReference.document(userid).collection("requests").document(User.getInstance().getUserid()).set(hashMap, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                collectionReference.document(userid).collection("message").document(User.getInstance().getUserid()).set(hashMap, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(IncogChatRoom.this, "Request Sent", Toast.LENGTH_SHORT).show();
@@ -479,6 +491,8 @@ public class IncogChatRoom extends AppCompatActivity {
         builder.setView(view);
         dialog = builder.create();
         dialog.show();
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_background);
+        dialog.getWindow().setLayout((int) getResources().getDimension(R.dimen._210sdp), (int) getResources().getDimension(R.dimen._70sdp));
     }
 
 
@@ -592,6 +606,7 @@ if (User.getInstance().getUserid()!=null) {
     });
 
 }
+        cancelNotification();
     }
 
 
@@ -908,6 +923,13 @@ if (User.getInstance().getUserid()!=null) {
             databaseReference.setValue(null);
         }
     }
+
+    private void cancelNotification() {
+        int j=Integer.parseInt(userid.replaceAll("[\\D]",""));
+        NotificationManager notificationManager=(NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+        notificationManager.cancel(j);
+    }
+
 
     @Override
     public void onBackPressed() {

@@ -14,4 +14,6 @@
     inner_frame_layout_padding (below variable) on round screens.
     -->
     <dimen name="inner_frame_layout_padding">5dp</dimen>
+    <dimen name="alertwidth">@dimen/_50sdp</dimen>
+    <dimen name="alertheight">@dimen/_50sdp</dimen>
 </resources>

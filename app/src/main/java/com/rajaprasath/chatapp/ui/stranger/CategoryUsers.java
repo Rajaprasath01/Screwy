@@ -146,7 +146,8 @@ public class CategoryUsers extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
 
-                finish();
+                onBackPressed();
+
             }
         });
 
@@ -280,6 +281,9 @@ public class CategoryUsers extends AppCompatActivity  {
                 finish();
 
             }
+        }
+        else {
+            finish();
         }
     }
 }

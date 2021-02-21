@@ -3,6 +3,7 @@ package com.rajaprasath.chatapp.controller;
 import android.app.Application;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class User extends Application {
@@ -17,6 +18,8 @@ public class User extends Application {
     private String status;
     private String typing;
     private Map messagetime;
+    private List<String> permitted;
+    private List<String> trusted;
     public User() {
     }
 
@@ -44,6 +47,11 @@ public class User extends Application {
         this.status = status;
         this.typing = typing;
         this.messagetime = messagetime;
+    }
+
+    public User(List<String> permitted, List<String> trusted) {
+        this.permitted = permitted;
+        this.trusted = trusted;
     }
 
     public User(String username, String userid) {
@@ -137,5 +145,21 @@ public class User extends Application {
 
     public void setTyping(String typing) {
         this.typing = typing;
+    }
+
+    public List<String> getPermitted() {
+        return permitted;
+    }
+
+    public void setPermitted(List<String> permitted) {
+        this.permitted = permitted;
+    }
+
+    public List<String> getTrusted() {
+        return trusted;
+    }
+
+    public void setTrusted(List<String> trusted) {
+        this.trusted = trusted;
     }
 }

@@ -156,8 +156,10 @@ public class MainActivity extends AppCompatActivity {
                     firebaseAuth.signOut();
                     User user = User.getInstance();
                     user = null;
+
                 }
                 if (firebaseAuth.getCurrentUser()==null) {
+                    firebaseAuth=null;
                     startActivity(new Intent(MainActivity.this, splashScreen.class));
                     finish();
                 }
@@ -175,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
         dialog = builder.create();
         dialog.show();
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.signout_popup_background);
-        dialog.getWindow().setLayout(750,280);
+        dialog.getWindow().setLayout((int) getResources().getDimension(R.dimen._210sdp), (int) getResources().getDimension(R.dimen._70sdp));
     }
 
     public class ViewpagerAdapter extends FragmentPagerAdapter{

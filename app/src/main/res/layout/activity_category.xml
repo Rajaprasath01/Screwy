@@ -11,7 +11,6 @@
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +54,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_toEndOf="@+id/mode_layout"
-                    android:text="@string/app_name"
+                    android:text="@string/category"
                     android:textColor="@color/cardview_light_background"
                     android:textSize="@dimen/_14sdp"
                     android:textStyle="bold" />

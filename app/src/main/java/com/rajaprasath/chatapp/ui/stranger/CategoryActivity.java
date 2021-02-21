@@ -76,6 +76,11 @@ public class CategoryActivity extends AppCompatActivity {
                     }
 
                 }
+                else {
+                    Intent intent = new Intent(CategoryActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
 
@@ -122,6 +127,19 @@ public class CategoryActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (activity != null) {
+            if (activity.equals("mainactivity")) {
+                finish();
+            } else if (activity.equals("splashscreen")) {
+                Intent intent = new Intent(CategoryActivity.this, MainActivity.class);
+                intent.putExtra("activity", "categoryactivity");
+                startActivity(intent);
+            }
 
+        }
 
+    }
 }

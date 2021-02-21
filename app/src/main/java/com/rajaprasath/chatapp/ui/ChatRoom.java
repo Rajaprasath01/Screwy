@@ -1,28 +1,25 @@
 package com.rajaprasath.chatapp.ui;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,9 +37,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.SetOptions;
 import com.rajaprasath.chatapp.Adapter.MessageAdapter;
 import com.rajaprasath.chatapp.Notifications.Client;
@@ -55,8 +50,6 @@ import com.rajaprasath.chatapp.controller.User;
 import com.rajaprasath.chatapp.fragment.APIService;
 import com.rajaprasath.chatapp.model.Chat;
 import com.rajaprasath.chatapp.model.UserStatus;
-import com.rajaprasath.chatapp.ui.stranger.CategoryActivity;
-import com.rajaprasath.chatapp.ui.stranger.CategoryUsers;
 import com.rajaprasath.chatapp.util.Util;
 
 import java.nio.charset.StandardCharsets;
@@ -65,7 +58,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -97,10 +89,10 @@ private SecretKeySpec secretKeySpec;
     private List<Chat> chats;
     private ImageView back_button;
     private String userid;
-    private String typing="typing";
+    private final String typing="typing";
     private ValueEventListener seenListener;
     private DatabaseReference reference;
-    private Integer Normal=0;
+    private final Integer Normal=0;
     private boolean notify=false;
     private APIService apiService;
     private AlertDialog.Builder builder;
@@ -255,6 +247,14 @@ private SecretKeySpec secretKeySpec;
         if (sender!=null && receiver!=null) {
             seenmsg(sender, receiver);
         }
+
+
+    }
+
+    private void cancelNotification() {
+        int j=Integer.parseInt(userid.replaceAll("[\\D]",""));
+        NotificationManager notificationManager=(NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+        notificationManager.cancel(j);
     }
 
     private void checkstatus_readmsg() {
@@ -332,7 +332,7 @@ private SecretKeySpec secretKeySpec;
     private void remove_trusted() {
         builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.remove_trusted_popup, null);
-        TextView confirmation=view.findViewById(R.id.confirmation);
+        TextView confirmation=view.findViewById(R.id.request);
         Button yes = view.findViewById(R.id.yes);
         Button no = view.findViewById(R.id.no);
         String text="Do you really want to block this person?";
@@ -347,7 +347,14 @@ private SecretKeySpec secretKeySpec;
                 collectionReference.document(User.getInstance().getUserid()).collection(Util.message).document(userid).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        collectionReference.document(userid).collection(Util.message).document(User.getInstance().getUserid()).set(hashMap);
+                        collectionReference.document(userid).collection(Util.message).document(User.getInstance().getUserid()).set(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                                finish();
+                            }
+                        });
+
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -369,6 +376,8 @@ private SecretKeySpec secretKeySpec;
         builder.setView(view);
         dialog = builder.create();
         dialog.show();
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_background);
+        dialog.getWindow().setLayout((int) getResources().getDimension(R.dimen._248sdp), (int) getResources().getDimension(R.dimen._70sdp));
 
     }
 
@@ -441,6 +450,7 @@ private SecretKeySpec secretKeySpec;
 
                 messageAdapter=new MessageAdapter(ChatRoom.this,chats,imageurl,0);
                 recyclerView.setAdapter(messageAdapter);
+
             }
 
             @Override
@@ -448,6 +458,8 @@ private SecretKeySpec secretKeySpec;
 
             }
         });
+
+        cancelNotification();
     }
 
 
@@ -591,7 +603,9 @@ private SecretKeySpec secretKeySpec;
         status("offline");
 if (ifsent==1) {
     updatemessagetime();
+
 }
+
         currentuser("none");
 
     }

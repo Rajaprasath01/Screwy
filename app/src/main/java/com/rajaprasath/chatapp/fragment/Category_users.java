@@ -27,9 +27,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -108,6 +110,7 @@ public class Category_users extends Fragment implements UserInterface {
                                 User user = new User();
                                 user.setUserid(snapshot.getString(Util.userid));
                                 user.setUsername(snapshot.getString(Util.username));
+                                user.setGender(snapshot.getString(Util.gender));
                                 user.setImageurl(snapshot.getString(Util.imageurl));
                                 user.setNickname(snapshot.getString(Util.nickname));
                                 user.setInterest((ArrayList<String>) snapshot.get(Util.interest));
@@ -162,6 +165,7 @@ public class Category_users extends Fragment implements UserInterface {
             @Override
             public void onClick(View v) {
                 HashMap<String,Object> hashMap= new HashMap<>();
+
                 hashMap.put("requesttime", Timestamp.now().toDate());
              collectionReference.document(userid).collection("requests").document(User.getInstance().getUserid()).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                  @Override
@@ -186,6 +190,8 @@ public class Category_users extends Fragment implements UserInterface {
         builder.setView(view);
         dialog=builder.create();
         dialog.show();
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_background);
+        dialog.getWindow().setLayout((int) getResources().getDimension(R.dimen._248sdp), (int) getResources().getDimension(R.dimen._70sdp));
     }
 
 

@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/_8sdp"
+        android:paddingTop="@dimen/_5sdp"
         android:paddingLeft="@dimen/_5sdp"
         android:paddingRight="@dimen/_5sdp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,7 +34,7 @@
                     android:padding="@dimen/_8sdp"
                     android:text="@string/sign_out_text"
                     android:textColor="@color/colorAccent"
-                    android:textSize="18dp"
+                    android:textSize="@dimen/_14sdp"
                     android:textStyle="bold" />
 
                 <Button

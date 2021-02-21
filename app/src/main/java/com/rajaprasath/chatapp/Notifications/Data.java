@@ -11,6 +11,7 @@ public class Data {
     private String sent;
     private Integer mode;
     private String category;
+
     public Data() {
     }
 
@@ -33,6 +34,8 @@ public class Data {
         this.mode = mode;
         this.category = category;
     }
+
+
 
     public String getUser() {
         return user;

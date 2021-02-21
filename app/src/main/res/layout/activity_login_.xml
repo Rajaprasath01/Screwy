@@ -38,9 +38,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_8sdp"
+            android:fontFamily="@font/almendra_sc"
             android:text="@string/action_sign_in_short"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_16sdp" />
+            android:textSize="@dimen/_16sdp"
+            android:textStyle="bold" />
 
         <AutoCompleteTextView
             android:id="@+id/_email"
@@ -92,6 +94,7 @@
             android:background="@android:color/transparent"
             android:gravity="center"
             android:text="@string/or"
+            android:textStyle="bold"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_11sdp" />
 
@@ -116,6 +119,7 @@
         android:layout_margin="@dimen/_13sdp"
         android:background="@android:color/transparent"
         android:text="@string/Create_account"
+        android:textStyle="bold"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_9sdp"
         app:layout_constraintBottom_toBottomOf="parent"

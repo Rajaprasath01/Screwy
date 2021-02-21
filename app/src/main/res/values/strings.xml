@@ -37,8 +37,10 @@
     <string name="signup">Signup</string>
     <string name="agree">Agree</string>
     <string name="decline">Decline</string>
-    <string name="request_text">Would you like to send a friend request to </string>
-    <string name="add_trusted_text">Would you like to add this person to your contacts?</string>
+    <string name="request_text">You want to chat with  </string>
+    <string name="add_trusted_text">You trust him...  really?</string>
     <string name="delete">Delete</string>
     <string name="sign_out_text">Are you sure you want to signout?</string>
+    <string name="remove_trusted">Do you really want to kick him out?</string>
+    <string name="category">Choose a category</string>
 </resources>

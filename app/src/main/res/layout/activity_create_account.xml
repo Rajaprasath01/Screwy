@@ -26,12 +26,14 @@
         android:id="@+id/signin_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_16sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Signin"
+        android:layout_marginTop="@dimen/_22sdp"
+        android:fontFamily="@font/almendra_sc"
+        android:text="Sign in"
+        android:textStyle="bold"
         android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_16sdp"/>
+        android:textSize="@dimen/_16sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/signup_form"
@@ -49,7 +51,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_8sdp"
+            android:fontFamily="@font/almendra_sc"
             android:text="@string/create_account"
+            android:textStyle="bold"
             android:textColor="@color/colorPrimary"
             android:textSize="21dp" />
 

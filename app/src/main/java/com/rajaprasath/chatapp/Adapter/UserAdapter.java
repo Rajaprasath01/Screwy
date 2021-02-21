@@ -129,14 +129,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>  {
          }
 
 
-        if (user.getImageurl().equals("default")){
+         if (user.getImageurl()!=null) {
+             if (user.getImageurl().equals("default")) {
 
-            holder.profilepic.setImageResource(R.mipmap.person_icon_round);
-        }
-        else {
-            Glide.with(context).load(user.getImageurl()).into(holder.profilepic);
-        }
-
+                 holder.profilepic.setImageResource(R.mipmap.person_icon_round);
+             } else {
+                 Glide.with(context).load(user.getImageurl()).into(holder.profilepic);
+             }
+         }
 
         checkstatus(holder,user.getUserid());
 
@@ -148,6 +148,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>  {
 
                 Intent intent = new Intent(context, ChatRoom.class);
                 intent.putExtra("userid",user.getUserid());
+                intent.putExtra("gender",user.getGender());
                     context.startActivity(intent);}
                 else if (mode==1){
                     collectionReference.document(user.getUserid()).collection("requests").document(User.getInstance().getUserid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -159,14 +160,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>  {
                                     if (snapshot.getBoolean("permission")){
                                         Intent intent = new Intent(context, IncogChatRoom.class);
                                         intent.putExtra("userid", user.getUserid());
+                                        intent.putExtra("gender",user.getGender());
                                         context.startActivity(intent);
                                     }
                                     else {
-                                        userInterface.requestchat(user.getUserid(),user.getUsername());
+                                        userInterface.requestchat(user.getUserid(),user.getNickname());
                                     }
                                 }
                                 else {
-                                    userInterface.requestchat(user.getUserid(),user.getUsername());
+                                    userInterface.requestchat(user.getUserid(),user.getNickname());
                                 }
                             }
 

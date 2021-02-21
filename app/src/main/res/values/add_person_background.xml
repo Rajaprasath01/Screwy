@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="add_person_background">#212121</color>
+    <color name="add_person_background">@color/incog_primary</color>
 </resources>

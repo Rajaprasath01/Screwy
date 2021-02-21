@@ -60,12 +60,13 @@
                     android:id="@+id/user_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
                     android:layout_marginLeft="@dimen/_4sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
                     android:layout_toEndOf="@+id/profile_image_id"
                     android:layout_toRightOf="@+id/profile_image_id"
-                    android:text="@string/username"
+                    android:fontFamily="@font/alegreya_bold_italic"
 
+                    android:text="@string/username"
                     android:textColor="@color/cardview_light_background"
                     android:textSize="@dimen/_14sdp" />
 
@@ -73,10 +74,11 @@
                     android:id="@+id/status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/user_id"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/_8sdp"
-                    android:layout_below="@id/user_id"
                     android:layout_toEndOf="@+id/profile_image_id"
+                    android:fontFamily="@font/alegreya_bold_italic"
                     android:text="offline"
                     android:textColor="@color/cardview_light_background"
                     android:textSize="@dimen/_12sdp" />

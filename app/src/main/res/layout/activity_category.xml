@@ -54,6 +54,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_toEndOf="@+id/mode_layout"
+                    android:fontFamily="@font/alegreya_bold_italic"
                     android:text="@string/category"
                     android:textColor="@color/cardview_light_background"
                     android:textSize="@dimen/_14sdp"

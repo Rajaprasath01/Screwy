@@ -3,7 +3,9 @@
     <array name="preloaded_fonts" translatable="false">
         <item>@font/</item>
         <item>@font/aclonica</item>
+        <item>@font/alegreya_bold_italic</item>
         <item>@font/almendra_sc</item>
+        <item>@font/arvo_italic</item>
         <item>@font/berkshire_swash</item>
         <item>@font/bonbon</item>
         <item>@font/caveat_bold</item>
@@ -16,7 +18,10 @@
         <item>@font/eater</item>
         <item>@font/fredericka_the_great</item>
         <item>@font/gabriela</item>
+        <item>@font/macondo_swash_caps</item>
         <item>@font/oleo_script_swash_caps</item>
+        <item>@font/playfair_display_black_italic</item>
+        <item>@font/trade_winds</item>
         <item>@font/vampiro_one</item>
     </array>
 </resources>

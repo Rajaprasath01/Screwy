@@ -2,9 +2,11 @@ package com.rajaprasath.chatapp.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +27,8 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,7 +49,8 @@ import java.util.Objects;
 
 public class Login_Activity extends AppCompatActivity {
 
-    private Button login, create_account,google_signin;
+    private Button login, google_signin;
+    private TextView create_account;
     private AutoCompleteTextView email;
     private EditText password;
     private FirebaseAuth firebaseAuth;
@@ -61,23 +67,37 @@ public class Login_Activity extends AppCompatActivity {
     private Uri personPhoto;
     private final String google_signin_mode="GOOGLE_SIGNIN";
 
+    private View bottomSheetDialog;
+    private LinearLayout showBottomSheet;
+    private BottomSheetBehavior behavior;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        fullScreenCall();
         setContentView(R.layout.activity_login_);
-        //getSupportActionBar().hide();
         login = findViewById(R.id.login);
         create_account = findViewById(R.id.create_account);
         SignInButton googlesignin = findViewById(R.id.sign_in_button);
         googlesignin.setSize(SignInButton.SIZE_STANDARD);
         TextView google= (TextView) googlesignin.getChildAt(0);
-        google.setText("Google");
+        google.setText("Sign in with Google");
         email = findViewById(R.id._email);
         password = findViewById(R.id._password);
         firebaseAuth=FirebaseAuth.getInstance();
 
+        bottomSheetDialog = findViewById(R.id.bottom_sheet);
+        behavior = BottomSheetBehavior.from(bottomSheetDialog);
 
+        showBottomSheet = findViewById(R.id.ll_show_login_options);
+        showBottomSheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -116,10 +136,18 @@ public class Login_Activity extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    //a2367fb466ded6bb38b77927f9622b5b69cb642e
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
+            behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -136,7 +164,7 @@ public class Login_Activity extends AppCompatActivity {
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        firebaseAuth=FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -146,20 +174,17 @@ public class Login_Activity extends AppCompatActivity {
 
                             FirebaseUser user = firebaseAuth.getCurrentUser();
                             assert user != null;
-                             currentuserid= user.getUid();
-
+                            currentuserid = user.getUid();
 
                             GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(Login_Activity.this);
 
                             if (acct != null) {
-
                                  personName = acct.getDisplayName();
                                  String personGivenName = acct.getGivenName();
                                  String personFamilyName = acct.getFamilyName();
                                  String personEmail = acct.getEmail();
                                  personPhoto= acct.getPhotoUrl();
                                  personId = acct.getId();
-
                             }
 
 
@@ -274,14 +299,14 @@ public class Login_Activity extends AppCompatActivity {
                 }
             });
 
-
-
         }
-
-
     }
 
-
+    public void fullScreenCall() {
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        decorView.setSystemUiVisibility(uiOptions);
+    }
 }
 
 

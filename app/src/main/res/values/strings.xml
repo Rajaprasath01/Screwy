@@ -3,7 +3,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="or">or sign in with</string>
+    <string name="or">or</string>
     <string name="username">Username</string>
     <string name="todo">TODO</string>
     <string name="sign_out">Sign Out</string>
@@ -43,4 +43,7 @@
     <string name="sign_out_text">Are you sure you want to signout?</string>
     <string name="remove_trusted">Do you really want to kick him out?</string>
     <string name="category">Choose a category</string>
+    <string name="click_here">Click Here</string>
+    <string name="create_new">Create a Screwy account</string>
+    <string name="login_options">Login Options</string>
 </resources>

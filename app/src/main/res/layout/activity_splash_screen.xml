@@ -31,8 +31,7 @@
             android:layout_width="@dimen/_155sdp"
             android:layout_height="@dimen/_78sdp"
             android:src="@drawable/screwy"
-            android:layout_centerInParent="true"
-            />
+            android:layout_centerInParent="true" />
 
         <ImageView
             android:layout_width="@dimen/_39sdp"

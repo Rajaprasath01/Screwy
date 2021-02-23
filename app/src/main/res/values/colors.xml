@@ -15,6 +15,8 @@
     <color name="notif_color">#121212</color>
     <color name="statusbar_color">#121212</color>
     <color name="lightcolor">#B4B4B4</color>
+    <color name="light_gray">#838282</color>
     <color name="transparent">#00000000</color>
+    <color name="blue">#02569F</color>
 
 </resources>

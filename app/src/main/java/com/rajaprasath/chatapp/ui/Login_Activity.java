@@ -1,12 +1,8 @@
 package com.rajaprasath.chatapp.ui;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,8 +11,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -28,14 +28,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rajaprasath.chatapp.R;
@@ -49,28 +47,21 @@ import java.util.Objects;
 
 public class Login_Activity extends AppCompatActivity {
 
-    private Button login, google_signin;
+    private Button login;
     private TextView create_account;
     private AutoCompleteTextView email;
     private EditText password;
     private FirebaseAuth firebaseAuth;
-    private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseUser user;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final CollectionReference collectionReference = db.collection("Users");
-    private final DocumentReference documentReference= collectionReference.document();
     private GoogleSignInClient mGoogleSignInClient;
-    private final int RC_SIGN_IN=999;
+    private final int RC_SIGN_IN = 999;
     private String personName;
-    private String currentuserid;
-    private String personId;
+    private String currentUserId;
     private Uri personPhoto;
-    private final String google_signin_mode="GOOGLE_SIGNIN";
 
-    private View bottomSheetDialog;
-    private LinearLayout showBottomSheet;
     private BottomSheetBehavior behavior;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +79,10 @@ public class Login_Activity extends AppCompatActivity {
         password = findViewById(R.id._password);
         firebaseAuth=FirebaseAuth.getInstance();
 
-        bottomSheetDialog = findViewById(R.id.bottom_sheet);
+        View bottomSheetDialog = findViewById(R.id.bottom_sheet);
         behavior = BottomSheetBehavior.from(bottomSheetDialog);
 
-        showBottomSheet = findViewById(R.id.ll_show_login_options);
+        LinearLayout showBottomSheet = findViewById(R.id.ll_show_login_options);
         showBottomSheet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,10 +108,9 @@ public class Login_Activity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Log.d("email", "onClick: " + email.getText().toString().trim());
-                String emailid = email.getText().toString().trim();
+                String emailId = email.getText().toString().trim();
                 String pwd = password.getText().toString().trim();
-                loginwithEmailAndPassword(emailid, pwd);
+                loginwithEmailAndPassword(emailId, pwd);
             }
         });
         googlesignin.setOnClickListener(new View.OnClickListener() {
@@ -131,12 +121,17 @@ public class Login_Activity extends AppCompatActivity {
         });
     }
 
+    //To Rajaprasath: Quit Development _/\_ (2/27/2021)
+    //PS: Your code sucks! \m/
+
+    //SHA1: 36:1B:7E:6F:3C:2D:5E:12:6D:6A:87:AF:07:A0:91:6B:EC:30:08:E6
+    //SHA-256: 12:AC:C6:69:48:18:FA:C9:17:8C:5C:66:A6:7C:DA:B1:47:94:3F:76:A6:82:7F:29:C3:2B:69:A2:BA:08:85:56
+    //Add this to firebase to enable G login
+
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-
-    //a2367fb466ded6bb38b77927f9622b5b69cb642e
 
     @Override
     public void onBackPressed() {
@@ -148,16 +143,13 @@ public class Login_Activity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN && resultCode == RESULT_OK) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
-
+                Log.d("TAG", "onActivityResult: " + e.toString());
             }
         }
     }
@@ -174,21 +166,16 @@ public class Login_Activity extends AppCompatActivity {
 
                             FirebaseUser user = firebaseAuth.getCurrentUser();
                             assert user != null;
-                            currentuserid = user.getUid();
+                            currentUserId = user.getUid();
 
                             GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(Login_Activity.this);
 
                             if (acct != null) {
                                  personName = acct.getDisplayName();
-                                 String personGivenName = acct.getGivenName();
-                                 String personFamilyName = acct.getFamilyName();
-                                 String personEmail = acct.getEmail();
                                  personPhoto= acct.getPhotoUrl();
-                                 personId = acct.getId();
                             }
 
-
-                             collectionReference.document(currentuserid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                             collectionReference.document(currentUserId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                  @Override
                                  public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                      if ((task.isComplete() && task.isSuccessful()) && Objects.requireNonNull(task.getResult()).exists()){
@@ -201,22 +188,26 @@ public class Login_Activity extends AppCompatActivity {
                                      User.getInstance().setInterest((ArrayList<String>) snapshot.get(Util.interest));
                                      User.getInstance().setAbout(snapshot.getString(Util.about));
                                      startActivity(new Intent(Login_Activity.this, MainActivity.class));
+
+                                     Toast.makeText(Login_Activity.this, "I know this app is kinda lame!", Toast.LENGTH_SHORT).show();
+
                                      finish();
 
                                      }
                                      else {
                                          Map<String, String> userobj = new HashMap<>();
-                                         userobj.put(Util.userid, currentuserid);
+                                         userobj.put(Util.userid, currentUserId);
                                          userobj.put(Util.username, personName);
                                          userobj.put(Util.imageurl,"default");
-                                         collectionReference.document(currentuserid).set(userobj).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                         collectionReference.document(currentUserId).set(userobj).addOnCompleteListener(new OnCompleteListener<Void>() {
                                              @Override
                                              public void onComplete(@NonNull Task<Void> task) {
                                                  Intent intent= new Intent(Login_Activity.this,ProfileActivity.class);
-                                                 intent.putExtra(Util.userid,currentuserid);
+                                                 intent.putExtra(Util.userid, currentUserId);
                                                  intent.putExtra(Util.username,personName);
                                                  intent.putExtra(Util.imageurl,personPhoto.toString());
                                                  startActivity(intent);
+                                                 Toast.makeText(Login_Activity.this, "I know this app is kinda lame!", Toast.LENGTH_SHORT).show();
                                                  finish();
                                              }
                                          });

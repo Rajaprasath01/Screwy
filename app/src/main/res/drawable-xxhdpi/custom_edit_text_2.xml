@@ -3,12 +3,11 @@
     <solid
         android:color="@color/transparent"/>
     <stroke
-        android:color="@color/light_gray"
+        android:color="@color/black"
         android:width="@dimen/_1sdp"/>
     <padding
         android:top="@dimen/_12sdp"
         android:bottom="@dimen/_12sdp"
-        android:left="@dimen/_12sdp"
-        android:right="@dimen/_12sdp"/>
-
+        android:right="@dimen/_12sdp"
+        android:left="@dimen/_12sdp"/>
 </shape>

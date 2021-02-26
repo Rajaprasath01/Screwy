@@ -5,53 +5,59 @@
     android:layout_width="match_parent"
     app:layout_behavior="@string/bottom_sheet_behavior"
     app:behavior_hideable="true"
-    android:background="@drawable/custom_bg_1"
+    android:background="@color/bg_gray"
     app:behavior_peekHeight="0dp"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_2sdp"
-        android:background="@color/light_gray"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/login_options"
-        android:textColor="@android:color/white"
-        android:textSize="26sp"
-        android:fontFamily="@font/caveat_bold"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_centerHorizontal="true"/>
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/light_gray"
-        android:layout_below="@+id/tv_title"
-        android:padding="@dimen/_10sdp"/>
+        android:background="@drawable/custom_bg_1"
+        android:layout_alignParentBottom="true">
+        <View
+            android:id="@+id/view"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_4sdp"
+            android:background="@color/light_gray"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
 
-    <TextView
-        android:id="@+id/create_account"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/sign_in_button"
-        android:layout_alignEnd="@+id/sign_in_button"
-        android:layout_marginStart="@dimen/_12sdp"
-        android:layout_marginEnd="@dimen/_12sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:background="@android:color/white"
-        android:text="@string/create_new"
-        android:gravity="center"
-        android:textColor="@color/colorPrimaryHighlight"
-        android:layout_below="@+id/sign_in_button"
-        android:paddingStart="@dimen/_5sdp"
-        android:paddingEnd="@dimen/_10sdp"
-        app:drawableStartCompat="@drawable/add_person_foreground_dark" />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_options"
+            android:textColor="@android:color/white"
+            android:textSize="26sp"
+            android:fontFamily="@font/caveat_bold"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_centerHorizontal="true"/>
 
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/light_gray"
+            android:layout_below="@+id/tv_title"
+            android:padding="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"/>
+
+        <TextView
+            android:id="@+id/create_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/sign_in_button"
+            android:layout_alignEnd="@+id/sign_in_button"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="@string/create_new"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:layout_below="@+id/sign_in_button"
+            android:paddingStart="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            app:drawableStartCompat="@drawable/add_person_foreground_small" />
+    </RelativeLayout>
 </RelativeLayout>

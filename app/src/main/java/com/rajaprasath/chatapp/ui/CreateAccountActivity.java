@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,15 +32,10 @@ public class CreateAccountActivity extends AppCompatActivity {
     private EditText username_Account;
     private EditText email_Account;
     private EditText password_Account;
-    private TextView signin;
     private Button create_account;
-    private ProgressBar progressBar;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseUser currentUser;
-
-    private FirebaseFirestore db=  FirebaseFirestore.getInstance();
-    private CollectionReference collectionReference = db.collection("Users");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +48,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         email_Account=findViewById(R.id.email_account);
         password_Account=findViewById(R.id.password_account);
         create_account=findViewById(R.id.create_account_);
-        signin=findViewById(R.id.signin_text);
-        signin.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
        User.getInstance().setInterest(null);
 
         firebaseAuth= FirebaseAuth.getInstance();
@@ -87,13 +81,6 @@ public class CreateAccountActivity extends AppCompatActivity {
                 }
             }
         });
-        signin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(CreateAccountActivity.this,Login_Activity.class));
-                finish();
-            }
-        });
     }
     public void createUserEmailAccount(final String email, final String password, final String username){
         if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(username)) {
@@ -102,6 +89,8 @@ public class CreateAccountActivity extends AppCompatActivity {
             intent.putExtra("username",username);
             intent.putExtra("email",email);
             intent.putExtra("password",password);
+
+            Toast.makeText(this, "I know this app is kinda lame!", Toast.LENGTH_SHORT).show();
             startActivity(intent);
             finish();
 

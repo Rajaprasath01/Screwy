@@ -34,7 +34,7 @@
     <string name="Create_account">Don\'t Have An Account?</string>
     <string name="create_account">Create new account</string>
     <string name="forgot_password">Forgot Password</string>
-    <string name="signup">Signup</string>
+    <string name="signup">Sign Up</string>
     <string name="agree">Agree</string>
     <string name="decline">Decline</string>
     <string name="request_text">You want to chat with  </string>
@@ -46,4 +46,5 @@
     <string name="click_here">Click Here</string>
     <string name="create_new">Create a Screwy account</string>
     <string name="login_options">Login Options</string>
+    <string name="welcome_fuckin_msg">Get Ready to $crew your mates!</string>
 </resources>

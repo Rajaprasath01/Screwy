@@ -23,17 +23,19 @@
     app:cardBackgroundColor="@color/colorPrimary"
     android:layout_marginLeft="@dimen/_4sdp"
     app:cardCornerRadius="@dimen/_4sdp">
+
     <TextView
         android:id="@+id/show_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_4sdp"
         android:layout_marginRight="@dimen/_4sdp"
+        android:background="@color/colorPrimary"
+        android:fontFamily="@font/alegreya_bold_italic"
         android:padding="@dimen/_4sdp"
         android:text="hello"
-        android:textSize="@dimen/_14sdp"
         android:textColor="@color/cardview_light_background"
-        android:background="@color/colorPrimary"/>
+        android:textSize="@dimen/_14sdp" />
 </androidx.cardview.widget.CardView>
 
 

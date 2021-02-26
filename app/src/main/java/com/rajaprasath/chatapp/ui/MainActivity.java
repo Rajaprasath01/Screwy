@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (firebaseAuth.getCurrentUser()==null) {
                     firebaseAuth=null;
-                    startActivity(new Intent(MainActivity.this, splashScreen.class));
+                    startActivity(new Intent(MainActivity.this, Login_Activity.class));
                     finish();
                 }
 

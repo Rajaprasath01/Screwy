@@ -21,8 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginBottom="@dimen/_8sdp"
-            android:layout_marginLeft="@dimen/_8sdp">
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_8sdp">
 
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -46,26 +46,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginStart="@dimen/_8sdp"
                 android:layout_toEndOf="@+id/profile_image"
-                android:layout_toRightOf="@+id/profile_image"
                 android:fontFamily="@font/oleo_script_swash_caps"
                 android:text="@string/username"
                 android:textColor="@color/colorAccent"
-                android:textSize="@dimen/_19sdp" />
+                android:textSize="@dimen/_16sdp" />
 
             <TextView
                 android:id="@+id/lastmessage"
                 android:layout_width="@dimen/_117sdp"
-                android:layout_height="@dimen/_12sdp"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/user"
                 android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginLeft="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:layout_toEndOf="@+id/profile_image"
-                android:fontFamily="@font/berkshire_swash"
+                android:fontFamily="@font/caveat_bold"
                 android:textColor="@color/colorAccent"
-                android:textSize="@dimen/_9sdp" />
+                android:textSize="@dimen/_12sdp" />
 
             <TextView
                 android:id="@+id/msg_count"

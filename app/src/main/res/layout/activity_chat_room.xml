@@ -62,9 +62,10 @@
                     android:id="@+id/user_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_7sdp"
                     android:layout_marginStart="@dimen/_9sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
                     android:layout_toEndOf="@+id/profile_image_id"
+                    android:fontFamily="@font/alegreya_bold_italic"
                     android:text="@string/username"
                     android:textColor="@color/cardview_light_background"
                     android:textSize="@dimen/_15sdp" />
@@ -73,13 +74,13 @@
                     android:id="@+id/status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/user_id"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:layout_below="@id/user_id"
                     android:layout_toEndOf="@+id/profile_image_id"
+                    android:fontFamily="@font/alegreya_bold_italic"
                     android:text="offline"
-                    android:textColor="@color/cardview_light_background"
+                    android:textColor="@color/lightcolor"
                     android:textSize="@dimen/_12sdp" />
 
                 <ImageView

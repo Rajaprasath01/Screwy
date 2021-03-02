@@ -30,6 +30,7 @@ import com.rajaprasath.chatapp.model.Category;
 import com.rajaprasath.chatapp.ui.MainActivity;
 import com.rajaprasath.chatapp.util.Util;
 
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

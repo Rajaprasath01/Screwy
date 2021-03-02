@@ -55,6 +55,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="15dp"
                     android:drawableEnd="@drawable/ic_baseline_edit_24"
+                    android:fontFamily="@font/alegreya_bold_italic"
                     android:text="@string/username"
                     android:textColor="@color/colorPrimary"
                     android:textSize="18sp"
@@ -71,7 +72,9 @@
                         android:id="@+id/nickname_id"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/oleo_script_swash_caps"
                         android:text="Nickname"
+                        android:textStyle="bold"
                         android:textColor="@color/colorPrimary" />
 
                     <TextView
@@ -82,6 +85,7 @@
                         android:background="@drawable/edittext_profile"
                         android:drawableStart="@drawable/nickname"
                         android:drawablePadding="10dp"
+                        android:fontFamily="@font/alegreya_bold_italic"
                         android:paddingStart="10dp"
                         android:textColor="@color/colorAccent"
                         android:textColorHint="@color/colorAccent"
@@ -99,7 +103,9 @@
                         android:id="@+id/gender_id"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/oleo_script_swash_caps"
                         android:text="Gender"
+                        android:textStyle="bold"
                         android:textColor="@color/colorPrimary" />
 
                     <TextView
@@ -110,6 +116,7 @@
                         android:background="@drawable/edittext_profile"
                         android:drawablePadding="10dp"
                         android:paddingStart="10dp"
+                        android:fontFamily="@font/alegreya_bold_italic"
                         android:textColor="@color/colorAccent"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -126,7 +133,9 @@
                         android:id="@+id/interest_id"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/oleo_script_swash_caps"
                         android:text="Interest"
+                        android:textStyle="bold"
                         android:textColor="@color/colorPrimary" />
 
                     <TextView
@@ -137,6 +146,7 @@
                         android:background="@drawable/edittext_profile"
                         android:drawablePadding="10dp"
                         android:paddingStart="10dp"
+                        android:fontFamily="@font/alegreya_bold_italic"
                         android:textColor="@color/colorAccent"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -153,7 +163,9 @@
                         android:id="@+id/about_id"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/oleo_script_swash_caps"
                         android:text="About"
+                        android:textStyle="bold"
                         android:textColor="@color/colorPrimary" />
 
                     <TextView
@@ -164,6 +176,7 @@
                         android:background="@drawable/edittext_profile"
                         android:drawablePadding="10dp"
                         android:paddingStart="10dp"
+                        android:fontFamily="@font/alegreya_bold_italic"
                         android:textColor="@color/colorAccent"
                         android:textSize="18sp"
                         android:textStyle="bold"

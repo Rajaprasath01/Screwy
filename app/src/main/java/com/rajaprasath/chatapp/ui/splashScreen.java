@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Button;
@@ -137,10 +138,18 @@ public class splashScreen extends AppCompatActivity {
 
                     }
                     if (ids.size()==0){
-                        Intent intent=new Intent(splashScreen.this, CategoryActivity.class);
-                        intent.putExtra("activity","splashscreen");
-                        startActivity(intent);
-                        finish();
+                        SharedPreferences preferences= getSharedPreferences("ENTRY",MODE_PRIVATE);
+                        int nthTime=preferences.getInt("entry_time",0);
+                        if (nthTime!=0) {
+                            Intent intent = new Intent(splashScreen.this, CategoryActivity.class);
+                            intent.putExtra("activity", "splashscreen");
+                            startActivity(intent);
+                            finish();
+                        }
+                        else {
+                            startActivity(new Intent(splashScreen.this,MainActivity.class));
+                            finish();
+                        }
                     }
                     else {
                         startActivity(new Intent(splashScreen.this,MainActivity.class));

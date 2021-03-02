@@ -156,9 +156,6 @@ public class IncogChatRoom extends AppCompatActivity {
         back_button = findViewById(R.id.back);
         add_trusted = findViewById(R.id.add_trusted);
         block=findViewById(R.id.block);
-
-
-       block.setImageResource(R.drawable.ic_baseline_block_24);
        block.setVisibility(View.GONE);
        checktrusted();
         block.setOnClickListener(new View.OnClickListener() {

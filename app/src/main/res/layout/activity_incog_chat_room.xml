@@ -85,13 +85,14 @@
 
                 <ImageView
                     android:id="@+id/block"
-                    android:layout_width="@dimen/_23sdp"
-                    android:layout_height="@dimen/_23sdp"
-                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_39sdp"
                     android:layout_toLeftOf="@+id/add_trusted"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="@dimen/_8sdp"
-                    android:src="@drawable/ic_baseline_block_24"/>
+                    android:paddingTop="@dimen/_9sdp"
+                    android:paddingBottom="@dimen/_7sdp"
+                    android:src="@drawable/unfriend"
+                    app:tint="@android:color/white" />
                 <ImageView
                     android:id="@+id/add_trusted"
                     android:layout_width="@dimen/_39sdp"

@@ -84,13 +84,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>  {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = null;
 
-        if (mode==0) {
+        if (mode==0)
              view = LayoutInflater.from(context).inflate(R.layout.user_item, parent, false);
-        }
-        else if (mode==1){
+        else if (mode==1)
             view = LayoutInflater.from(context).inflate(R.layout.incog_user_item, parent, false);
-
-        }
 
         try {
             cipher=Cipher.getInstance("AES");

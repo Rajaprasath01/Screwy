@@ -4,10 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 
 public class splashScreen extends AppCompatActivity {
@@ -46,66 +51,64 @@ public class splashScreen extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseUser user;
 
-    private FirebaseFirestore db=  FirebaseFirestore.getInstance();
-    private CollectionReference collectionReference=db.collection("Users");
+    private final FirebaseFirestore db =  FirebaseFirestore.getInstance();
+    private final CollectionReference collectionReference=db.collection("Users");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         firebaseAuth=FirebaseAuth.getInstance();
         user=firebaseAuth.getCurrentUser();
 
-        authStateListener= new FirebaseAuth.AuthStateListener() {
+        ImageView background = findViewById(R.id.iv_background);
+        Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+
+        background.setAnimation(fadeIn);
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(user!=null){
+            public void run() {
+                user = firebaseAuth.getCurrentUser();
+                firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        if(user!=null) {
+                            user=firebaseAuth.getCurrentUser();
+                            final String currentId = user.getUid();
 
-                    user=firebaseAuth.getCurrentUser();
-                    final String currentid= user.getUid();
+                            collectionReference.document(currentId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isComplete() && task.isSuccessful()){
+                                        DocumentSnapshot snapshot = task.getResult();
+                                        User user = User.getInstance();
+                                        user.setUserid(snapshot.getString("userid"));
+                                        user.setUsername(snapshot.getString("username"));
+                                        user.setImageurl(snapshot.getString("imageurl"));
+                                        user.setNickname(snapshot.getString("nickname"));
+                                        user.setGender(snapshot.getString("gender"));
+                                        user.setInterest((ArrayList<String>) snapshot.get("interest"));
+                                        user.setAbout(snapshot.getString("about"));
 
-                    collectionReference.document(currentid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isComplete() && task.isSuccessful()){
-                                DocumentSnapshot snapshot = task.getResult();
-                                User user = User.getInstance();
-                                user.setUserid(snapshot.getString("userid"));
-                                user.setUsername(snapshot.getString("username"));
-                                user.setImageurl(snapshot.getString("imageurl"));
-                                user.setNickname(snapshot.getString("nickname"));
-                                user.setGender(snapshot.getString("gender"));
-                                user.setInterest((ArrayList<String>) snapshot.get("interest"));
-                                user.setAbout(snapshot.getString("about"));
-
-                                check_users();
-                                updatelastseen();
-
-                            }
-                            else {
-
-                            }
+                                        check_users();
+                                        updatelastseen();
+                                    }
+                                }
+                            });
                         }
-                    });
-
-                }
-                else {
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+                        else {
                             startActivity(new Intent(splashScreen.this,Login_Activity.class));
-                             finish();
+                            finish();
                         }
-                    }, 1000);
-
-                }
+                    }
+                });
             }
-        };
-
+        }, 2000);
     }
 
     private void check_users() {
@@ -136,17 +139,15 @@ public class splashScreen extends AppCompatActivity {
                         }
 
                     }
-                    if (ids.size()==0){
+                    if (ids.size() == 0){
                         Intent intent=new Intent(splashScreen.this, CategoryActivity.class);
                         intent.putExtra("activity","splashscreen");
                         startActivity(intent);
-                        finish();
                     }
                     else {
-                        startActivity(new Intent(splashScreen.this,MainActivity.class));
-                        finish();
+                        startActivity(new Intent(splashScreen.this, MainActivity.class));
                     }
-
+                    finish();
                 }
             }
         });
@@ -154,7 +155,6 @@ public class splashScreen extends AppCompatActivity {
     }
 
     private void updatelastseen() {
-
         if (User.getInstance().getUserid()!=null) {
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put(Util.lastseen, Timestamp.now());
@@ -165,8 +165,6 @@ public class splashScreen extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        user=firebaseAuth.getCurrentUser();
-        firebaseAuth.addAuthStateListener(authStateListener);
     }
 
 
@@ -174,8 +172,7 @@ public class splashScreen extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(firebaseAuth!=null){
+        if(firebaseAuth != null)
             firebaseAuth.removeAuthStateListener(authStateListener);
-        }
     }
 }

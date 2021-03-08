@@ -52,54 +52,52 @@
                     android:layout_height="@dimen/_31sdp"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/back_layout"
-                    android:src="@mipmap/chatroom_person_icon_round"
+                    android:layout_alignTop="@+id/ll_container"
+                    android:layout_alignBottom="@+id/ll_container"
+                    android:src="@mipmap/chatroom_person_icon_round"/>
 
-                    />
-
-                <TextView
-                    android:id="@+id/user_id"
+                <LinearLayout
+                    android:id="@+id/ll_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_4sdp"
-                    android:layout_marginTop="@dimen/_12sdp"
+                    android:orientation="vertical"
                     android:layout_toEndOf="@+id/profile_image_id"
-                    android:layout_toRightOf="@+id/profile_image_id"
-                    android:fontFamily="@font/alegreya_bold_italic"
-
-                    android:text="@string/username"
-                    android:textColor="@color/cardview_light_background"
-                    android:textSize="@dimen/_14sdp" />
-
-                <TextView
-                    android:id="@+id/status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/user_id"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:layout_toEndOf="@+id/profile_image_id"
-                    android:fontFamily="@font/alegreya_bold_italic"
-                    android:text="offline"
-                    android:textColor="@color/cardview_light_background"
-                    android:textSize="@dimen/_12sdp" />
+                    android:layout_marginStart="@dimen/_9sdp">
+                    <TextView
+                        android:id="@+id/user_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/alegreya_bold"
+                        android:text="@string/username"
+                        android:textColor="@color/cardview_light_background"
+                        android:textSize="@dimen/_16ssp" />
+
+                    <TextView
+                        android:id="@+id/status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="offline"
+                        android:textColor="@color/cardview_light_background"
+                        android:textSize="@dimen/_12ssp" />
+                </LinearLayout>
 
                 <ImageView
                     android:id="@+id/block"
-                    android:layout_width="@dimen/_23sdp"
-                    android:layout_height="@dimen/_23sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
-                    android:layout_toLeftOf="@+id/add_trusted"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_toStartOf="@+id/add_trusted"
+                    android:layout_centerVertical="true"
                     android:src="@drawable/ic_baseline_block_24"/>
                 <ImageView
                     android:id="@+id/add_trusted"
-                    android:layout_width="@dimen/_39sdp"
-                    android:layout_height="@dimen/_39sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:src="@mipmap/add_person"/>
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_baseline_person_add_24"/>
             </RelativeLayout>
 
 
@@ -138,7 +136,7 @@
                     android:background="@null"
                     android:hint="Type a Message"
                     android:textColor="#FFFFFF"
-                    android:textColorHint="#FFFFFF" />
+                    android:textColorHint="@color/light_gray" />
             </androidx.cardview.widget.CardView>
 
             <de.hdodenhof.circleimageview.CircleImageView

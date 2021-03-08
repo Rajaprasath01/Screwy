@@ -2,45 +2,43 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:weightSum="1"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/category_card"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_8sdp"
-        android:layout_marginBottom="@dimen/_8sdp"
-        android:layout_marginTop="@dimen/_8sdp"
-        app:cardBackgroundColor="@color/colorPrimary"
-        >
+        android:layout_margin="@dimen/_10sdp"
+        app:cardBackgroundColor="@color/colorPrimary">
         <RelativeLayout
-
-            android:layout_width="@dimen/_117sdp"
-            android:layout_height="@dimen/_117sdp"
-            >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:layout_marginBottom="@dimen/_7sdp"
+            android:padding="@dimen/_20sdp">
 
             <ImageView
                 android:id="@+id/category_image"
-                android:layout_width="@dimen/_62sdp"
-                android:layout_height="@dimen/_62sdp"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_16sdp"
                 android:src="@drawable/gaming"
-                android:tint="@color/cardview_light_background"
-                app:tint="@color/cardview_light_background" />
-
+                app:tint="@color/cardview_light_background"
+                android:tint="@color/cardview_light_background"/>
 
             <TextView
                 android:id="@+id/category_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/category_image"
-                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
                 android:fontFamily="@font/chicle"
-                android:text="category"
+                android:text="Category"
                 android:textColor="@color/cardview_light_background"
-                android:textSize="@dimen/_19sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_19sdp" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

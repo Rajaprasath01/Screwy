@@ -121,12 +121,8 @@ public class Login_Activity extends AppCompatActivity {
         });
     }
 
-    //To Rajaprasath: Quit Development _/\_ (2/27/2021)
+    //To Rajaprasath: Fuckin' Quit Development _/\_ (2/27/2021)
     //PS: Your code sucks! \m/
-
-    //SHA1: 36:1B:7E:6F:3C:2D:5E:12:6D:6A:87:AF:07:A0:91:6B:EC:30:08:E6
-    //SHA-256: 12:AC:C6:69:48:18:FA:C9:17:8C:5C:66:A6:7C:DA:B1:47:94:3F:76:A6:82:7F:29:C3:2B:69:A2:BA:08:85:56
-    //Add this to firebase to enable G login
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -135,9 +131,10 @@ public class Login_Activity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
             behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        else
+            super.onBackPressed();
     }
 
     @Override

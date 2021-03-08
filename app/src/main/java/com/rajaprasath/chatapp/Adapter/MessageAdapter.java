@@ -53,8 +53,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         this.mode=mode;
     }
 
-
-
     @NonNull
     @Override
     public MessageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -120,17 +118,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         if (who==LEFT_MSG){
             if (imageurl.equals("default")){
                 if (mode==0) {
-                    holder.profile_pic.setImageResource(R.mipmap.person_icon_round);
+                    if (holder.profile_pic != null) {
+                        holder.profile_pic.setImageResource(R.mipmap.person_icon_round);
+                    }
                 }
                 else {
-                    holder.profile_pic.setImageResource(R.mipmap.chatroom_person_icon_round);
+                    if (holder.profile_pic != null) {
+                        holder.profile_pic.setImageResource(R.mipmap.chatroom_person_icon_round);
+                    }
                 }
             }
-            else {
-
-
+            else
                 Glide.with(context).load(imageurl).into(holder.profile_pic);
-            }
         }
         else if (who==RIGHT_MSG){
             User user= User.getInstance();

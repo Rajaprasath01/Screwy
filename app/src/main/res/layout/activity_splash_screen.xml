@@ -8,6 +8,13 @@
     android:orientation="vertical"
     tools:context=".ui.splashScreen">
 
+    <ImageView
+        android:id="@+id/iv_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/sg1"
+        android:alpha="0.15"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,26 +40,18 @@
             android:src="@drawable/screwy"
             android:layout_centerInParent="true" />
 
-        <ImageView
-            android:layout_width="@dimen/_39sdp"
-            android:layout_height="@dimen/_39sdp"
-            android:layout_above="@+id/eternity"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/from"
-            android:layout_marginBottom="-35dp"
-            />
-        <ImageView
+        <TextView
             android:id="@+id/eternity"
-            android:layout_width="@dimen/_124sdp"
-            android:layout_height="@dimen/_47sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/eternity"/>
-
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:fontFamily="@font/gabriela"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/colorPrimaryHighlight"
+            android:text="@string/eternity"/>
     </RelativeLayout>
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

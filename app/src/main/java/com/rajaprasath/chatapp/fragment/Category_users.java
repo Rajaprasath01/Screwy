@@ -191,7 +191,6 @@ public class Category_users extends Fragment implements UserInterface {
         dialog=builder.create();
         dialog.show();
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_background);
-        dialog.getWindow().setLayout((int) getResources().getDimension(R.dimen._248sdp), (int) getResources().getDimension(R.dimen._70sdp));
     }
 
 

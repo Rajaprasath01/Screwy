@@ -101,7 +101,7 @@ public class CategoryUsers extends AppCompatActivity  {
 
         ViewpagerAdapter viewpagerAdapter= new ViewpagerAdapter(getSupportFragmentManager());
         viewpagerAdapter.addFragments(category_users,getString(R.string.chats_fragment));
-        viewpagerAdapter.addFragments(friendRequests,getString(R.string.requests_fragment));
+        viewpagerAdapter.addFragments(friendRequests,getString(R.string.request));
 
         viewPager.setAdapter(viewpagerAdapter);
         tabLayout.setupWithViewPager(viewPager);

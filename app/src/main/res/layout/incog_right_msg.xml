@@ -6,7 +6,7 @@
 
 
     <RelativeLayout
-        android:layout_width="@dimen/_233sdp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/_8sdp"
@@ -16,15 +16,15 @@
             android:layout_width="@dimen/_31sdp"
             android:layout_height="@dimen/_31sdp"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/right_card"
-            android:background="@color/transparent"/>
+            android:layout_alignParentEnd="true"
+            android:background="@mipmap/chatroom_person_icon_round"/>
         <androidx.cardview.widget.CardView
             android:id="@+id/right_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/_4sdp"
-            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:layout_toStartOf="@+id/profile_pic"
             app:cardBackgroundColor="@color/colorPrimary"
             app:cardCornerRadius="@dimen/_4sdp">
 

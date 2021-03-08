@@ -151,7 +151,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>  {
                     collectionReference.document(user.getUserid()).collection("requests").document(User.getInstance().getUserid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            DocumentSnapshot snapshot=task.getResult();
+                            DocumentSnapshot snapshot = null;
+                            if (task.getResult()!=null){
+                                snapshot=task.getResult();
+                            }
                             if (snapshot!=null){
                                 if (snapshot.getBoolean("permission")!=null){
                                     if (snapshot.getBoolean("permission")){

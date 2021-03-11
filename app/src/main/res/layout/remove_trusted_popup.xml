@@ -34,7 +34,7 @@
                     android:padding="@dimen/_8sdp"
                     android:text="@string/remove_trusted"
                     android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_13ssp" />
 
                 <Button
                     android:id="@+id/yes"

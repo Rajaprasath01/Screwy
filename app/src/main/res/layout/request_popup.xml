@@ -19,7 +19,7 @@
             android:padding="@dimen/_8sdp"
             android:text="Clicking on yea will send a chat request!"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_12ssp"/>
+            android:textSize="@dimen/_13ssp"/>
 
         <TextView
             android:id="@+id/ps"
@@ -30,7 +30,7 @@
             android:layout_below="@+id/request"
             android:text="PS: I'd suggest you to think twice. JK !"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_8ssp"/>
+            android:textSize="@dimen/_12ssp"/>
 
 
         <Button

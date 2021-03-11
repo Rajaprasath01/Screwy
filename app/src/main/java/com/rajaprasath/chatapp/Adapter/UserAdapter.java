@@ -148,30 +148,30 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>  {
                 intent.putExtra("gender",user.getGender());
                     context.startActivity(intent);}
                 else if (mode==1){
-                    collectionReference.document(user.getUserid()).collection("requests").document(User.getInstance().getUserid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    collectionReference.document(user.getUserid()).collection("requests").document(User.getInstance().getUserid()).get().
+                            addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            DocumentSnapshot snapshot = null;
-                            if (task.getResult()!=null){
-                                snapshot=task.getResult();
+                            if (task.isSuccessful()){
+                                DocumentSnapshot snapshot = null;
+                            if (task.getResult() != null) {
+                                snapshot = task.getResult();
                             }
-                            if (snapshot!=null){
-                                if (snapshot.getBoolean("permission")!=null){
-                                    if (snapshot.getBoolean("permission")){
+                            if (snapshot != null) {
+                                if (snapshot.getBoolean("permission") != null) {
+                                    if (snapshot.getBoolean("permission")) {
                                         Intent intent = new Intent(context, IncogChatRoom.class);
                                         intent.putExtra("userid", user.getUserid());
-                                        intent.putExtra("gender",user.getGender());
+                                        intent.putExtra("gender", user.getGender());
                                         context.startActivity(intent);
+                                    } else {
+                                        userInterface.requestchat(user.getUserid(), user.getNickname());
                                     }
-                                    else {
-                                        userInterface.requestchat(user.getUserid(),user.getNickname());
-                                    }
-                                }
-                                else {
-                                    userInterface.requestchat(user.getUserid(),user.getNickname());
+                                } else {
+                                    userInterface.requestchat(user.getUserid(), user.getNickname());
                                 }
                             }
-
+                        }
                         }
                     });
 
@@ -275,8 +275,14 @@ else if (collection=="Incogchats"){
                         }
                     }
                }
-
+                holder.lastmessage.setVisibility(View.GONE);
+                if (recent_msg!=null && !recent_msg.isEmpty()) {
+                    holder.lastmessage.setVisibility(View.VISIBLE);
                     holder.lastmessage.setText(recent_msg);
+                }
+                else {
+                    holder.lastmessage.setVisibility(View.GONE);
+                }
             }
 
             @Override

@@ -57,9 +57,8 @@ public class Login_Activity extends AppCompatActivity {
     private final CollectionReference collectionReference = db.collection("Users");
     private GoogleSignInClient mGoogleSignInClient;
     private final int RC_SIGN_IN = 999;
-    private String personName;
     private String currentUserId;
-    private Uri personPhoto;
+
 
     private BottomSheetBehavior behavior;
 
@@ -121,8 +120,7 @@ public class Login_Activity extends AppCompatActivity {
         });
     }
 
-    //To Rajaprasath: Fuckin' Quit Development _/\_ (2/27/2021)
-    //PS: Your code sucks! \m/
+
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -144,6 +142,7 @@ public class Login_Activity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
+
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 Log.d("TAG", "onActivityResult: " + e.toString());
@@ -151,7 +150,7 @@ public class Login_Activity extends AppCompatActivity {
         }
     }
 
-    private void firebaseAuthWithGoogle(String idToken) {
+    private void firebaseAuthWithGoogle(final String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signInWithCredential(credential)
@@ -167,10 +166,6 @@ public class Login_Activity extends AppCompatActivity {
 
                             GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(Login_Activity.this);
 
-                            if (acct != null) {
-                                 personName = acct.getDisplayName();
-                                 personPhoto= acct.getPhotoUrl();
-                            }
 
                              collectionReference.document(currentUserId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                  @Override
@@ -186,28 +181,18 @@ public class Login_Activity extends AppCompatActivity {
                                      User.getInstance().setAbout(snapshot.getString(Util.about));
                                      startActivity(new Intent(Login_Activity.this, MainActivity.class));
 
-                                     Toast.makeText(Login_Activity.this, "I know this app is kinda lame!", Toast.LENGTH_SHORT).show();
-
                                      finish();
 
                                      }
                                      else {
-                                         Map<String, String> userobj = new HashMap<>();
-                                         userobj.put(Util.userid, currentUserId);
-                                         userobj.put(Util.username, personName);
-                                         userobj.put(Util.imageurl,"default");
-                                         collectionReference.document(currentUserId).set(userobj).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                             @Override
-                                             public void onComplete(@NonNull Task<Void> task) {
-                                                 Intent intent= new Intent(Login_Activity.this,ProfileActivity.class);
-                                                 intent.putExtra(Util.userid, currentUserId);
-                                                 intent.putExtra(Util.username,personName);
-                                                 intent.putExtra(Util.imageurl,personPhoto.toString());
-                                                 startActivity(intent);
-                                                 Toast.makeText(Login_Activity.this, "I know this app is kinda lame!", Toast.LENGTH_SHORT).show();
-                                                 finish();
-                                             }
-                                         });
+
+                                         firebaseAuth.signOut();
+
+                                         Intent intent= new Intent(Login_Activity.this,ProfileActivity.class);
+                                         intent.putExtra("loginMode","google");
+                                         intent.putExtra("idToken",idToken);
+                                         startActivity(intent);
+                                         finish();
 
 
                                      }

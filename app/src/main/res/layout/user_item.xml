@@ -26,43 +26,45 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
                 android:layout_width="@dimen/_39sdp"
-                android:layout_height="@dimen/_39sdp"
-                android:layout_alignTop="@+id/ll_detail_container"
-                android:layout_alignBottom="@+id/ll_detail_container"/>
+                android:layout_height="@dimen/_39sdp" />
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/status"
                 android:layout_width="@dimen/_8sdp"
                 android:layout_height="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_28sdp"
                 android:layout_marginStart="@dimen/_30sdp"
                 android:src="@color/colorAccent" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/ll_detail_container"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_35sdp"
                 android:orientation="vertical"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/profile_image"
                 android:layout_marginStart="@dimen/_8sdp">
                 <TextView
                     android:id="@+id/user"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:fontFamily="@font/alegreya_bold"
+                    android:layout_centerVertical="true"
+                    android:layout_above="@+id/lastmessage"
                     android:text="@string/username"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/_14ssp" />
 
                 <TextView
                     android:id="@+id/lastmessage"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/_150sdp"
                     android:ellipsize="end"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_alignParentBottom="true"
                     android:fontFamily="@font/alegreya_italic"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
-            </LinearLayout>
+                    android:textSize="@dimen/_12ssp"
+                    android:visibility="gone"/>
+            </RelativeLayout>
 
 
             <TextView

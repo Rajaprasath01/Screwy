@@ -1,6 +1,7 @@
 package com.rajaprasath.chatapp.fragment;
 
 import android.app.NotificationManager;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.util.Assert;
 import com.rajaprasath.chatapp.Adapter.requestAdapter;
+import com.rajaprasath.chatapp.Notifications.MyFirebaseMessaging;
 import com.rajaprasath.chatapp.R;
 import com.rajaprasath.chatapp.controller.User;
 import com.rajaprasath.chatapp.util.Util;
@@ -246,7 +248,8 @@ public class FriendRequests extends Fragment {
                                 HashMap<String, Object> obj = new HashMap<>();
                                 obj.put("trust_count", trusted_users.size());
                                 collectionReference.document(User.getInstance().getUserid()).set(obj, SetOptions.merge());
-                                cancelNotification(trust_ids);
+                                //cancelNotification(trust_ids);
+
                             }
                         }
                     });
@@ -310,7 +313,8 @@ public class FriendRequests extends Fragment {
                                 obj.put("chat_count", chat_users.size());
                                 collectionReference.document(User.getInstance().getUserid()).set(obj, SetOptions.merge());
 
-                                cancelNotification(chat_ids);
+
+                               // cancelNotification(chat_ids);
                             }
                         }
                     });
@@ -346,8 +350,10 @@ public class FriendRequests extends Fragment {
         if (chat_ids!=null && !chat_ids.isEmpty()){
             for (String id : chat_ids){
                 int j=Integer.parseInt(id.replaceAll("[\\D]",""));
-                NotificationManager notificationManager=(NotificationManager) getContext().getSystemService(getContext().NOTIFICATION_SERVICE);
-                notificationManager.cancel(j);
+                if ((NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE)!=null) {
+                    NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.cancel(j);
+                }
             }
         }
     }

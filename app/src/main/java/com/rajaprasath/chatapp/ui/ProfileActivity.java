@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -22,13 +23,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.rajaprasath.chatapp.Adapter.InterestAdapter;
 import com.rajaprasath.chatapp.R;
@@ -41,6 +47,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -58,7 +65,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private String username;
     private RelativeLayout viewgroup;
     private String personPhoto;
-    private final String google_signin_mode="GOOGLE_SIGNIN";
+
+    private String personName;
+
+
+
 
 
     @Override
@@ -140,29 +151,43 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void finish_profile(String email, String password, String username) {
-        Log.d("maara", "finish_profile: "+nickname.getText().toString()+"  "+gender.getText().toString()+"  "+interest.getText().toString()+"  "+about.getText().toString() );
+
         if (!nickname.getText().toString().isEmpty()  &&  !gender.getText().toString().isEmpty()
                 && !interest.getText().toString().isEmpty()  &&  !about.getText().toString().isEmpty())
         {
+
             String nickname = this.nickname.getText().toString().trim();
             String gender = this.gender.getText().toString().trim();
 
             ArrayList<String> interest = User.getInstance().getInterest();
             String about = this.about.getText().toString().trim();
 
-            createUserEmailAccount(email, password, username,nickname,gender,interest,about);
 
+
+            String loginMode= getIntent().getStringExtra("loginMode");
+            if (loginMode.equals("google")){
+                String idToken= getIntent().getStringExtra("idToken");
+
+                if (idToken!=null) {
+                    firebaseAuthWithGoogle(idToken, nickname, gender, interest, about);
+                }
+            }
+            else {
+                createUserEmailAccount(email, password, username, nickname, gender, interest, about);
+            }
         }
 
     }
 
-    private void create_profile(String userid, final String nickname, final String gender, final ArrayList<String> interest, final String about) {
+    private void create_profile(String userid, final String username, final String imageUrl, final String nickname, final String gender, final ArrayList<String> interest, final String about) {
+
+
 
 
         Map<String,Object> userobj = new HashMap<>();
         userobj.put(Util.userid, userid);
         userobj.put(Util.username,username);
-        userobj.put(Util.imageurl,"default");
+        userobj.put(Util.imageurl,imageUrl);
         if (personPhoto!=null){
             userobj.put(Util.imageurl,personPhoto);
         }
@@ -179,7 +204,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     User user =User.getInstance();
                     user.setUserid(ProfileActivity.this.userid);
                     user.setUsername(username);
-                    user.setImageurl("default");
+                    user.setImageurl(imageUrl);
                     if (personPhoto!=null){
                         user.setImageurl(personPhoto);
                     }
@@ -315,34 +340,89 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    public void createUserEmailAccount(String email, String password, String username, final String nickname, final String gender, final ArrayList<String> interest, final String about){
+    public void createUserEmailAccount(String email, String password, final String username, final String nickname, final String gender, final ArrayList<String> interest, final String about){
         if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(username)) {
 
 
+                firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
 
-            firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        currentUser=firebaseAuth.getCurrentUser();
 
-                        userid=currentUser.getUid();
-                        create_profile(userid,nickname, gender, interest, about);
+                            currentUser=firebaseAuth.getCurrentUser();
+
+                            userid=currentUser.getUid();
+
+                            create_profile(userid,username,"default",nickname, gender, interest, about);
+
+
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
 
 
                     }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
+                });
+            }
 
 
-                }
-            });
-        }
         else {
 
         }
+    }
+
+
+    private void firebaseAuthWithGoogle(String idToken, final String nickname, final String gender, final ArrayList<String> interest, final String about) {
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            assert user != null;
+
+
+                            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(ProfileActivity.this);
+
+                            if (acct != null) {
+                                personName = acct.getDisplayName();
+                                personPhoto= acct.getPhotoUrl().toString();
+                            }
+
+
+                            currentUser=firebaseAuth.getCurrentUser();
+
+                            userid=currentUser.getUid();
+
+                            create_profile(userid, personName,personPhoto,nickname, gender, interest, about);
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+
+
+
+                        }
+
+                        // ...
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+
+
+        });
+
+
     }
 
 

@@ -87,11 +87,13 @@ public class requestAdapter  extends RecyclerView.Adapter<requestAdapter.ViewHol
 
             String request = user.getNickname() + " wants to chat with you.";
 
-            if (user.getImageurl().equals("default")) {
+            if (user.getImageurl()!=null && !user.getImageurl().isEmpty()) {
+                if (user.getImageurl().equals("default")) {
 
-                holder.profile.setImageResource(R.mipmap.person_icon_round);
-            } else {
-                Glide.with(context).load(user.getImageurl()).into(holder.profile);
+                    holder.profile.setImageResource(R.mipmap.person_icon_round);
+                } else {
+                    Glide.with(context).load(user.getImageurl()).into(holder.profile);
+                }
             }
             checkstatus(holder, user.getStatus());
             holder.username.setText(request);
@@ -194,9 +196,11 @@ if (status!=null) {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
 
-                String category=User.getInstance().getInterest().get(0);
-                if (category==null){
-                    category="";
+                String category="";
+                if (User.getInstance().getInterest()!=null && !User.getInstance().getInterest().isEmpty()) {
+                    if ( User.getInstance().getInterest().get(0)!=null) {
+                        category = User.getInstance().getInterest().get(0);
+                    }
                 }
 
                 for (DataSnapshot snapshot : datasnapshot.getChildren()) {

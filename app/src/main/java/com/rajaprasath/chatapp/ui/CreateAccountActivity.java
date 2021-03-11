@@ -90,7 +90,6 @@ public class CreateAccountActivity extends AppCompatActivity {
             intent.putExtra("email",email);
             intent.putExtra("password",password);
 
-            Toast.makeText(this, "I know this app is kinda lame!", Toast.LENGTH_SHORT).show();
             startActivity(intent);
             finish();
 

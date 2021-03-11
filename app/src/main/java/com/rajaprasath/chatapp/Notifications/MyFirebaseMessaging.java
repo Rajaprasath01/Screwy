@@ -31,6 +31,8 @@ import com.rajaprasath.chatapp.ui.stranger.CategoryActivity;
 import com.rajaprasath.chatapp.ui.stranger.CategoryUsers;
 import com.rajaprasath.chatapp.ui.stranger.IncogChatRoom;
 
+import java.util.List;
+
 public class MyFirebaseMessaging extends FirebaseMessagingService {
 
 
@@ -40,6 +42,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
     public MyFirebaseMessaging() {
     }
+
 
     public MyFirebaseMessaging(FirebaseUser firebaseUser) {
         this.firebaseUser = firebaseUser;
@@ -116,6 +119,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
         }
         else if (mode==Category_users_intent){
+
             intent=new Intent(getApplicationContext(),CategoryUsers.class);
             intent.putExtra("mode","category_users");
             intent.putExtra("category_name",category);
@@ -127,11 +131,11 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         intent.putExtras(bundle);
         intent.putExtra("activity","notif");
         intent.putExtra("userid",user);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         TaskStackBuilder stackBuilder=TaskStackBuilder.create(getApplicationContext());
         stackBuilder.addNextIntentWithParentStack(intent);
 
-        PendingIntent pendingIntent=stackBuilder.getPendingIntent(100,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent=stackBuilder.getPendingIntent(100,PendingIntent.FLAG_ONE_SHOT);
         String GROUP_KEY_WORK_EMAIL = "com.android.example.WORK_EMAIL";
         Uri defaultringtone= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         OreoNotification oreoNotification= new OreoNotification(this);
@@ -187,12 +191,13 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
         intent.putExtra("activity","notif");
         intent.putExtra("userid",user);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         TaskStackBuilder stackBuilder=TaskStackBuilder.create(getApplicationContext());
 
         stackBuilder.addNextIntentWithParentStack(intent);
 
-        PendingIntent pendingIntent=stackBuilder.getPendingIntent(100,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(100,PendingIntent.FLAG_ONE_SHOT);
         String GROUP_KEY_WORK_EMAIL = "com.android.example.WORK_EMAIL";
         Uri defaultringtone= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -218,6 +223,15 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         noti.notify(i,builder.build());
 
 
+    }
+
+    private void cancelNotification() {
+                if ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)!=null) {
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    if (notificationManager != null) {
+                        notificationManager.cancelAll();
+                    }
+                }
     }
 
 

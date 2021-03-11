@@ -34,7 +34,7 @@
                     android:padding="@dimen/_8sdp"
                     android:text="@string/sign_out_text"
                     android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_13ssp" />
 
                 <TextView
                     android:id="@+id/ps"
@@ -45,7 +45,7 @@
                     android:layout_below="@+id/sign_out_text"
                     android:text="PS: If yes, then screw you  _|_  ;)"
                     android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/_8ssp" />
+                    android:textSize="@dimen/_13ssp" />
 
                 <Button
                     android:id="@+id/yes"

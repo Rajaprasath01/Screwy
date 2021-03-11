@@ -84,16 +84,20 @@
 
                 <ImageView
                     android:id="@+id/block"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_26sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:paddingTop="@dimen/_4sdp"
+                    android:paddingBottom="@dimen/_3sdp"
                     android:layout_toStartOf="@+id/add_trusted"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_baseline_block_24"/>
+                    android:src="@drawable/unfriend"
+                    app:tint="@color/cardview_light_background" />
                 <ImageView
                     android:id="@+id/add_trusted"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"

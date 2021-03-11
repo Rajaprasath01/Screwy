@@ -10,6 +10,8 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -47,17 +49,16 @@ import java.util.List;
 
 public class CategoryUsers extends AppCompatActivity  {
 
-    private RecyclerView recyclerView;
+
     private List<User> users;
-    private UserAdapter userAdapter;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference= db.collection("Users");
     private FirebaseDatabase database=FirebaseDatabase.getInstance();
     private String category;
     private ImageButton back;
     private TextView category_name;
-    private TabItem chatItem;
-    private ViewpagerAdapter viewpagerAdapter;
+
+
     private String request_count;
 
 
@@ -93,7 +94,7 @@ public class CategoryUsers extends AppCompatActivity  {
 
       final TabLayout  tabLayout=findViewById(R.id.tab_layout);
       final ViewPager  viewPager=findViewById(R.id.view_pager);
-      chatItem=findViewById(R.id.requests_tabitem);
+
 
 
 
@@ -114,17 +115,18 @@ public class CategoryUsers extends AppCompatActivity  {
         @Override
         public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
 
+            if (snapshot!=null) {
 
-            if (snapshot.getLong("trust_count") != null && snapshot.getLong("chat_count") != null) {
-                Long trust_count = snapshot.getLong("trust_count");
-                Long chat_count = snapshot.getLong("chat_count");
-                long total_count = trust_count + chat_count;
-                request_count = "  (" + total_count + ")";
+                if (snapshot.getLong("trust_count") != null && snapshot.getLong("chat_count") != null) {
+                    Long trust_count = snapshot.getLong("trust_count");
+                    Long chat_count = snapshot.getLong("chat_count");
+                    long total_count = trust_count + chat_count;
+                    request_count = "  (" + total_count + ")";
 
-                tabLayout.getTabAt(1).setText("Friend Requests" + request_count);
+                    tabLayout.getTabAt(1).setText("Friend Requests" + request_count);
 
+                }
             }
-
 
         }
 
@@ -140,7 +142,6 @@ public class CategoryUsers extends AppCompatActivity  {
         users = new ArrayList<>();
 
        category_name.setText(category);
-        //getusers();
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,52 +156,6 @@ public class CategoryUsers extends AppCompatActivity  {
     }
 
 
-
-    private void getusers() {
-        FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
-        final FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
-
-        collectionReference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                if (queryDocumentSnapshots!=null){
-                    users.clear();
-
-                    for (DocumentSnapshot snapshot: queryDocumentSnapshots){
-
-                        if (!firebaseUser.getUid().equals(snapshot.get(Util.userid))){
-
-                            User user = new User();
-                            if (user!=null) {
-                                user.setUserid(snapshot.getString(Util.userid));
-                                user.setUsername(snapshot.getString(Util.nickname));
-                                user.setImageurl(snapshot.getString(Util.imageurl));
-                                user.setInterest((ArrayList<String>) snapshot.get(Util.interest));
-
-                                if (user.getInterest() != null) {
-
-                                    if (category!=null) {
-                                        if (user.getInterest().toString().contains(category)) {
-                                            users.add(user);
-                                        }
-                                    }
-                                }
-                            }
-
-                        }
-
-                    }
-
-
-
-                }
-            }
-
-        });
-
-
-
-    }
 
 
 
@@ -244,7 +199,7 @@ public class CategoryUsers extends AppCompatActivity  {
     protected void onResume() {
         super.onResume();
         status("online");
-
+        cancelNotification();
     }
 
     @Override
@@ -284,6 +239,14 @@ public class CategoryUsers extends AppCompatActivity  {
         }
         else {
             finish();
+        }
+    }
+
+
+    private void cancelNotification() {
+        if ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)!=null) {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancelAll();
         }
     }
 }

@@ -34,17 +34,14 @@ import com.rajaprasath.chatapp.fragment.UsersFragment;
 import com.rajaprasath.chatapp.ui.stranger.CategoryActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseUser user;
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private final CollectionReference collectionReference=db.collection("Users");
     private final FirebaseDatabase database= FirebaseDatabase.getInstance();
-    private StorageReference storageReference;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private RelativeLayout mode;
@@ -61,10 +58,11 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences preferences= getSharedPreferences("ENTRY",MODE_PRIVATE);
         int nthTime=preferences.getInt("entry_time",0);
-        if (nthTime!=0){
+
+        if (nthTime!=1){
 
 
-            TapTargetView.showFor(this, TapTarget.forView(findViewById(R.id.mode_layout),"Go Incognito","Screw some random assholes")
+            TapTargetView.showFor(this, TapTarget.forView(findViewById(R.id.mode_layout),"Go Incognito","Find someone as screwed as you")
             .targetCircleColor(R.color.transparent)
             .textColor(R.color.colorAccent)
             .transparentTarget(true)
@@ -166,16 +164,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (firebaseAuth.getCurrentUser()!=null) {
+
+                    startActivity(new Intent(MainActivity.this, Login_Activity.class));
                     firebaseAuth.signOut();
-                    User user = User.getInstance();
-                    user = null;
+                    firebaseAuth=null;
+                    finish();
 
                 }
-                if (firebaseAuth.getCurrentUser()==null) {
-                    firebaseAuth=null;
-                    startActivity(new Intent(MainActivity.this, Login_Activity.class));
-                    finish();
-                }
+
 
                 dialog.dismiss();
             }
@@ -189,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setView(view);
         dialog = builder.create();
         dialog.show();
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.signout_popup_background);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.signout_popup_background);
     }
 
     public class ViewpagerAdapter extends FragmentPagerAdapter{

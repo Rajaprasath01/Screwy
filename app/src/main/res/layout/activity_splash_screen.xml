@@ -51,6 +51,7 @@
             android:fontFamily="@font/gabriela"
             android:textSize="@dimen/_12ssp"
             android:textColor="@color/colorPrimaryHighlight"
+            android:textStyle="bold"
             android:text="@string/eternity"/>
     </RelativeLayout>
 

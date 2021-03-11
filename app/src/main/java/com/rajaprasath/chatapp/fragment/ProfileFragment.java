@@ -255,8 +255,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
 
-                if (User.getInstance().getInterest()!=null) {
-                    interest.setText(User.getInstance().getInterest().toString().trim());
+                if (User.getInstance().getInterest()!=null && !User.getInstance().getInterest().isEmpty()) {
+                    if (User.getInstance().getInterest().toString()!=null && !User.getInstance().getInterest().toString().isEmpty()) {
+                        interest.setText(User.getInstance().getInterest().toString().trim());
+                    }
                 }
                 dialog.dismiss();
                 Map<String,Object> userobj = new HashMap<>();

@@ -416,8 +416,8 @@ public class IncogChatRoom extends AppCompatActivity {
         TextView confirmation=view.findViewById(R.id.request);
         Button yes = view.findViewById(R.id.yes);
         Button no = view.findViewById(R.id.no);
-        String text="Do you really want to block this person?";
-        confirmation.setText(text);
+       // String text="Do you really want to block this person?";
+       // confirmation.setText(text);
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -441,6 +441,7 @@ public class IncogChatRoom extends AppCompatActivity {
         dialog = builder.create();
         dialog.show();
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_background);
+        dialog.getWindow().setLayout((int)getResources().getDimension(R.dimen._270sdp),(int)getResources().getDimension(R.dimen._90sdp));
 
     }
 
@@ -653,8 +654,12 @@ if (User.getInstance().getUserid()!=null) {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
 
-                String category=User.getInstance().getInterest().get(0);
-
+                String category="";
+                if (User.getInstance().getInterest()!=null && !User.getInstance().getInterest().isEmpty()) {
+                    if ( User.getInstance().getInterest().get(0)!=null) {
+                        category = User.getInstance().getInterest().get(0);
+                    }
+                }
                 for (DataSnapshot snapshot : datasnapshot.getChildren()) {
                     Token token = snapshot.getValue(Token.class);
                     final Data data = new Data(User.getInstance().getUserid(), R.mipmap.ic_launcher, nickname, msg,User.getInstance().getUserid(),Incognito,category);

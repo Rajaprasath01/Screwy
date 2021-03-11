@@ -34,18 +34,18 @@
                     android:padding="@dimen/_8sdp"
                     android:text="@string/add_trusted_text"
                     android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/_14sdp" />
+                    android:textSize="@dimen/_15ssp" />
 
                 <TextView
                     android:id="@+id/ps"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="PS: Yoc can always kick 'em out"
+                    android:text="PS: You can always kick 'em out"
                     android:fontFamily="@font/damion"
                     android:textColor="@color/colorAccent"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_below="@+id/request"
-                    android:textSize="@dimen/_8ssp" />
+                    android:textSize="@dimen/_12ssp" />
 
                 <Button
                     android:id="@+id/yes"

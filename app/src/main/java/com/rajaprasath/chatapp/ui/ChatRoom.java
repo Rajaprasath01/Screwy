@@ -335,8 +335,8 @@ private SecretKeySpec secretKeySpec;
         TextView confirmation=view.findViewById(R.id.request);
         Button yes = view.findViewById(R.id.yes);
         Button no = view.findViewById(R.id.no);
-        String text="Do you really want to block this person?";
-        confirmation.setText(text);
+        //String text="Do you really want to block this person?";
+        //confirmation.setText(text);
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -377,6 +377,7 @@ private SecretKeySpec secretKeySpec;
         dialog = builder.create();
         dialog.show();
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_background);
+        dialog.getWindow().setLayout((int)getResources().getDimension(R.dimen._270sdp),(int)getResources().getDimension(R.dimen._90sdp));
 
     }
 
@@ -598,7 +599,9 @@ private SecretKeySpec secretKeySpec;
     @Override
     protected void onPause() {
         super.onPause();
-        reference.removeEventListener(seenListener);
+        if (reference!=null && seenListener!=null) {
+            reference.removeEventListener(seenListener);
+        }
         status("offline");
 if (ifsent==1) {
     updatemessagetime();
